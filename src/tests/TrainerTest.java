@@ -29,11 +29,12 @@ public class TrainerTest {
 	}
 	
 	@Test
-	public void pokeballTest(){
-		assertEquals(ash.getPokeballsLeft(), 10);
-		ash.addPokeball();
-		assertEquals(ash.getPokeballsLeft(), 11);
-		ash.usePokeball();
-		assertEquals(ash.getPokeballsLeft(), 10);
+	public void backpackTest(){
+		assertEquals(ash.openPack().getPokeballsLeft(), 10);
+		ash.openPack().addPokeball();
+		assertEquals(ash.openPack().getPokeballsLeft(), 11);
+		ash.openPack().usePokeball();
+		assertEquals(ash.openPack().getPokeballsLeft(), 10);
 	}
+	
 }

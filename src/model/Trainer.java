@@ -68,27 +68,11 @@ public class Trainer implements Serializable {
 	}
 	
 	/**
-	 * Use a pokeball
-	 * @return Pokeball removed from backpack
+	 * Allow the Trainer to open their backpack and use methods associated with it
+	 * @return Backpack object
 	 */
-	public Pokeball usePokeball(){
-		return bp.usePokeball();
+	public Backpack openPack(){
+		return this.bp;
 	}
-	
-	/**
-	 * Add a new Pokeball to the backpack
-	 */
-	public void addPokeball(){
-		bp.addPokeball();
-	}
-	
-	/**
-	 * Get the amount of pokeballs remaining
-	 * @return pokeball count
-	 */
-	public int getPokeballsLeft(){
-		return bp.getPokeballsLeft();
-	}
-	
 
 }
