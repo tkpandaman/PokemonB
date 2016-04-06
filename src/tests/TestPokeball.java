@@ -1,10 +1,13 @@
 package tests;
 
 import static org.junit.Assert.*;
+
 import java.util.Random;
+
 import org.junit.Test;
+
+import model.Charizard;
 import model.Pokeball;
-import model.pokemon.Charizard;
 
 public class TestPokeball
 {
@@ -24,4 +27,5 @@ public class TestPokeball
         Pokeball p2 = new Pokeball( new Random( 1234L ) ); // controlled random pokeball that will catch
         assertTrue( p2.use( charizard ) );
     }
+    
 }

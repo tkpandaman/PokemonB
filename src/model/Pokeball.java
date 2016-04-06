@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import java.util.Random;
-import model.pokemon.*;
 
 /**
  * Pokeball item used to capture pokemon

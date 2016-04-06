@@ -1,8 +1,10 @@
 package tests;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
-import model.pokemon.*;
+
+import model.Charizard;
 import model.Potion;
 
 public class TestPotion

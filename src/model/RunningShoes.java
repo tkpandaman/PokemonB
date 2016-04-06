@@ -29,4 +29,5 @@ public class RunningShoes extends TrainerItem implements Serializable
     {
         trainer.setSpeed( 2.0 );
     }
+    
 }

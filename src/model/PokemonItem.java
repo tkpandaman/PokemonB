@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import model.pokemon.Pokemon;
 
 /**
  * The inheritance hierarchy for any item used on a pokemon in-game
