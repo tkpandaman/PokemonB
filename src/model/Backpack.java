@@ -38,6 +38,7 @@ public class Backpack {
 	
 	/**
 	 * Create a new Backpack for testing with intial amount of pokeballs
+	 * @param rand as a Random seed
 	 */
 	public Backpack(Random rand){
 		
@@ -60,6 +61,7 @@ public class Backpack {
 	
 	/**
 	 * Add a new pokeball to the list with testable random
+	 * @param rand as a Random seed
 	 */
 	public void addPokeball(Random rand){
 		pokeBallList.add(new Pokeball(rand));
@@ -104,6 +106,21 @@ public class Backpack {
 		trainerItemList.add(ti);
 	}
 	
+	/**
+	 * Return the number of captured pokemon
+	 * @return int as number of pokemon
+	 */
+	public int getPokemonCaptured(){
+		return pokemonList.size();
+	}
+	
+	/**
+	 * Add a pokemon to the list
+	 * @param p as a Pokemon
+	 */
+	public void addPokemon(Pokemon p){
+		pokemonList.add(p);
+	}
 	
 	
 	
