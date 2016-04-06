@@ -62,13 +62,13 @@ abstract class Pokemon implements Serializable {
 		HP -= d;
 	}
 	
-	public void flee(){
+	//public void flee(){
 		// Not sure what to do here?
 		/*
 		 * Boolean inBattle = false?
 		 * 
 		 */
-	}
+	//}
 	
 	/**
 	 * This function draws the pokemon on and given graphics component with the given x and y location 
@@ -77,10 +77,10 @@ abstract class Pokemon implements Serializable {
 	 * @param x value of top corner
 	 * @param y value of top corner
 	 */
-	public void Draw(Graphics g, int x, int y){
-		ImageIcon image = new ImageIcon(this.fileName);
-	    g.drawImage (image.getImage(), x, y, 50, 50, null);
-	}
+	//public void Draw(Graphics g, int x, int y){
+	//	ImageIcon image = new ImageIcon(this.fileName);
+	//    g.drawImage (image.getImage(), x, y, 50, 50, null);
+	//}
 	
 	abstract String getType();
 }
