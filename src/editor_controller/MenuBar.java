@@ -14,7 +14,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 
 import model.LevelEditor;
-import model.Tileset;
 import model.LevelEditor.EditorView;
 
 // The menu bar.
@@ -114,7 +113,7 @@ public class MenuBar extends JMenuBar {
 	private class SaveTileDefaultsListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Tileset.getInstance().saveTileDefaults();
+			levelEditor.getTileset().saveTileDefaults();
 		}
 	}
 	

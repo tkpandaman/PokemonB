@@ -12,11 +12,13 @@ import java.util.Observable;
 // The model class for the level editor.
 // Holds a Map and is responsible for changing the tiles on it.
 public class LevelEditor extends Observable{
-
 	private int width = 50;
 	private int height = 50;
 	
 	private Map map;
+	
+	private Tileset currentTileset;
+	private int tileSize;
 	
 	private int[] tileImage = new int[2]; //coordinates of the current tile image in the tileset.
 	MapTile currentTile = new MapTile(0,0);
@@ -24,9 +26,26 @@ public class LevelEditor extends Observable{
 	public enum EditorView{Normal, Collisions, TileType};
 	private EditorView view = EditorView.Normal;
 	
-	public LevelEditor(){
-		map = new Map(width, height);
+	public enum UpdateType{TilesetChanged};
+	
+	public LevelEditor(String tileset, int tileSize){
+		setTileset(tileset, tileSize);
+		
+		map = new Map(width, height, tileset, tileSize);
 		setTileImage(0, 0);
+	}
+	
+	// Gets the current Tileset.
+	public Tileset getTileset(){
+		return currentTileset;
+	}
+	
+	// Changes the current Tileset.
+	public void setTileset(String tileset, int size){
+		tileSize = size;
+		currentTileset = new Tileset(tileset, size);
+		setChanged();
+		notifyObservers(UpdateType.TilesetChanged);
 	}
 	
 	// Changes the tile at x, y on the map to the current tile.
@@ -45,7 +64,7 @@ public class LevelEditor extends Observable{
 	public void setTileImage(int x, int y){
 		currentTile.setImage(x, y);
 		//get default TileType for x, y
-		currentTile.setTileType(Tileset.getInstance().getDefaultType(x, y));
+		currentTile.setTileType(currentTileset.getDefaultType(x, y));
 		setChanged();
 		notifyObservers();
 	}
@@ -54,7 +73,7 @@ public class LevelEditor extends Observable{
 	public void setTileType(TileType type){
 		currentTile.setTileType(type);
 		//make this the new default TileType for this tile
-		Tileset.getInstance().setDefaultType(currentTile.getTilesetX(), currentTile.getTilesetY(), type);
+		currentTileset.setDefaultType(currentTile.getTilesetX(), currentTile.getTilesetY(), type);
 	}
 	
 	// Returns the current tile image coordinates
@@ -79,12 +98,17 @@ public class LevelEditor extends Observable{
 	
 	// Gets the width of the map (in pixels).
 	public int getMapPixelWidth(){
-		return width*Tileset.tileSize;
+		return width*tileSize;
 	}
 	
 	// Gets the height of the map (in pixels).
 	public int getMapPixelHeight(){
-		return height*Tileset.tileSize;
+		return height*tileSize;
+	}
+	
+	// Returns the tile size.
+	public int getTileSize(){
+		return tileSize;
 	}
 	
 	// Returns the current EditorView (normal, show collisions, or show tile type)
@@ -101,7 +125,7 @@ public class LevelEditor extends Observable{
 	
 	// Creates a blank map.
 	public void newLevel(){
-		map = new Map(width, height);
+		map = new Map(width, height, currentTileset.getName(), tileSize);
 		setChanged();
 		notifyObservers();
 	}
@@ -130,6 +154,7 @@ public class LevelEditor extends Observable{
 			
 			//read objects from saved data
 			map = (Map) in.readObject();
+			this.setTileset(map.getTileset(), map.getTileSize());
 			
 			in.close();
 			fileIn.close();

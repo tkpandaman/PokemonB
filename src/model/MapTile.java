@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 // A tile in a Pokemon map.
@@ -38,11 +37,6 @@ public class MapTile implements Serializable {
 	// Sets the tile's image.
 	public void setImage(int x, int y){
 		tilesetX = x; tilesetY = y;
-	}
-	
-	// Get this tile's image from the Tileset.
-	public BufferedImage getImage(){
-		return Tileset.getInstance().tileAt(tilesetX, tilesetY);
 	}
 	
 	// Gets the x-position of this tile in the Tileset.

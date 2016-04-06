@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import model.LevelEditor;
 import model.LevelEditor.EditorView;
 import model.MapTile;
-import model.Tileset;
 
 // A JPanel which shows the current map and allows the user to draw on it.
 public class MapPreviewPanel extends JPanel implements Observer {
@@ -44,10 +43,13 @@ public class MapPreviewPanel extends JPanel implements Observer {
 		
 		//draw the map
 		MapTile[][] map = levelEditor.getMap().getTiles();
+		int tileSize = levelEditor.getTileSize();
 		for(int x=0; x<map.length; x++){
 			for(int y=0; y<map[0].length; y++){
 				//draw the tile
-				g2.drawImage(map[x][y].getImage(), x*Tileset.tileSize, y*Tileset.tileSize, null);
+				int imgx = map[x][y].getTilesetX();
+				int imgy = map[x][y].getTilesetY();
+				g2.drawImage(levelEditor.getTileset().tileAt(imgx, imgy), x*tileSize, y*tileSize, null);
 				
 				if (levelEditor.getEditorView() == EditorView.Collisions){
 					//show a red square if a tile is solid, and green if it isn't.
@@ -55,29 +57,30 @@ public class MapPreviewPanel extends JPanel implements Observer {
 						g2.setColor(new Color(1.0f, 0.0f, 0.0f, 0.3f));
 					else
 						g2.setColor(new Color(0.0f, 1.0f, 0.0f, 0.3f));
-					g2.fillRect(x*Tileset.tileSize, y*Tileset.tileSize, Tileset.tileSize, Tileset.tileSize);
+					g2.fillRect(x*tileSize, y*tileSize, tileSize, tileSize);
 				}
 				
 				if (levelEditor.getEditorView() == EditorView.TileType){
 					//show the abbreviation of each tile's TileType
-					int size = Tileset.tileSize;
 					g2.setColor(new Color(0.0f, 0.0f, 0.0f, 0.4f));
-					g2.fillRect(x*Tileset.tileSize, y*Tileset.tileSize, Tileset.tileSize, Tileset.tileSize);
+					g2.fillRect(x*tileSize, y*tileSize, tileSize, tileSize);
 					g2.setColor(new Color(1.0f, 1.0f, 1.0f, 1));
-					g2.drawString(map[x][y].getTileType().getAbbreviation(), x*size+size/2-4, y*size+size/2+4);
+					g2.drawString(map[x][y].getTileType().getAbbreviation(), x*tileSize+tileSize/2-4, y*tileSize+tileSize/2+4);
 				}
 			}
 		}
 		
 		//draw preview
-		BufferedImage ghostImage = levelEditor.getCurrentTile().getImage();
-		g2.drawImage(ghostImage, mouseoverX*Tileset.tileSize, mouseoverY*Tileset.tileSize, null);
+		int imgx = levelEditor.getCurrentTile().getTilesetX();
+		int imgy = levelEditor.getCurrentTile().getTilesetY();
+		BufferedImage ghostImage = levelEditor.getTileset().tileAt(imgx, imgy);
+		g2.drawImage(ghostImage, mouseoverX*tileSize, mouseoverY*tileSize, null);
 
 	}
 
 	//Whenever the model changes, repaint.
 	@Override
-	public void update(Observable o, Object obj) {
+	public void update(Observable model, Object obj) {
 		repaint();
 	}
 	
@@ -90,7 +93,7 @@ public class MapPreviewPanel extends JPanel implements Observer {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			try{
-				levelEditor.drawTile(e.getX()/Tileset.tileSize, e.getY()/Tileset.tileSize);
+				levelEditor.drawTile(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
 			} catch (ArrayIndexOutOfBoundsException ex){
 				//don't do anything if user clicked out of bounds
 			}
@@ -98,10 +101,10 @@ public class MapPreviewPanel extends JPanel implements Observer {
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			mouseoverX = e.getX()/Tileset.tileSize;
-			mouseoverY = e.getY()/Tileset.tileSize;
+			mouseoverX = e.getX()/levelEditor.getTileSize();
+			mouseoverY = e.getY()/levelEditor.getTileSize();
 			try{
-				levelEditor.drawTile(e.getX()/Tileset.tileSize, e.getY()/Tileset.tileSize);
+				levelEditor.drawTile(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
 			} catch (ArrayIndexOutOfBoundsException ex){
 				//don't do anything if user clicked out of bounds
 			}
@@ -110,8 +113,8 @@ public class MapPreviewPanel extends JPanel implements Observer {
 		
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			mouseoverX = e.getX()/Tileset.tileSize;
-			mouseoverY = e.getY()/Tileset.tileSize;
+			mouseoverX = e.getX()/levelEditor.getTileSize();
+			mouseoverY = e.getY()/levelEditor.getTileSize();
 			repaint();
 		}
 		

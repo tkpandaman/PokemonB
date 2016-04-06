@@ -10,17 +10,21 @@ public class Map implements Serializable {
 	private MapTile[][] tile;  //array of Tile objects which comprise the map
 	private int width, height; //width and height of the map (in tiles)
 	
+	private String tileset;
+	private int tileSize;
 	private String leftMap, rightMap, upMap, downMap; //what maps are adjacent to this one?
 
-	public Map(int width, int height){
+	public Map(int width, int height, String tileset, int tileSize){
 		this.width = width; this.height = height;
+		this.tileset = tileset;
+		this.tileSize = tileSize;
 		tile = new MapTile[width][height];
 		
 		//populate the map with default grass tiles
 		for(int i=0; i<width; i++){
 			for(int j=0; j<height; j++){
-				if (Tileset.getInstance().getName().equals("tileset-x2")) tile[i][j] = new MapTile(3, 0, TileType.Grass);
-				else if (Tileset.getInstance().getName().equals("emerald-x2")) tile[i][j] = new MapTile(1, 0, TileType.Grass);
+				if (tileset.equals("tileset-x2")) tile[i][j] = new MapTile(3, 0, TileType.Grass);
+				else if (tileset.equals("emerald-x2")) tile[i][j] = new MapTile(1, 0, TileType.Grass);
 				else tile[i][j] = new MapTile(0, 0, TileType.Grass);
 			}
 		}
@@ -56,9 +60,19 @@ public class Map implements Serializable {
 		return leftMap;
 	}
 	
+	// Sets the name of the map to the left of this one.
+	public void setLeftMap(String name){
+		leftMap = name;
+	}
+	
 	// Returns the name of the map to the right of this one.
 	public String getRightMap(){
 		return rightMap;
+	}
+	
+	// Sets the name of the map to the right of this one.
+	public void setRightMap(String name){
+		rightMap = name;
 	}
 	
 	// Returns the name of the map above this one.
@@ -66,9 +80,29 @@ public class Map implements Serializable {
 		return upMap;
 	}
 	
+	// Sets the name of the map above this one.
+	public void setUpMap(String name){
+		upMap = name;
+	}
+	
 	// Returns the name of the map below this one.
 	public String getDownMap(){
 		return downMap;
+	}
+	
+	// Sets the name of the map below this one.
+	public void setDownMap(String name){
+		downMap = name;
+	}
+
+	// Returns the name of this map's tileset.
+	public String getTileset() {
+		return tileset;
+	}
+	
+	// Returns the size (in pixels) of each tile in this map.
+	public int getTileSize(){
+		return tileSize;
 	}
 	
 }

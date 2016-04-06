@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import model.LevelEditor;
+import model.MapTile;
 import model.TileType;
 
 // A JPanel which allows the user to set the properties of the current tile.
@@ -35,7 +36,8 @@ public class TilePropertiesPanel extends JPanel implements Observer {
 		this.add(Box.createVerticalStrut(15));
 		
 		//add tile preview image
-		BufferedImage tileImg = levelEditor.getCurrentTile().getImage();
+		MapTile currentTile = levelEditor.getCurrentTile();
+		BufferedImage tileImg = levelEditor.getTileset().tileAt(currentTile.getTilesetX(), currentTile.getTilesetY());
 		tileIcon = new JLabel(new ImageIcon(tileImg));
 		this.add(tileIcon);
 		
@@ -60,9 +62,10 @@ public class TilePropertiesPanel extends JPanel implements Observer {
 	}
 
 	@Override
-	public void update(Observable o, Object obj) {
+	public void update(Observable model, Object obj) {
 		//update current tile
-		BufferedImage tileImg = levelEditor.getCurrentTile().getImage();
+		MapTile currentTile = levelEditor.getCurrentTile();
+		BufferedImage tileImg = levelEditor.getTileset().tileAt(currentTile.getTilesetX(), currentTile.getTilesetY());
 		tileIcon.setIcon(new ImageIcon(tileImg));
 		//update type selection radio buttons
 		for(TileTypeSelectionListener listener : selectionListeners){

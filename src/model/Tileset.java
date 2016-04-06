@@ -12,30 +12,24 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
-// A singleton which represents a tileset, dividing up a large image into discrete tiles
+// A class which represents a tileset, dividing up a large image into discrete tiles
 // and maintaining a list of default TileTypes for each one.
 public class Tileset {
-	
 	static Tileset instance = null;
 	
-	static final String filename = "tileset-x2";
-	int width, height;
+	private final String filename;
+	private int width, height;
 	
-	BufferedImage[][] tile;
-	public static final int tileSize = 32;
+	private BufferedImage[][] tile;
+	private final int tileSize;
 	
 	HashMap<String, TileType> defaults = new HashMap<String, TileType>();
 	
-	// Singleton stuff
-	public static Tileset getInstance(){
-		if (instance == null){
-			instance = new Tileset();
-		}
-		return instance;
-	}
-	
 	@SuppressWarnings("unchecked")
-	private Tileset(){
+	public Tileset(String filename, int tileSize){
+		this.filename = filename;
+		this.tileSize = tileSize;
+		
 		//load tileset image
 		BufferedImage image = null;
 		try {
@@ -78,6 +72,10 @@ public class Tileset {
 	// Returns the filename of the tileset.
 	public String getName(){
 		return filename;
+	}
+	
+	public int getTileSize(){
+		return tileSize;
 	}
 	
 	// Returns the width of the tileset (in pixels).

@@ -28,7 +28,7 @@ public class EditorGUI extends JFrame {
 		this.setSize(1024, 768);
 		
 		//level editor = model
-		LevelEditor levelEditor = new LevelEditor();
+		LevelEditor levelEditor = new LevelEditor("tileset-x2", 32);
 		
 		//map preview: shows the map, lets you draw on it
 		MapPreviewPanel mapPreview = new MapPreviewPanel(levelEditor);
@@ -42,6 +42,8 @@ public class EditorGUI extends JFrame {
 		//add it to a JScrollPane
 		JScrollPane tileScrollPane = new JScrollPane(tileSelection);
 		tileScrollPane.setPreferredSize(new Dimension(800, 250));
+		
+		levelEditor.addObserver(tileSelection);
 		
 		//tile properties: lets you choose the properties (solidity, random encounter chance) of the tile
 		TilePropertiesPanel tileProperties = new TilePropertiesPanel(levelEditor);
