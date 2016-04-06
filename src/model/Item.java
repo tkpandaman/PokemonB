@@ -2,7 +2,7 @@ package model;
 
 /**
  * The inheritance hierarchy for any items used in-game
- *
+ * @author Joshua Raphael
  */
 public abstract class Item
 {

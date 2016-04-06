@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 /**
  * Creates running shoes for the trainer to double their speed
+ * @author Joshua Raphael
  */
 public class RunningShoes extends TrainerItem implements Serializable
 {

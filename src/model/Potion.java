@@ -5,6 +5,7 @@ import model.pokemon.Pokemon;
 
 /**
  * A potion item that heals a pokemons health by 20 points
+ * @author Joshua Raphael
  */
 public class Potion extends PokemonItem implements Serializable
 {

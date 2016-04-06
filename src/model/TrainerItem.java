@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Hierarchy for items to be used on the trainer
- *
+ * @author Joshua Raphael
  */
 public abstract class TrainerItem extends Item implements Serializable
 {
