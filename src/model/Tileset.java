@@ -35,7 +35,7 @@ public class Tileset {
 		try {
 			image = ImageIO.read(new File("images/" + filename + ".png"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		width = image.getWidth();

@@ -62,10 +62,5 @@ public class TileTest {
 		assertEquals(tile.getTileType(), TileType.Wall);
 		assertTrue(tile.isSolid());
 	}
-	
-	@Test
-	public void testSerializable(){
-		//TODO
-	}
 
 }

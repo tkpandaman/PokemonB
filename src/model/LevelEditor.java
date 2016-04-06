@@ -1,8 +1,8 @@
+
 package model;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -20,7 +20,6 @@ public class LevelEditor extends Observable{
 	private Tileset currentTileset;
 	private int tileSize;
 	
-	private int[] tileImage = new int[2]; //coordinates of the current tile image in the tileset.
 	MapTile currentTile = new MapTile(0,0);
 	
 	public enum EditorView{Normal, Collisions, TileType};
@@ -74,11 +73,6 @@ public class LevelEditor extends Observable{
 		currentTile.setTileType(type);
 		//make this the new default TileType for this tile
 		currentTileset.setDefaultType(currentTile.getTilesetX(), currentTile.getTilesetY(), type);
-	}
-	
-	// Returns the current tile image coordinates
-	public int[] getTileImage(){
-		return tileImage;
 	}
 	
 	// Gets the Map object being edited.
@@ -139,10 +133,7 @@ public class LevelEditor extends Observable{
 			out.writeObject(map);
 			fileOut.close();
 			fileOut.flush();
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
 		} catch (IOException e1) {
-			e1.printStackTrace();
 		}
 	}
 	
@@ -161,7 +152,6 @@ public class LevelEditor extends Observable{
 			setChanged();
 			notifyObservers();
 		} catch(Exception ee){
-			System.out.println("Couldn't load file!");
 		}
 	}
 	
