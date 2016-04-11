@@ -19,7 +19,7 @@ public class Backpack {
 	private List<TrainerItem> trainerItemList;
 	private List<PokemonItem> pokemonItemList;
 
-	private static final int iniPokeBalls = 10;
+	private static final int iniPokeBalls = 30;
 
 	/**
 	 * Create a new Backpack with intial amount of pokeballs

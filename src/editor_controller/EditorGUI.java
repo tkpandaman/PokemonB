@@ -65,5 +65,6 @@ public class EditorGUI extends JFrame {
 		this.add(splitPane);
 		
 	}
+	
 
 }
