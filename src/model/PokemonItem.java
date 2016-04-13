@@ -1,15 +1,15 @@
 package model;
 
-import java.io.Serializable;
+
+import model.pokemon.Pokemon;
 
 /**
  * The inheritance hierarchy for any item used on a pokemon in-game
  * @author Joshua Raphael
  */
-public abstract class PokemonItem extends Item implements Serializable
+public abstract class PokemonItem extends Item
 {
-    private static final long serialVersionUID = -4451901954314653025L;
-
+    private static final long serialVersionUID = 5370483442030256472L;
     /**
      * Constructs the new pokemon item and sets the name and description of the superclass
      * @param name
