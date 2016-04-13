@@ -7,7 +7,7 @@ import java.io.Serializable;
 	Should be Serializable.
  * 
  * */
-abstract class Pokemon implements Serializable {
+public abstract class Pokemon implements Serializable {
 	
 	private int HP;
 	private int runLikely;
