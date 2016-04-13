@@ -13,12 +13,15 @@ public class Gamestate implements Serializable{
 	private int trainerX, trainerY;
 	private Trainer trainer;
 	private Map currentMap;
+	private State state;
 
+	//Constructor with default states of variables
 	private Gamestate(){
 		setTrainerX(0);
 		setTrainerY(0);
 		setTrainer(new Trainer("Ash"));
 		setCurrentMap(null);
+		setState(State.NORMAL);
 	}
 
 	/**
@@ -26,7 +29,7 @@ public class Gamestate implements Serializable{
 	 *
 	 * @return single instance of Gamestate
 	 */
-	public static Gamestate getInstance(){
+	public synchronized static Gamestate getInstance(){
 		if(instance == null) instance = new Gamestate();	
 		return instance;
 	}
@@ -110,6 +113,24 @@ public class Gamestate implements Serializable{
 	 */
 	public void setCurrentMap(Map currentMap) {
 		this.currentMap = currentMap;
+	}
+
+	/**
+	 * Gets the state.
+	 *
+	 * @return the state
+	 */
+	public State getState() {
+		return state;
+	}
+
+	/**
+	 * Sets the state.
+	 *
+	 * @param state the new state
+	 */
+	public void setState(State state) {
+		this.state = state;
 	}
 
 }
