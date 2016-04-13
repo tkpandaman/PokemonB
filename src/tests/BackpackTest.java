@@ -19,14 +19,13 @@ public class BackpackTest {
 
 	@Test
 	public void backPackAddPokeballTest() {
-		assertEquals(bp.getPokeballsLeft(), 10);
+		assertEquals(bp.getPokeballsLeft(), 30);
 		bp.addPokeball();
-		bp.addPokeball(r);
-		assertEquals(bp.getPokeballsLeft(), 12);
+		assertEquals(bp.getPokeballsLeft(), 31);
 		bp.usePokeball();
-		assertEquals(bp.getPokeballsLeft(), 11);
+		assertEquals(bp.getPokeballsLeft(), 30);
 		
-		for(int i = 0; i < 11; i++){
+		for(int i = 0; i < 31; i++){
 			bp.usePokeball();
 		}
 		

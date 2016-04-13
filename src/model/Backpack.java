@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,15 +14,16 @@ import model.pokemon.Pokemon;
  * @author AlexKatzfey
  *
  */
-public class Backpack {
+public class Backpack implements Serializable{
 
 	//Create pockets in the backpack for different objects
 	private List<Pokemon> pokemonList;
-	private List<Pokeball> pokeBallList;
 	private List<TrainerItem> trainerItemList;
 	private List<PokemonItem> pokemonItemList;
-
-	private static final int iniPokeBalls = 10;
+	private int pokeBalls;
+	private Random rand;
+	
+	private static final int INI_POKEBALLS = 30;  //initial amount of pokeballs
 
 	/**
 	 * Create a new Backpack with intial amount of pokeballs
@@ -31,11 +33,8 @@ public class Backpack {
 		pokemonList = new ArrayList<Pokemon>();
 		trainerItemList = new ArrayList<TrainerItem>();
 		pokemonItemList = new ArrayList<PokemonItem>();
-		pokeBallList = new ArrayList<Pokeball>();
-		
-		for (int i = 0; i < iniPokeBalls; i++){
-			pokeBallList.add(new Pokeball(new Random()));
-		}
+		pokeBalls = INI_POKEBALLS;
+		rand = new Random();
 	}
 	
 	/**
@@ -47,26 +46,15 @@ public class Backpack {
 		pokemonList = new ArrayList<Pokemon>();
 		trainerItemList = new ArrayList<TrainerItem>();
 		pokemonItemList = new ArrayList<PokemonItem>();
-		pokeBallList = new ArrayList<Pokeball>();
-		
-		for (int i = 0; i < iniPokeBalls; i++){
-			pokeBallList.add(new Pokeball(rand));
-		}
+		pokeBalls = INI_POKEBALLS;
+		this.rand = rand;
 	}
 	
 	/**
-	 * Add a new pokeball to the list
+	 * Add a new pokeball to the count
 	 */
 	public void addPokeball(){
-		pokeBallList.add(new Pokeball(new Random()));
-	}
-	
-	/**
-	 * Add a new pokeball to the list with testable random
-	 * @param rand as a Random seed
-	 */
-	public void addPokeball(Random rand){
-		pokeBallList.add(new Pokeball(rand));
+		pokeBalls++;
 	}
 
 	/**
@@ -74,15 +62,18 @@ public class Backpack {
 	 * @return int pokeball count
 	 */
 	public int getPokeballsLeft(){
-		return pokeBallList.size();
+		return pokeBalls;
 	}
 
 	/**
-	 * Removes a pokeball from the end of the list and returns it if the List is not empty.
+	 * Removes a pokeball from the count and returns a new Pokeball object with rand seed.
 	 * @return Pokeball
 	 */
 	public Pokeball usePokeball(){
-		if(!pokeBallList.isEmpty()) return pokeBallList.remove(pokeBallList.size()-1);
+		if(pokeBalls > 0) {
+			pokeBalls--;
+			return new Pokeball(rand);
+		}
 		return null;
 	}
 	
@@ -114,6 +105,10 @@ public class Backpack {
 	 */
 	public int getPokemonCaptured(){
 		return pokemonList.size();
+	}
+	
+	public Pokemon getPokemonAt(int index){
+		return pokemonList.get(index);
 	}
 	
 	/**

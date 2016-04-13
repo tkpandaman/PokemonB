@@ -30,11 +30,11 @@ public class TrainerTest {
 	
 	@Test
 	public void backpackTest(){
-		assertEquals(ash.openPack().getPokeballsLeft(), 10);
+		assertEquals(ash.openPack().getPokeballsLeft(), 30);
 		ash.openPack().addPokeball();
-		assertEquals(ash.openPack().getPokeballsLeft(), 11);
+		assertEquals(ash.openPack().getPokeballsLeft(), 31);
 		ash.openPack().usePokeball();
-		assertEquals(ash.openPack().getPokeballsLeft(), 10);
+		assertEquals(ash.openPack().getPokeballsLeft(), 30);
 	}
 	
 }
