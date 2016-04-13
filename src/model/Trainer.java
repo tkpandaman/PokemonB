@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Trainer implements Serializable {
 	
-	//private Backpack bp;
+	private Backpack bp;
 	private String name;
 	private int steps;
 	private double speed;
@@ -22,7 +22,7 @@ public class Trainer implements Serializable {
 	 * @param name as the Trainer's name
 	 */
 	public Trainer(String name){
-		//this.bp = new Backpack();
+		this.bp = new Backpack();
 		this.name = name;
 		this.steps = 500;
 		this.speed = 1.0;
@@ -52,14 +52,6 @@ public class Trainer implements Serializable {
 	}
 	
 	/**
-	 * Return the list of Pokemon contained in the Backpack object
-	 * @return List of Pokemon objects
-	 */
-//	public List getPokemon(){
-//		//return this.bp.getPokemon();
-//	}
-	
-	/**
 	 * Get the current speed of the Trainer
 	 * @return double as a scale of speed
 	 */
@@ -69,11 +61,18 @@ public class Trainer implements Serializable {
 	
 	/**
 	 * Set the current speed of the trainer
-	 * @param speed
+	 * @param speed as a double
 	 */
 	public void setSpeed(double speed){
 		this.speed = speed;
 	}
 	
+	/**
+	 * Allow the Trainer to open their backpack and use methods associated with it
+	 * @return Backpack object
+	 */
+	public Backpack openPack(){
+		return this.bp;
+	}
 
 }

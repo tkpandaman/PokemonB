@@ -27,5 +27,14 @@ public class TrainerTest {
 		ash.setSpeed(1.5);
 		assertEquals(ash.getSpeed(), 1.5, 0.001);
 	}
-
+	
+	@Test
+	public void backpackTest(){
+		assertEquals(ash.openPack().getPokeballsLeft(), 10);
+		ash.openPack().addPokeball();
+		assertEquals(ash.openPack().getPokeballsLeft(), 11);
+		ash.openPack().usePokeball();
+		assertEquals(ash.openPack().getPokeballsLeft(), 10);
+	}
+	
 }
