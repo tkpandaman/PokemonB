@@ -8,10 +8,9 @@ import java.util.Observable;
 public class Game extends Observable {
 	
 	private Map map;
-	private Trainer trainer;
+	private Trainer trainer = new Trainer("Sir Dumplestein");
 	private int playerX = 0;
 	private int playerY = 0;
-	private int steps = 0;
 	
 	private State state = State.NORMAL;
 	
@@ -38,6 +37,17 @@ public class Game extends Observable {
 		
 	}
 	
+	public void loadState(){
+		Gamestate gamestate = Gamestate.getInstance();
+		map = gamestate.getCurrentMap();
+		trainer = gamestate.getTrainer();
+		playerX = gamestate.getTrainerX();
+		playerY = gamestate.getTrainerY();
+		state = gamestate.getState();
+		setChanged();
+		notifyObservers();
+	}
+	
 	// Returns the current map.
 	public Map getMap(){
 		return map;
@@ -47,15 +57,11 @@ public class Game extends Observable {
 		if (state == State.NORMAL){
 			playerX += x;
 			playerY += y;
-			steps++;
-			if (steps >= 500) state = State.WIN;
+			trainer.takeStep();
+			if (trainer.getStepsLeft() <= 0) state = State.WIN;
 			setChanged();
 			notifyObservers();
 		}
-	}
-	
-	public int getSteps(){
-		return steps;
 	}
 	
 	public void moveLeft(){

@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JOptionPane;
+
 import model.Game;
 import model.Gamestate;
 import view.MapView;
@@ -28,6 +29,8 @@ public class GameGUI extends JFrame {
 		this.setTitle("Pokemon");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1024, 768);
+		
+		this.addWindowListener(new SaveAndLoad());
 		
 		game = new Game();
 		
@@ -86,6 +89,7 @@ public class GameGUI extends JFrame {
                     ObjectInputStream ois = new ObjectInputStream( fis );
                     // load our saved data
                     Gamestate.setInstance( (Gamestate)ois.readObject() );
+                    game.loadState();
                     ois.close();
                     fis.close();
                     
