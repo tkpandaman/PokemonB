@@ -6,8 +6,8 @@ import java.util.Random;
 
 import org.junit.Test;
 
-import model.Charizard;
 import model.Pokeball;
+import model.pokemon.Charizard;
 
 public class TestPokeball
 {

@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import model.Charizard;
 import model.Potion;
+import model.pokemon.Charizard;
 
 public class TestPotion
 {   
