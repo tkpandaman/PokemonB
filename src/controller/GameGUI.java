@@ -6,10 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.Gamestate;
 
-public class PokemonGUI
+public class GameGUI extends JFrame
 {
+    private Gamestate game;
+
     private class SaveAndLoad extends WindowAdapter
     {
         private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
@@ -21,6 +25,7 @@ public class PokemonGUI
             if( selectedChoice == JOptionPane.NO_OPTION )
             {
                 // load defaults if we do not want to restore our data
+                GameGUI.this.game = Gamestate.getInstance();
             };
             if( selectedChoice == JOptionPane.YES_OPTION )
             {
@@ -30,6 +35,9 @@ public class PokemonGUI
                     ObjectInputStream ois = new ObjectInputStream( fis );
                     // load all data that we read in from the file
                     //var something = (Object)ois.readObject();
+                    Gamestate.setInstance( (Gamestate)ois.readObject() );
+                    GameGUI.this.game = Gamestate.getInstance();
+                    System.out.println(GameGUI.this.game.getTrainerX() );
                     ois.close();
                     fis.close();
                     
@@ -56,9 +64,12 @@ public class PokemonGUI
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     // save all data we need to a file
                     // oos.writeObject( Object )
+                    oos.writeObject( GameGUI.this.game );
                     oos.close();
                     fos.close();
-                } catch (Exception exception) {
+                }
+                catch( Exception exception )
+                {
                     exception.printStackTrace();
                 }
             };
