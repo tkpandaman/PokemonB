@@ -1,24 +1,34 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Observable;
 
 /**
  * Gamestate is in charge of storing information that needs to be saved to and loaded from a file.
  * @author AlexKatzfey
  *
  */
-public class Gamestate implements Serializable{
+public class Gamestate extends Observable implements Serializable{
 
 	private static Gamestate instance;
 	private int trainerX, trainerY;
 	private Trainer trainer;
 	private Map currentMap;
+	private State state;
 
+	//Constructor with default states of variables
 	private Gamestate(){
 		setTrainerX(0);
 		setTrainerY(0);
 		setTrainer(new Trainer("Ash"));
 		setCurrentMap(null);
+		setState(State.NORMAL);
+	}
+	
+	//Shorter way of updating the set
+	private void update(){
+		this.setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -26,7 +36,7 @@ public class Gamestate implements Serializable{
 	 *
 	 * @return single instance of Gamestate
 	 */
-	public static Gamestate getInstance(){
+	public synchronized static Gamestate getInstance(){
 		if(instance == null) instance = new Gamestate();	
 		return instance;
 	}
@@ -56,6 +66,7 @@ public class Gamestate implements Serializable{
 	 */
 	public void setTrainerX(int trainerX) {
 		this.trainerX = trainerX;
+		update();
 	}
 
 	/**
@@ -74,6 +85,7 @@ public class Gamestate implements Serializable{
 	 */
 	public void setTrainerY(int trainerY) {
 		this.trainerY = trainerY;
+		update();
 	}
 
 	/**
@@ -92,6 +104,7 @@ public class Gamestate implements Serializable{
 	 */
 	public void setTrainer(Trainer trainer) {
 		this.trainer = trainer;
+		update();
 	}
 
 	/**
@@ -110,6 +123,26 @@ public class Gamestate implements Serializable{
 	 */
 	public void setCurrentMap(Map currentMap) {
 		this.currentMap = currentMap;
+		update();
+	}
+
+	/**
+	 * Gets the state.
+	 *
+	 * @return the state
+	 */
+	public State getState() {
+		return state;
+	}
+
+	/**
+	 * Sets the state.
+	 *
+	 * @param state the new state
+	 */
+	public void setState(State state) {
+		this.state = state;
+		update();
 	}
 
 }

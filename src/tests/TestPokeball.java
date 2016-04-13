@@ -1,18 +1,12 @@
 package tests;
 
 import static org.junit.Assert.*;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Random;
 
 import org.junit.Test;
 
-import model.Charizard;
-import model.Item;
+import model.pokemon.Charizard;
 import model.Pokeball;
 
 public class TestPokeball extends SerializableTestCase
