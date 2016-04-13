@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import java.util.Random;
 
 import model.Backpack;
-import model.Charizard;
 import model.RunningShoes;
 import model.TrainerItem;
+import model.pokemon.Charizard;
 
 import org.junit.Test;
 

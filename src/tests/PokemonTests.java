@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import model.Charizard;
-import model.Snorlax;
-import model.Voltorb;
+import model.pokemon.Charizard;
+import model.pokemon.Snorlax;
+import model.pokemon.Voltorb;
 import junit.framework.TestCase;
 
 public class PokemonTests {

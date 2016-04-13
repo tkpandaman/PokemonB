@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import model.pokemon.Pokemon;
+
 /**
  * Backpack is in charge of encapsulating various List objects and provides convienient functionality
  * for the Trainer class to use.

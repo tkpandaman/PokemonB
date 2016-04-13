@@ -1,0 +1,5 @@
+package model.pokemon;
+
+public enum PokemonType {
+	CHARIZARD, SNORLAX, VOLTORB, SQUIRTLE, BUTTERFREE, BEEDRILL, PIDGEOT, SPEAROW, ARBOK, PIKACHU;
+}

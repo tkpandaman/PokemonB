@@ -1,4 +1,4 @@
-package model;
+package model.pokemon;
 
 import java.awt.Graphics;
 import java.io.Serializable;
@@ -82,5 +82,5 @@ abstract class Pokemon implements Serializable {
 	//    g.drawImage (image.getImage(), x, y, 50, 50, null);
 	//}
 	
-	abstract String getType();
+	abstract PokemonType getType();
 }
