@@ -8,11 +8,32 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.Game;
 import model.Gamestate;
+import view.MapView;
 
-public class GameGUI extends JFrame
-{
-    private class SaveAndLoad extends WindowAdapter
+public class GameGUI extends JFrame {
+	
+	public static void main(String[] args){
+		GameGUI gui = new GameGUI();
+		gui.setVisible(true);
+	}
+	
+	public GameGUI(){
+		this.setTitle("Pokemon");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(1024, 768);
+		
+		Game game = new Game();
+		
+		MapView mapView = new MapView(game);
+		
+		game.addObserver(mapView);
+		
+		this.add(mapView);
+		
+	}
+	private class SaveAndLoad extends WindowAdapter
     {
         private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
 
@@ -67,4 +88,5 @@ public class GameGUI extends JFrame
             };
         };
     };
+	
 }
