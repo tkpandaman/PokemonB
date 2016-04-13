@@ -9,10 +9,10 @@ public class Pikachu extends Pokemon{
 	/**
 	 * Makes a new Pikachu
 	 */
-	private static final int HP = 120;
-	private static final int RUNLIKELY = 50;
-	private static final int MAXHP = 120;
-	private static final int MAXBATTLEDURATION = 10;
+	private static final int HP = 200;
+	private static final int RUNLIKELY = 5;
+	private static final int MAXHP = 200;
+	private static final int MAXBATTLEDURATION = 20;
 	
 	public Pikachu(){
 		super(HP, RUNLIKELY, MAXHP, MAXBATTLEDURATION);

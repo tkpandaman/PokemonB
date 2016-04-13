@@ -16,15 +16,14 @@ import java.io.Serializable;
 // can call the assertObjectSerializable method.
 public abstract class SerializableTestCase {
 
-    public void assertObjectSerializable(Serializable expected) throws IOException, ClassNotFoundException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream objectOut = new ObjectOutputStream(out);
-        objectOut.writeObject(expected);
-        InputStream in = new ByteArrayInputStream(out.toByteArray());
-        ObjectInputStream objectIn = new ObjectInputStream(in);
-        Serializable actual = (Serializable)objectIn.readObject();
-        System.out.print( actual.getClass() );
-        assertEquals(expected, actual);
-    }
+	public void assertObjectSerializable(Serializable expected) throws IOException, ClassNotFoundException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ObjectOutputStream objectOut = new ObjectOutputStream(out);
+		objectOut.writeObject(expected);
+		InputStream in = new ByteArrayInputStream(out.toByteArray());
+		ObjectInputStream objectIn = new ObjectInputStream(in);
+		Serializable actual = (Serializable)objectIn.readObject();
+		assertEquals(expected, actual);
+	}
 
 }

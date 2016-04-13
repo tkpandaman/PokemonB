@@ -9,10 +9,10 @@ public class Arbok extends Pokemon{
 	/**
 	 * Makes a new Arbok
 	 */
-	private static final int HP = 120;
-	private static final int RUNLIKELY = 50;
-	private static final int MAXHP = 120;
-	private static final int MAXBATTLEDURATION = 10;
+	private static final int HP = 90;
+	private static final int RUNLIKELY = 70;
+	private static final int MAXHP = 90;
+	private static final int MAXBATTLEDURATION = 3;
 	
 	public Arbok(){
 		super(HP, RUNLIKELY, MAXHP, MAXBATTLEDURATION);

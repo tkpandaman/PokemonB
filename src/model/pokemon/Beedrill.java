@@ -9,9 +9,9 @@ public class Beedrill extends Pokemon{
 	/**
 	 * Makes a new Beedrill
 	 */
-	private static final int HP = 120;
-	private static final int RUNLIKELY = 50;
-	private static final int MAXHP = 120;
+	private static final int HP = 130;
+	private static final int RUNLIKELY = 10;
+	private static final int MAXHP = 130;
 	private static final int MAXBATTLEDURATION = 10;
 	
 	public Beedrill(){
