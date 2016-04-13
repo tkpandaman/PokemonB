@@ -13,10 +13,9 @@ public class Pidgeot extends Pokemon{
 	private static final int RUNLIKELY = 50;
 	private static final int MAXHP = 120;
 	private static final int MAXBATTLEDURATION = 10;
-	private static final String FILENAME = "Charizard.png";
 	
 	public Pidgeot(){
-		super(HP, RUNLIKELY, MAXHP, MAXBATTLEDURATION, FILENAME);
+		super(HP, RUNLIKELY, MAXHP, MAXBATTLEDURATION);
 	}
 	
 	public PokemonType getType(){
