@@ -13,7 +13,7 @@ public class Game extends Observable {
 	private int playerY = 0;
 	private int steps = 0;
 	
-	private boolean won = false;
+	private State state = State.NORMAL;
 	
 	public Game(){
 		
@@ -33,6 +33,9 @@ public class Game extends Observable {
 		} catch(Exception ee){
 		}
 		
+		Gamestate state = Gamestate.getInstance();
+		this.addObserver(state);
+		
 	}
 	
 	// Returns the current map.
@@ -41,11 +44,11 @@ public class Game extends Observable {
 	}
 	
 	public void takeStep(int x, int y){
-		if (!won){
+		if (state == State.NORMAL){
 			playerX += x;
 			playerY += y;
 			steps++;
-			if (steps >= 500) won = true;
+			if (steps >= 500) state = State.WIN;
 			setChanged();
 			notifyObservers();
 		}
@@ -95,8 +98,12 @@ public class Game extends Observable {
 		return playerY;
 	}
 	
-	public boolean gameWon(){
-		return won;
+	public Trainer getTrainer(){
+		return trainer;
+	}
+	
+	public State getState(){
+		return state;
 	}
 	
 }

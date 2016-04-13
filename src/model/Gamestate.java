@@ -2,13 +2,14 @@ package model;
 
 import java.io.Serializable;
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Gamestate is in charge of storing information that needs to be saved to and loaded from a file.
  * @author AlexKatzfey
  *
  */
-public class Gamestate extends Observable implements Serializable{
+public class Gamestate extends Observable implements Serializable, Observer{
 
 	private static Gamestate instance;
 	private int trainerX, trainerY;
@@ -143,6 +144,16 @@ public class Gamestate extends Observable implements Serializable{
 	public void setState(State state) {
 		this.state = state;
 		update();
+	}
+
+	@Override
+	public void update(Observable o, Object obj) {
+		Game game = (Game)o;
+		setTrainerX(game.getPlayerX());
+		setTrainerY(game.getPlayerY());
+		setTrainer(game.getTrainer());
+		setCurrentMap(game.getMap());
+		setState(game.getState());
 	}
 
 }

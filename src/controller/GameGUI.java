@@ -64,6 +64,7 @@ public class GameGUI extends JFrame {
 		}
 		
 	}
+	
 	private class SaveAndLoad extends WindowAdapter
     {
         private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";

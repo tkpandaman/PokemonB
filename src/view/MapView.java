@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import model.Game;
 import model.Map;
 import model.MapTile;
+import model.State;
 import model.Tileset;
 
 public class MapView extends JPanel implements Observer {
@@ -62,7 +63,7 @@ public class MapView extends JPanel implements Observer {
 		g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize());
 		
 		g2.setColor(Color.BLUE);
-		if (game.gameWon())
+		if (game.getState() == State.WIN)
 			g2.drawString("You won?!", 400, 400);
 		
 	}
