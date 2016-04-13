@@ -9,8 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import model.LevelEditor;
-
 public class EditorGUI extends JFrame {
 	private static final long serialVersionUID = 2084081246604831895L;
 
@@ -65,5 +63,6 @@ public class EditorGUI extends JFrame {
 		this.add(splitPane);
 		
 	}
+	
 
 }

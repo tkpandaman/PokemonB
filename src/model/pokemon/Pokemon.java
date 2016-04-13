@@ -1,29 +1,24 @@
-package model;
+package model.pokemon;
 
-import java.awt.Graphics;
 import java.io.Serializable;
-
-import javax.swing.ImageIcon;
 
 /*
  * Inheritance hierarchy exists for Pokémon with at least 3 concrete classes.
 	Should be Serializable.
  * 
  * */
-abstract class Pokemon implements Serializable {
+public abstract class Pokemon implements Serializable {
 	
 	private int HP;
 	private int runLikely;
 	private int maxHP;
 	private int maxDur;
-	private String fileName;
 	
-	public Pokemon(int hp, int run, int maxHP, int maxDur, String fileName){
+	public Pokemon(int hp, int run, int maxHP, int maxDur){
 		this.HP = hp;
 		this.runLikely = run;
 		this.maxHP = maxHP;
 		this.maxDur = maxDur;
-		this.fileName = fileName;
 	}
 	
 	/**
@@ -70,17 +65,33 @@ abstract class Pokemon implements Serializable {
 		 */
 	//}
 	
-	/**
-	 * This function draws the pokemon on and given graphics component with the given x and y location 
-	 * 
-	 * @param g Graphics component to draw on
-	 * @param x value of top corner
-	 * @param y value of top corner
-	 */
-	//public void Draw(Graphics g, int x, int y){
-	//	ImageIcon image = new ImageIcon(this.fileName);
-	//    g.drawImage (image.getImage(), x, y, 50, 50, null);
-	//}
+	abstract PokemonType getType();
 	
-	abstract String getType();
+	@Override
+	public boolean equals(Object other) {
+		// In an equals method you should always confirm that the instance of the Object
+		// is the type you are looking for.
+		if (!(other instanceof Pokemon)) {
+			return false;
+		} else {
+			Pokemon otherPokemon = (Pokemon)other;
+			
+			if(this.HP != otherPokemon.getCurHP())
+				return false;
+			
+			if(this.maxHP != otherPokemon.getMaxHP())
+				return false;
+			
+			if(this.maxDur != otherPokemon.getTurnsTillFlee())
+				return false;
+			
+			if(this.runLikely != otherPokemon.getLikelyRun())
+				return false;
+			
+			if(this.getType() != otherPokemon.getType())
+				return false;
+			
+			return true;
+		}
+	}
 }

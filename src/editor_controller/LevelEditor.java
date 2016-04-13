@@ -1,5 +1,5 @@
 
-package model;
+package editor_controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
+
+import model.Map;
+import model.MapTile;
+import model.TileType;
+import model.Tileset;
 
 // The model class for the level editor.
 // Holds a Map and is responsible for changing the tiles on it.

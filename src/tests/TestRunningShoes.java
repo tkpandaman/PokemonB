@@ -1,21 +1,29 @@
 package tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import java.io.IOException;
 import org.junit.Test;
 import model.RunningShoes;
 import model.Trainer;
 
-public class TestRunningShoes
+public class TestRunningShoes extends SerializableTestCase
 {
     @Test
-    public void testGetters()
+    public void testRunningShoesGetName()
     {
         RunningShoes shoe = new RunningShoes();
         assertEquals( "Running Shoes", shoe.getName() );
+    }
+    @Test
+    public void testRunningShoesGetDescription()
+    {
+        RunningShoes shoe = new RunningShoes();
         assertEquals( "Doubles the trainers walking speed", shoe.getDescription() );
     }
     @Test
-    public void testShoes()
+    public void testRunningShoesIncreaseSpeed()
     {
         Trainer t = new Trainer("Bob");
         RunningShoes shoe = new RunningShoes();
@@ -23,4 +31,17 @@ public class TestRunningShoes
         shoe.use( t );
         assertEquals( 2.0, t.getSpeed(), 0.000000000000000000001 );
     };
+    @Test
+    public void testRunningShoesSerializable() throws ClassNotFoundException, IOException
+    {
+        this.assertObjectSerializable( new RunningShoes() );
+    }
+    @Test
+    public void testRunningShoesNotEqualToObject()
+    {
+        Trainer t = new Trainer("Bob");
+        RunningShoes shoe = new RunningShoes();
+        assertFalse( shoe.equals( t ) );
+        assertTrue( shoe.equals( shoe ) );
+    }
 }

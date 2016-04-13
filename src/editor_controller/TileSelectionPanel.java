@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import model.LevelEditor;
 import model.Tileset;
 
 // A JPanel which allows the user to select a tile to draw.

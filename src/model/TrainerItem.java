@@ -1,15 +1,12 @@
 package model;
 
-import java.io.Serializable;
-
 /**
  * Hierarchy for items to be used on the trainer
  * @author Joshua Raphael
  */
-public abstract class TrainerItem extends Item implements Serializable
+public abstract class TrainerItem extends Item
 {
-    private static final long serialVersionUID = -6802313021262429494L;
-
+    private static final long serialVersionUID = -255055332706335957L;
     /**
      * Constructs a new trainer item
      * @param name

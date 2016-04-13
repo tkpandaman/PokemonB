@@ -6,8 +6,8 @@ import java.io.File;
 
 import org.junit.Test;
 
-import model.LevelEditor;
-import model.LevelEditor.EditorView;
+import editor_controller.LevelEditor;
+import editor_controller.LevelEditor.EditorView;
 import model.Map;
 import model.TileType;
 import model.Tileset;
