@@ -57,4 +57,12 @@ public class TestPotion extends SerializableTestCase
     {
         this.assertObjectSerializable( new Potion() );
     }
+    @Test
+    public void testPotionNotEqualToObject()
+    {
+        Charizard charizard = new Charizard();
+        Potion potion = new Potion();
+        assertFalse( potion.equals( charizard ) );
+        assertTrue( potion.equals( potion ) );
+    }
 }

@@ -49,4 +49,12 @@ public class TestPokeball extends SerializableTestCase
     {
         this.assertObjectSerializable( new Pokeball( new Random() ) );
     }
+    @Test
+    public void testPokeballNotEqualToObject()
+    {
+        Charizard charizard = new Charizard();
+        Pokeball p = new Pokeball( new Random( 1234L ) );
+        assertFalse( p.equals( charizard ) );
+        assertTrue( p.equals( p ) );
+    }
 }

@@ -1,6 +1,8 @@
 package tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import org.junit.Test;
 import model.RunningShoes;
@@ -33,5 +35,13 @@ public class TestRunningShoes extends SerializableTestCase
     public void testRunningShoesSerializable() throws ClassNotFoundException, IOException
     {
         this.assertObjectSerializable( new RunningShoes() );
+    }
+    @Test
+    public void testRunningShoesNotEqualToObject()
+    {
+        Trainer t = new Trainer("Bob");
+        RunningShoes shoe = new RunningShoes();
+        assertFalse( shoe.equals( t ) );
+        assertTrue( shoe.equals( shoe ) );
     }
 }
