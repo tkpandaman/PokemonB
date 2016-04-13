@@ -13,8 +13,7 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
-import model.LevelEditor;
-import model.LevelEditor.EditorView;
+import editor_controller.LevelEditor.EditorView;
 import model.MapTile;
 
 // A JPanel which shows the current map and allows the user to draw on it.

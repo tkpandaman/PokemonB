@@ -13,8 +13,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 
-import model.LevelEditor;
-import model.LevelEditor.EditorView;
+import editor_controller.LevelEditor.EditorView;
 
 // The menu bar.
 public class MenuBar extends JMenuBar {
