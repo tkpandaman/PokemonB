@@ -1,5 +1,7 @@
 package model;
 
-public enum State {
+import java.io.Serializable;
+
+public enum State implements Serializable {
 	BATTLE, LOSE, NORMAL, WIN, MENU; 
 }

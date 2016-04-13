@@ -24,6 +24,12 @@ public class Gamestate extends Observable implements Serializable{
 		setCurrentMap(null);
 		setState(State.NORMAL);
 	}
+	
+	//Shorter way of updating the set
+	private void update(){
+		this.setChanged();
+		notifyObservers();
+	}
 
 	/**
 	 * Gets the single instance of Gamestate.
@@ -60,6 +66,7 @@ public class Gamestate extends Observable implements Serializable{
 	 */
 	public void setTrainerX(int trainerX) {
 		this.trainerX = trainerX;
+		update();
 	}
 
 	/**
@@ -78,6 +85,7 @@ public class Gamestate extends Observable implements Serializable{
 	 */
 	public void setTrainerY(int trainerY) {
 		this.trainerY = trainerY;
+		update();
 	}
 
 	/**
@@ -96,6 +104,7 @@ public class Gamestate extends Observable implements Serializable{
 	 */
 	public void setTrainer(Trainer trainer) {
 		this.trainer = trainer;
+		update();
 	}
 
 	/**
@@ -114,6 +123,7 @@ public class Gamestate extends Observable implements Serializable{
 	 */
 	public void setCurrentMap(Map currentMap) {
 		this.currentMap = currentMap;
+		update();
 	}
 
 	/**
@@ -132,6 +142,7 @@ public class Gamestate extends Observable implements Serializable{
 	 */
 	public void setState(State state) {
 		this.state = state;
+		update();
 	}
 
 }
