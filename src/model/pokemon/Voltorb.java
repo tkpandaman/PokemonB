@@ -9,10 +9,10 @@ public class Voltorb extends Pokemon{
 	/**
 	 * Makes a new Voltorb
 	 */
-	private static final int HP = 120;
-	private static final int RUNLIKELY = 50;
-	private static final int MAXHP = 120;
-	private static final int MAXBATTLEDURATION = 10;
+	private static final int HP = 99;
+	private static final int RUNLIKELY = 25;
+	private static final int MAXHP = 99;
+	private static final int MAXBATTLEDURATION = 3;
 	
 	public Voltorb(){
 		super(HP, RUNLIKELY, MAXHP, MAXBATTLEDURATION);

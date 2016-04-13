@@ -9,10 +9,10 @@ public class Spearow extends Pokemon{
 	/**
 	 * Makes a new Spearow
 	 */
-	private static final int HP = 120;
-	private static final int RUNLIKELY = 50;
-	private static final int MAXHP = 120;
-	private static final int MAXBATTLEDURATION = 10;
+	private static final int HP = 60;
+	private static final int RUNLIKELY = 25;
+	private static final int MAXHP = 60;
+	private static final int MAXBATTLEDURATION = 2;
 	
 	public Spearow(){
 		super(HP, RUNLIKELY, MAXHP, MAXBATTLEDURATION);
