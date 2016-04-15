@@ -5,12 +5,15 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import model.Game;
+import model.Map;
 
 public class GameTest {
 
 	@Test
 	public void test() {
-		Game game = new Game();
+		
+		Map map = new Map(512, 512, "", 32);
+		Game game = new Game(map);
 		
 		assertEquals(game.getPlayerX(), 0);
 		assertEquals(game.getPlayerY(), 0);
@@ -45,7 +48,6 @@ public class GameTest {
 		game.moveRight();
 		
 		// test that gamestate is keeping up when game updates
-		game.loadState();
 		assertEquals(game.getPlayerX(), 4);
 		assertEquals(game.getPlayerY(), 0);
 	}

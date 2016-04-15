@@ -4,21 +4,26 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.JOptionPane;
 
 import model.Game;
-import model.Gamestate;
+import model.Map;
 import view.MapView;
 
 public class GameGUI extends JFrame {
 	
 	private Game game;
+	private Map map;
+	private MapView mapView;
 	
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
@@ -32,9 +37,22 @@ public class GameGUI extends JFrame {
 		
 		this.addWindowListener(new SaveAndLoad());
 		
-		game = new Game();
+		File mapFile = new File("levels/emerald-test");
+		try{
+			FileInputStream fileIn = new FileInputStream(mapFile);
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			
+			//read objects from saved data
+			map = (Map) in.readObject();
+			
+			in.close();
+			fileIn.close();
+		} catch(Exception ee){
+		}
 		
-		MapView mapView = new MapView(game);
+		game = new Game(map);
+		
+		mapView = new MapView(game);
 		
 		game.addObserver(mapView);
 		
@@ -79,7 +97,6 @@ public class GameGUI extends JFrame {
             if( selectedChoice == JOptionPane.NO_OPTION )
             {
                 // load defaults if we do not want to restore our data
-                Gamestate.getInstance();
             };
             if( selectedChoice == JOptionPane.YES_OPTION )
             {
@@ -88,14 +105,16 @@ public class GameGUI extends JFrame {
                     FileInputStream fis = new FileInputStream( SAVED_COLLECTION_LOCATION );
                     ObjectInputStream ois = new ObjectInputStream( fis );
                     // load our saved data
-                    Gamestate.setInstance( (Gamestate)ois.readObject() );
-                    game.loadState();
+                    game = (Game)ois.readObject();
                     ois.close();
                     fis.close();
                     
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }
+                
+                game.addObserver(mapView);
+                game.update();
             };
             // change GUI after data loaded
         };
@@ -115,7 +134,7 @@ public class GameGUI extends JFrame {
                     FileOutputStream fos = new FileOutputStream(SAVED_COLLECTION_LOCATION);
                     ObjectOutputStream oos = new ObjectOutputStream(fos);
                     // save all data we need to a file
-                    oos.writeObject( Gamestate.getInstance() );
+                    oos.writeObject(game);
                     oos.close();
                     fos.close();
                 } catch (Exception exception) {
