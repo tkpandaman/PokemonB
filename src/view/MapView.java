@@ -10,6 +10,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Game;
@@ -64,7 +65,19 @@ public class MapView extends JPanel implements Observer {
 		
 		g2.setColor(Color.BLUE);
 		if (game.getState() == State.WIN)
-			g2.drawString("You won?!", 400, 400);
+		{
+		 // Panel to display stats after game ends
+            JPanel stats = new JPanel();
+            stats.setLayout( null );
+            stats.setSize( 100, 100 );
+            stats.setLocation( 100, 100 );
+            // label for 
+            JLabel label = new JLabel("hi");
+            label.setSize( 100, 25 );
+            label.setLocation( 0, 0 );
+            stats.add( label );
+            this.add( stats );
+		}
 		
 	}
 	
