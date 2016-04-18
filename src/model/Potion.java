@@ -18,19 +18,19 @@ public class Potion extends PokemonItem implements Serializable
     }
 
     @Override
-    public boolean use( Pokemon pokemon )
+    public boolean use( Object pokemon )
     {
-        if( pokemon.getCurHP() >= pokemon.getMaxHP() )
+        if( ((Pokemon)pokemon).getCurHP() >= ((Pokemon)pokemon).getMaxHP() )
         {
             return false;
         };
-        if( pokemon.getCurHP() + 20 > pokemon.getMaxHP() )
+        if( ((Pokemon)pokemon).getCurHP() + 20 > ((Pokemon)pokemon).getMaxHP() )
         {
-            int diff = pokemon.getMaxHP() - pokemon.getCurHP();
-            pokemon.takeDamage( -diff );
+            int diff = ((Pokemon)pokemon).getMaxHP() - ((Pokemon)pokemon).getCurHP();
+            ((Pokemon)pokemon).takeDamage( -diff );
             return true;
         }
-        pokemon.takeDamage( -20 );
+        ((Pokemon)pokemon).takeDamage( -20 );
         return true;
     }
 }
