@@ -30,7 +30,7 @@ public class Pokeball extends PokemonItem implements Serializable
      * Use the pokeball on a pokemon
      */
     @Override
-    public boolean use( Pokemon pokemon )
+    public boolean use(Pokemon pokemon)
     {
         int rand = random.nextInt();
         if( rand % 2 == 0 )
