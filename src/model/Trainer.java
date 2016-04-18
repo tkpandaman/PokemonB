@@ -24,7 +24,7 @@ public class Trainer implements Serializable {
 	public Trainer(String name){
 		this.bp = new Backpack();
 		this.name = name;
-		this.steps = 10;
+		this.steps = 500;
 		this.speed = 1.0;
 	}
 	
