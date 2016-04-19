@@ -12,6 +12,7 @@ import model.pokemon.Pokemon;
  */
 public class Pokeball extends PokemonItem implements Serializable
 {
+    private static final long serialVersionUID = 2656695956168857439L;
     // pass in random value so we can test capturing
     Random random;
     /**
@@ -32,7 +33,6 @@ public class Pokeball extends PokemonItem implements Serializable
     public boolean use( Pokemon pokemon )
     {
         int rand = random.nextInt();
-        System.out.println( rand );
         if( rand % 2 == 0 )
         {
             return true; // captured

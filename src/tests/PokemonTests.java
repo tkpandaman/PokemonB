@@ -17,7 +17,6 @@ import model.pokemon.Snorlax;
 import model.pokemon.Spearow;
 import model.pokemon.Squirtle;
 import model.pokemon.Voltorb;
-import junit.framework.TestCase;
 
 public class PokemonTests extends SerializableTestCase{
 	

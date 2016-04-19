@@ -33,5 +33,4 @@ public class Potion extends PokemonItem implements Serializable
         pokemon.takeDamage( -20 );
         return true;
     }
-    
 }
