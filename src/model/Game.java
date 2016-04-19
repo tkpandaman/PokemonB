@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Observable;
+import java.util.Random;
 
 public class Game extends Observable implements Serializable {
 
@@ -41,7 +42,19 @@ public class Game extends Observable implements Serializable {
 			playerY += y;
 			trainer.takeStep();
 			if (trainer.getStepsLeft() <= 0) state = State.WIN;
+            checkForPokemon(new Random());
 			update();
+		}
+	}
+	
+	public void checkForPokemon(Random r){
+		MapTile t = map.tileAt(playerX, playerY);
+		int chance = t.getRandomEncounterChance();
+		
+		boolean isPokemon = r.nextInt(chance) == 0;
+		
+		if(isPokemon){
+			state = State.BATTLE;
 		}
 	}
 	
