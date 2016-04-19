@@ -37,7 +37,7 @@ public class GameGUI extends JFrame {
 		
 		this.addWindowListener(new SaveAndLoad());
 		
-		File mapFile = new File("levels/emerald-test");
+		File mapFile = new File("levels/viridian-forest");
 		try{
 			FileInputStream fileIn = new FileInputStream(mapFile);
 			ObjectInputStream in = new ObjectInputStream(fileIn);
