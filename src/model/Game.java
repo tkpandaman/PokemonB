@@ -19,8 +19,8 @@ public class Game extends Observable implements Serializable {
 		//Load map
 		this.map = map;
 		trainer = new Trainer("Sir Dumplestein");
-		playerX = 11;
-		playerY = 8;
+		playerX = 1;
+		playerY = 2;
 		update();
 		
 
