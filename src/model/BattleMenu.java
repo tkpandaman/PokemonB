@@ -57,10 +57,10 @@ public class BattleMenu extends Observable {
 	public void setBattle(Battle battle){
 		this.battle = battle;
 		setChanged();
-		notifyObservers();
+		notifyObservers(1);
 	}
 	
-	public Battle battle(){
+	public Battle getBattle(){
 		return battle;
 	}
 	
