@@ -15,13 +15,17 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.JOptionPane;
 
+import model.Battle;
 import model.Game;
 import model.Map;
+import model.State;
 import view.MapView;
 
 public class GameGUI extends JFrame {
 	
 	private Game game;
+	private Battle battle;
+	//private BattleView battleView;
 	private Map map;
 	private MapView mapView;
 	
@@ -74,6 +78,10 @@ public class GameGUI extends JFrame {
 				game.moveLeft();
 			if (event.getKeyCode() == KeyEvent.VK_RIGHT)
 				game.moveRight();
+			
+			if(game.getState() == State.BATTLE){
+				battle = new Battle(game.getTrainer());
+			}
 		}
 
 		@Override
@@ -143,5 +151,6 @@ public class GameGUI extends JFrame {
             };
         };
     };
+    
 	
 }

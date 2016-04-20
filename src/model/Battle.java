@@ -1,14 +1,24 @@
 package model;
 
+import java.util.Observable;
 import java.util.Random;
 
+import model.pokemon.Arbok;
+import model.pokemon.Beedrill;
+import model.pokemon.Butterfree;
+import model.pokemon.Charizard;
+import model.pokemon.Pikachu;
 import model.pokemon.Pokemon;
+import model.pokemon.Snorlax;
+import model.pokemon.Spearow;
+import model.pokemon.Squirtle;
+import model.pokemon.Voltorb;
 
 /**
  * The Class Battle.
  * @author AlexKatzfey
  */
-public class Battle {
+public class Battle extends Observable {
 	
 	private double chanceOfRun;
 	private double chanceOfCapture;
@@ -19,29 +29,43 @@ public class Battle {
 	private Trainer t;
 	private Random rand;
 	
+	/** The Constant ROCK_DAMAGE. */
 	//Change these to affect the balance
 	public static final int ROCK_DAMAGE = 20;
+	
+	/** The Constant BAIT_CHANCE. */
 	public static final double BAIT_CHANCE = 0.05;
+	
+	/** The Constant MIN_RUN_CHANCE. */
 	public static final double MIN_RUN_CHANCE = 0.10;
+	
+	/** The Constant MIN_CAPTURE_CHANCE. */
 	public static final double MIN_CAPTURE_CHANCE = 0.35;
+	
+	/**
+	 * The Enum Select.
+	 */
+	public static enum Select { throwRock, throwBait, throwBall, runAway };
+	
+	/** The current selection. */
+	public Select currentSelection;
 	
 	/**
 	 * Instantiates a new battle.
 	 *
 	 * @param t the trainer
-	 * @param p the pokemon
 	 */
-	public Battle(Trainer t, Pokemon p){
-		this.poke = p;
+	public Battle(Trainer t){
 		this.t = t;
-		this.turnsTillFlee = p.getTurnsTillFlee();
+		this.poke = randomPokemon(rand);
+		this.turnsTillFlee = poke.getTurnsTillFlee();
 		this.turn = 1;
 		this.chanceOfRun = poke.getLikelyRun() / 100;
 		this.willFlee = false;
 		this.rand = new Random();
 		this.chanceOfCapture = MIN_CAPTURE_CHANCE;
+		currentSelection = Battle.Select.throwRock;
 	}
-	
 	/**
 	 * Instantiates a new battle with random seed for testability.
 	 *
@@ -58,6 +82,7 @@ public class Battle {
 		this.willFlee = false;
 		this.rand = r;
 		this.chanceOfCapture = MIN_CAPTURE_CHANCE;
+		currentSelection = Battle.Select.throwRock;
 	}
 	
 	private void setCaptureChance(){
@@ -91,6 +116,16 @@ public class Battle {
 		return this.turn;
 	}
 	
+	
+	/**
+	 * Gets the pokemon.
+	 *
+	 * @return the pokemon
+	 */
+	public Pokemon getPokemon(){
+		return this.poke;
+	}
+	
 	private void endTurn(){
 		//End of turn actions here
 		this.turn++;
@@ -98,6 +133,42 @@ public class Battle {
 		if (turn >= turnsTillFlee || rand.nextDouble() < chanceOfRun){
 			this.willFlee = true;
 		}
+		
+	}
+	
+	private Pokemon randomPokemon(Random rand){
+		double choice = rand.nextDouble();
+		
+		//Commons 60%
+		if(choice >= 0.0 && choice < 0.15){
+			return new Arbok();
+		}
+		else if (choice >= 0.15 && choice < 0.30){
+			return new Voltorb();
+		}
+		else if (choice >= 0.30 && choice < 0.45){
+			return new Butterfree();
+		}
+		else if (choice >= 0.45 && choice < 0.60){
+			return new Spearow();
+		}
+		
+		//Rares 30%
+		else if (choice >= 0.60 && choice < 0.675){
+			return new Beedrill();
+		}
+		else if (choice >= 0.675 && choice < 0.75){
+			return new Pikachu();
+		}
+		else if (choice >= 0.75 && choice < 0.825){
+			return new Charizard();
+		}
+		else if (choice >= 0.825 && choice < 0.9){
+			return new Squirtle();
+		}
+		
+		//Ultra-rare 10%
+		return new Snorlax();
 		
 	}
 	
@@ -145,7 +216,5 @@ public class Battle {
 					  //should not be able to throw a pokeball when they have 0 left.
 		
 	}
-	
-	
 
 }

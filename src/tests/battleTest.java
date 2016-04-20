@@ -24,9 +24,7 @@ public class battleTest {
 	public void setupBattleTest() {
 		Pokemon arbok = new Arbok();
 		Battle b = new Battle(ash, arbok, rand);
-		Battle b2 = new Battle(ash, arbok);
 		assertFalse(b.pokemonRanAway());
-		assertFalse(b2.pokemonRanAway());
 	}
 
 	@Test
