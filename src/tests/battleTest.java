@@ -22,15 +22,14 @@ public class battleTest {
 
 	@Test
 	public void setupBattleTest() {
-		Pokemon arbok = new Arbok();
-		Battle b = new Battle(ash, arbok, rand);
+		Battle b = new Battle(ash, rand, 0.0);
 		assertFalse(b.pokemonRanAway());
 	}
 
 	@Test
 	public void throwRockTest() {
-		Pokemon c = new Charizard();
-		Battle b = new Battle(ash, c, rand);
+		Battle b = new Battle(ash, rand, 0.8);
+		Pokemon c = b.getPokemon();
 
 		b.throwRock();
 		assertEquals(c.getMaxHP() - Battle.ROCK_DAMAGE, c.getCurHP());
@@ -44,9 +43,10 @@ public class battleTest {
 
 	@Test
 	public void throwBaitTest() {
-		Pokemon c = new Charizard();
-		Battle b = new Battle(ash, c, rand);
-		
+
+		Battle b = new Battle(ash, rand, 0.8);
+		Pokemon c = b.getPokemon();
+		System.out.println(b.getFleeChance());
 		double runChance = (double)c.getLikelyRun()/100;
 
 		assertEquals(runChance, b.getFleeChance(), 0.00001);
@@ -63,9 +63,8 @@ public class battleTest {
 	
 	@Test
 	public void throwSafariBallTest(){
-		Pokemon c = new Pikachu();
 		Trainer m = new Trainer("Misty");
-		Battle b = new Battle(m, c, rand);
+		Battle b = new Battle(m, rand, 0.7);
 		
 		assertEquals(Battle.MIN_CAPTURE_CHANCE , b.getCaptureChance(), 0.00001);
 		assertFalse(b.throwSafariBall());
@@ -79,7 +78,6 @@ public class battleTest {
 		assertTrue(b.throwSafariBall());
 		assertEquals(1, m.openPack().getPokemonCaptured());
 	}
-	
 	
 
 

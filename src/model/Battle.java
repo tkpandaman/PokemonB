@@ -58,7 +58,7 @@ public class Battle extends Observable {
 	public Battle(Trainer t){
 		this.t = t;
 		this.rand = new Random();
-		this.poke = randomPokemon(rand);
+		this.poke = randomPokemon(rand.nextDouble());
 		this.turnsTillFlee = poke.getTurnsTillFlee();
 		this.chanceOfRun = poke.getLikelyRun() / 100;
 		this.turn = 1;
@@ -66,6 +66,7 @@ public class Battle extends Observable {
 		this.chanceOfCapture = MIN_CAPTURE_CHANCE;
 		currentSelection = Battle.Select.throwRock;
 	}
+	
 	/**
 	 * Instantiates a new battle with random seed for testability.
 	 *
@@ -73,14 +74,14 @@ public class Battle extends Observable {
 	 * @param p the pokemon
 	 * @param r the random
 	 */
-	public Battle(Trainer t, Pokemon p, Random r){
-		this.poke = p;
+	public Battle(Trainer t, Random rand, double pokemonChoice){
 		this.t = t;
-		this.turnsTillFlee = p.getTurnsTillFlee();
-		this.turn = 1;
+		this.rand = rand;
+		this.poke = randomPokemon(pokemonChoice);
+		this.turnsTillFlee = poke.getTurnsTillFlee();
 		this.chanceOfRun = (double)poke.getLikelyRun() / 100;
+		this.turn = 1;
 		this.willFlee = false;
-		this.rand = r;
 		this.chanceOfCapture = MIN_CAPTURE_CHANCE;
 		currentSelection = Battle.Select.throwRock;
 	}
@@ -136,8 +137,7 @@ public class Battle extends Observable {
 		
 	}
 	
-	private Pokemon randomPokemon(Random rand){
-		double choice = rand.nextDouble();
+	private Pokemon randomPokemon(double choice){
 		
 		//Commons 60%
 		if(choice >= 0.0 && choice < 0.15){
