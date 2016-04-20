@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Observable;
 import java.util.Random;
 
@@ -18,7 +19,7 @@ import model.pokemon.Voltorb;
  * The Class Battle.
  * @author AlexKatzfey
  */
-public class Battle extends Observable {
+public class Battle extends Observable implements Serializable {
 	
 	private double chanceOfRun;
 	private double chanceOfCapture;
