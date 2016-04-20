@@ -57,12 +57,12 @@ public class Battle extends Observable {
 	 */
 	public Battle(Trainer t){
 		this.t = t;
+		this.rand = new Random();
 		this.poke = randomPokemon(rand);
 		this.turnsTillFlee = poke.getTurnsTillFlee();
-		this.turn = 1;
 		this.chanceOfRun = poke.getLikelyRun() / 100;
+		this.turn = 1;
 		this.willFlee = false;
-		this.rand = new Random();
 		this.chanceOfCapture = MIN_CAPTURE_CHANCE;
 		currentSelection = Battle.Select.throwRock;
 	}

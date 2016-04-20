@@ -7,7 +7,7 @@ import java.io.Serializable;
 public enum TileType implements Serializable {
 
 	Floor("Floor", "F", false, 0),
-	Grass("Grass", "G", false, 30), // 1/10 chance
+	Grass("Grass", "G", false, 100), // 1/100 chance
 	LongGrass("Long Grass", "L", false, 20), // 1/20 change
 	Wall("Wall", "W", true, 0);
 	

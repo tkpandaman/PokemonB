@@ -8,9 +8,9 @@ public class Game extends Observable implements Serializable {
 
     private static final long serialVersionUID = -1241442352734346332L;
     private Map map;
-	private Trainer trainer = new Trainer("Sir Dumplestein");
-	private int playerX = 0;
-	private int playerY = 0;
+	private Trainer trainer;
+	private int playerX;
+	private int playerY;
 
 	private State state = State.NORMAL;
 
@@ -18,7 +18,11 @@ public class Game extends Observable implements Serializable {
 
 		//Load map
 		this.map = map;
+		trainer = new Trainer("Sir Dumplestein");
+		playerX = 11;
+		playerY = 8;
 		update();
+		
 
 	}
 	

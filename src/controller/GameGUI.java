@@ -82,6 +82,8 @@ public class GameGUI extends JFrame {
 			if(game.getState() == State.BATTLE){
 				battle = new Battle(game.getTrainer());
 			}
+			
+			//System.out.println(game.getPlayerX() + ", " + game.getPlayerY());
 		}
 
 		@Override
