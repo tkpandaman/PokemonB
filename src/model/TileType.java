@@ -6,7 +6,7 @@ import java.io.Serializable;
 // (solidity and random-encounter-chance so far)
 public enum TileType implements Serializable {
 
-	Floor("Floor", "F", false, 0),
+	Floor("Floor", "F", false, Integer.MAX_VALUE),
 	Grass("Grass", "G", false, 100), // 1/100 chance
 	LongGrass("Long Grass", "L", false, 20), // 1/20 change
 	Wall("Wall", "W", true, 0);
