@@ -1,15 +1,20 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -18,6 +23,7 @@ import model.Map;
 import model.MapTile;
 import model.State;
 import model.Tileset;
+import model.pokemon.Charizard;
 
 public class MapView extends JPanel implements Observer {
 	
@@ -66,17 +72,77 @@ public class MapView extends JPanel implements Observer {
 		g2.setColor(Color.BLUE);
 		if (game.getState() == State.WIN)
 		{
-		 // Panel to display stats after game ends
+		    // Panel to display stats after game ends
             JPanel stats = new JPanel();
             stats.setLayout( null );
-            stats.setSize( 100, 100 );
+            stats.setSize( 800, 100 );
             stats.setLocation( 100, 100 );
-            // label for 
-            JLabel label = new JLabel("hi");
-            label.setSize( 100, 25 );
-            label.setLocation( 0, 0 );
-            stats.add( label );
+            stats.setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
+            // game over label
+            JLabel end = new JLabel("GAME OVER" );
+            end.setFont( new Font( "Serif", Font.BOLD + Font.ITALIC, 20 ) );
+            end.setSize( 500, 20 );
+            end.setLocation( 10, 10 );
+            stats.add( end );
+            // player name label
+            JLabel name = new JLabel("PLAYER: " + game.getTrainer().getName() );
+            name.setFont( new Font( "Serif", Font.BOLD, 20 ) );
+            name.setSize( 500, 20 );
+            name.setLocation( 10, 40 );
+            stats.add( name );
+            /*JButton newGame = new JButton( "New Game" );
+            newGame.setSize( 150, 25 );
+            newGame.setLocation( 10, 60 );
+            newGame.addActionListener( new ActionListener()
+            {
+                @Override
+                public void actionPerformed( ActionEvent e )
+                {
+                    // need a new game method for game if we want this button to work
+                }
+            });
+            stats.add( newGame );*/
+            // pokemon caught label
+            JLabel pokemonCaught = new JLabel( "POKEMON CAUGHT: " + game.getTrainer().openPack().getPokemonCaptured() );
+            pokemonCaught.setFont( new Font( "Serif", Font.BOLD, 20 ) );
+            pokemonCaught.setSize( 500, 20 );
+            pokemonCaught.setLocation( 410, 10 );
+            stats.add( pokemonCaught );
+            // pokebalsl remaining label
+            JLabel pokeballs = new JLabel( "POKEBALLS REMAINING: " + game.getTrainer().openPack().getPokeballsLeft() );
+            pokeballs.setFont( new Font( "Serif", Font.BOLD, 20 ) );
+            pokeballs.setSize( 500, 20 );
+            pokeballs.setLocation( 410, 40 );
+            stats.add( pokeballs );
+            // steps taken label
+            JLabel steps = new JLabel( "STEPS TAKEN: " + ( 500 - game.getTrainer().getStepsLeft() ) );
+            steps.setFont( new Font( "Serif", Font.BOLD, 20 ) );
+            steps.setSize( 500, 20 );
+            steps.setLocation( 410, 70 );
+            stats.add( steps );
             this.add( stats );
+            
+            // Panel to display pokemon caught after game ends
+            JPanel pokemon = new JPanel();
+            pokemon.setLayout( null );
+            pokemon.setSize( 200, 30 + ( 30 * game.getTrainer().openPack().getPokemonCaptured() ) );
+            pokemon.setLocation( 100, 250 );
+            pokemon.setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
+            // pokemon label
+            JLabel pokemonLabel = new JLabel( "POKEMON (" + game.getTrainer().openPack().getPokemonCaptured() + "):" );
+            pokemonLabel.setFont( new Font( "Serif", Font.BOLD, 20 ) );
+            pokemonLabel.setSize( 200, 20 );
+            pokemonLabel.setLocation( 5, 5 );
+            pokemon.add( pokemonLabel );
+            for( int i = 0; i < game.getTrainer().openPack().getPokemonCaptured(); i++ )
+            {
+                JLabel poke = new JLabel( ( i + 1 ) + ".) " +game.getTrainer().openPack().getPokemonAt( i ).getClass().getSimpleName() );
+                poke.setFont( new Font( "Serif", Font.BOLD, 20 ) );
+                poke.setSize( 200, 20 );
+                poke.setLocation( 5, 30 + ( 30 * i ) );
+                pokemon.add( poke );
+            }
+            this.add( pokemon );
 		}
 		
 	}
