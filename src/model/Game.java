@@ -1,12 +1,14 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
 
 public class Game extends Observable implements Serializable {
 
     private static final long serialVersionUID = -1241442352734346332L;
+    private ArrayList<Map> maps;
     private Map map;
 	private Trainer trainer;
 	private int playerX;
@@ -14,10 +16,11 @@ public class Game extends Observable implements Serializable {
 
 	private State state = State.NORMAL;
 
-	public Game(Map map){
+	public Game(ArrayList<Map> maps){
 
 		//Load map
-		this.map = map;
+		this.maps = maps;
+		this.map = maps.get(0); //This should probably change later (1 = emerald, 0 = viridian)
 		trainer = new Trainer("Sir Dumplestein");
 		playerX = 1;
 		playerY = 2;
@@ -47,6 +50,14 @@ public class Game extends Observable implements Serializable {
             checkForPokemon(new Random());
 			update();
 		}
+	}
+	
+	//Need to improve this later
+	public void transitionToMap(){
+		if (map.equals(maps.get(0))){
+			map = maps.get(1);
+		}
+		else map = maps.get(0);
 	}
 	
 	public void checkForPokemon(Random r){
@@ -83,6 +94,9 @@ public class Game extends Observable implements Serializable {
 				takeStep(0, -1);
 			}
 		}
+		else{
+			transitionToMap();
+		}
 	}
 
 	public void moveDown(){
@@ -90,6 +104,9 @@ public class Game extends Observable implements Serializable {
 			if (!map.tileAt(playerX, playerY+1).isSolid()){
 				takeStep(0, 1);
 			}
+		}
+		else{
+			transitionToMap();
 		}
 	}
 
