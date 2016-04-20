@@ -7,16 +7,16 @@ import java.io.Serializable;
 public enum TileType implements Serializable {
 
 	Floor("Floor", "F", false, 0),
-	Grass("Grass", "G", false, 0.05f),
-	LongGrass("Long Grass", "L", false, 0.1f),
+	Grass("Grass", "G", false, 30), // 1/10 chance
+	LongGrass("Long Grass", "L", false, 20), // 1/20 change
 	Wall("Wall", "W", true, 0);
 	
 	private String name;
 	private String abbrev;
 	private boolean solid;
-	private float randEncounterChance;
+	private int randEncounterChance;
 	
-	TileType(String name, String abbrev, boolean isSolid, float randomEncounterChance){
+	TileType(String name, String abbrev, boolean isSolid, int randomEncounterChance){
 		this.name = name;
 		this.abbrev = abbrev;
 		this.solid = isSolid;
@@ -29,7 +29,7 @@ public enum TileType implements Serializable {
 	}
 	
 	// Returns the chance (out of 1) of encountering a Pokemon on this tile.
-	public float getRandEncounterChance(){
+	public int getRandEncounterChance(){
 		return randEncounterChance;
 	}
 	
