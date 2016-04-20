@@ -99,11 +99,11 @@ public class BattleMenu extends Observable implements Serializable{
 		}
 		if( battle.getTrainer().openPack().getPokeballsLeft() == 0 )
 		{
-		    text = "You ran out of pokeballs!";
+		    //text = "You ran out of pokeballs!";
 		    battleOver = true;
 		}
 		if (battle.pokemonRanAway()){
-			text = "The pokemon ran away!";
+			//text = "The pokemon ran away!";
 			battleOver = true;
 		}
 		

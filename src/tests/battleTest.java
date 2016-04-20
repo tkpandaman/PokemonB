@@ -170,6 +170,7 @@ public class battleTest {
 	    m.openPack().usePokeball();
 	    assertEquals( 0, m.openPack().getPokeballsLeft() );
         Battle b = new Battle(m);
+        //assertEquals( b.ge )
         assertFalse( b.throwSafariBall() );
 	}
 }
