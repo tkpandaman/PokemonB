@@ -168,26 +168,28 @@ public class GameGUI extends JFrame {
 		@Override
 		public void windowClosing( WindowEvent e )
 		{
-			int selectedChoice = JOptionPane.showConfirmDialog( null, "Save data?", "Select an option", JOptionPane.YES_NO_CANCEL_OPTION );
-			if( selectedChoice == JOptionPane.NO_OPTION )
-			{
-				System.exit( 0 );
-			};
-			if( selectedChoice == JOptionPane.YES_OPTION )
-			{
-				try
+			if (game.getState() != State.BATTLE){
+				int selectedChoice = JOptionPane.showConfirmDialog( null, "Save data?", "Select an option", JOptionPane.YES_NO_CANCEL_OPTION );
+				if( selectedChoice == JOptionPane.NO_OPTION )
 				{
-					// save current state of pokemon game (Trainer, pokemon, items, backpack, etc.)
-					FileOutputStream fos = new FileOutputStream(SAVED_COLLECTION_LOCATION);
-					ObjectOutputStream oos = new ObjectOutputStream(fos);
-					// save all data we need to a file
-					oos.writeObject(game);
-					oos.close();
-					fos.close();
-				} catch (Exception exception) {
-					exception.printStackTrace();
-				}
-			};
+					System.exit( 0 );
+				};
+				if( selectedChoice == JOptionPane.YES_OPTION )
+				{
+					try
+					{
+						// save current state of pokemon game (Trainer, pokemon, items, backpack, etc.)
+						FileOutputStream fos = new FileOutputStream(SAVED_COLLECTION_LOCATION);
+						ObjectOutputStream oos = new ObjectOutputStream(fos);
+						// save all data we need to a file
+						oos.writeObject(game);
+						oos.close();
+						fos.close();
+					} catch (Exception exception) {
+						exception.printStackTrace();
+					}
+				};
+			}
 		};
 	};
 	
