@@ -15,6 +15,8 @@ public class Game extends Observable implements Serializable {
 	private int playerY;
 
 	private State state = State.NORMAL;
+	
+	public boolean isTransition;
 
 	public Game(ArrayList<Map> maps){
 
@@ -24,6 +26,7 @@ public class Game extends Observable implements Serializable {
 		trainer = new Trainer("Sir Dumplestein");
 		playerX = 2;
 		playerY = 2;
+		isTransition = false;
 		update();
 		
 
@@ -58,6 +61,8 @@ public class Game extends Observable implements Serializable {
 			map = maps.get(1);
 		}
 		else map = maps.get(0);
+		isTransition = true;
+		update();
 	}
 	
 	public void checkForPokemon(Random r){

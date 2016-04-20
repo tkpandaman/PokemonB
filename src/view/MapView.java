@@ -65,6 +65,7 @@ public class MapView extends JPanel implements Observer {
 					g2.drawImage(trainer, x*tileSize, y*tileSize, null);
 				}
 			}
+			
 		}
 		
 		g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize());
@@ -156,14 +157,23 @@ public class MapView extends JPanel implements Observer {
 		if (cameraY < 0) cameraY = 0;
 		if (cameraY+32 > map.getHeight()) cameraY = map.getHeight()-32;
 	}
+	
+	public void updateTileset(){
+		this.tileset = new Tileset(map.getTileset(), map.getTileSize());
+	}
 
 	@Override
 	public void update(Observable o, Object obj) {
 		game = (Game)o;
+		if (!game.getMap().equals(map)){
+			map = game.getMap();
+			updateTileset();
+		}
 		map = game.getMap();
 		updateCamera();
 		repaint();
 	}
+	
 	
 	
 }
