@@ -55,7 +55,7 @@ public class MapTile implements Serializable {
 	}
 	
 	// Returns the chance (out of 1) of encountering a Pokemon on this tile.
-	public float getRandomEncounterChance(){
+	public int getRandomEncounterChance(){
 		return tileType.getRandEncounterChance();
 	}
 	
