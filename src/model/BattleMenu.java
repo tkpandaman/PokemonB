@@ -3,7 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Observable;
 
-public class BattleMenu extends Observable implements Serializable {
+public class BattleMenu extends Observable implements Serializable{
 	
 	private int menuIndex;
 	private MenuItem[] buttons;
@@ -13,7 +13,7 @@ public class BattleMenu extends Observable implements Serializable {
 	
 	private boolean battleOver;
 	
-	private enum BattleAction{Ball, Bait, Rock, Run};
+	private enum BattleAction implements Serializable {Ball, Bait, Rock, Run};
 	
 	public BattleMenu(){
 		menuIndex = 0;
@@ -97,7 +97,11 @@ public class BattleMenu extends Observable implements Serializable {
 			battleOver = true;
 			break;
 		}
-		
+		if( battle.getTrainer().openPack().getPokeballsLeft() == 0 )
+		{
+		    text = "You ran out of pokeballs!";
+		    battleOver = true;
+		}
 		if (battle.pokemonRanAway()){
 			text = "The pokemon ran away!";
 			battleOver = true;
