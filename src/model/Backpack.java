@@ -23,7 +23,7 @@ public class Backpack implements Serializable{
 	private int pokeBalls;
 	private Random rand;
 	
-	private static final int INI_POKEBALLS = 30;  //initial amount of pokeballs
+	public static final int INI_POKEBALLS = 30;  //initial amount of pokeballs
 
 	/**
 	 * Create a new Backpack with intial amount of pokeballs
