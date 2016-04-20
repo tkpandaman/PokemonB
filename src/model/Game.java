@@ -22,7 +22,7 @@ public class Game extends Observable implements Serializable {
 		this.maps = maps;
 		this.map = maps.get(0); //This should probably change later (1 = emerald, 0 = viridian)
 		trainer = new Trainer("Sir Dumplestein");
-		playerX = 1;
+		playerX = 2;
 		playerY = 2;
 		update();
 		
