@@ -54,8 +54,8 @@ public class GameTest {
 		game.moveUp();
 		
 		// test that gamestate is keeping up when game updates
-		assertEquals(game.getPlayerX(), 5);
-		assertEquals(game.getPlayerY(), 0);
+		assertEquals(5,game.getPlayerX());
+		assertEquals(0,game.getPlayerY());
 	}
 	@Test
 	public void testGetters()
@@ -70,4 +70,23 @@ public class GameTest {
         assertEquals( 2, game.getPlayerY() );
         assertEquals( State.NORMAL, game.getState() );
 	}
+	
+	@Test
+	public void testTransition()
+	{
+		Map map = new Map(512, 512, "tileset-x2", 32);
+		Map map2 = new Map(512, 512, "tileset-x2", 32);
+		ArrayList<Map> maps = new ArrayList<Map>();
+		maps.add(map);
+		maps.add(map2);
+		Game game = new Game(maps);
+		
+		game.setPlayerPos(2,1);
+		game.moveUp();
+		game.moveUp();
+		
+		assertEquals(map2, game.getMap());
+		
+	}
+	
 }

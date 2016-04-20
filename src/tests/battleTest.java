@@ -46,7 +46,7 @@ public class battleTest {
 
 		Battle b = new Battle(ash, rand, 0.8);
 		Pokemon c = b.getPokemon();
-		System.out.println(b.getFleeChance());
+		
 		double runChance = (double)c.getLikelyRun()/100;
 
 		assertEquals(runChance, b.getFleeChance(), 0.00001);

@@ -56,7 +56,7 @@ public class Game extends Observable implements Serializable {
 	}
 	
 	//Need to improve this later
-	public void transitionToMap(){
+	private void transitionToMap(){
 		if (map.equals(maps.get(0))){
 			map = maps.get(1);
 		}
@@ -122,6 +122,11 @@ public class Game extends Observable implements Serializable {
 	public int getPlayerY(){
 		return playerY;
 	}
+	
+	public void setPlayerPos(int x, int y){
+		this.playerX = x;
+		this.playerY = y;
+	}
 
 	public Trainer getTrainer(){
 		return trainer;
@@ -130,5 +135,6 @@ public class Game extends Observable implements Serializable {
 	public State getState(){
 		return state;
 	}
+	
 
 }
