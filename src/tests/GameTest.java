@@ -8,7 +8,9 @@ import org.junit.Test;
 
 import model.Game;
 import model.Map;
+import model.MapTile;
 import model.State;
+import model.TileType;
 
 public class GameTest {
 
@@ -16,6 +18,12 @@ public class GameTest {
 	public void testMove() {
 		
 		Map map = new Map(512, 512, "tileset-x2", 32);
+		MapTile[][] tiles = map.getTiles();
+		for(MapTile[] tt : tiles){
+			for(MapTile tile : tt){
+				tile.setTileType(TileType.Floor);
+			}
+		}
 		ArrayList<Map> maps = new ArrayList<Map>();
 		maps.add(map);
 		Game game = new Game(maps);
