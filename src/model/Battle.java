@@ -43,14 +43,6 @@ public class Battle extends Observable {
 	public static final double MIN_CAPTURE_CHANCE = 0.35;
 	
 	/**
-	 * The Enum Select.
-	 */
-	public static enum Select { throwRock, throwBait, throwBall, runAway };
-	
-	/** The current selection. */
-	public Select currentSelection;
-	
-	/**
 	 * Instantiates a new battle.
 	 *
 	 * @param t the trainer
@@ -64,7 +56,6 @@ public class Battle extends Observable {
 		this.turn = 1;
 		this.willFlee = false;
 		this.chanceOfCapture = MIN_CAPTURE_CHANCE;
-		currentSelection = Battle.Select.throwRock;
 	}
 	
 	/**
@@ -83,7 +74,6 @@ public class Battle extends Observable {
 		this.turn = 1;
 		this.willFlee = false;
 		this.chanceOfCapture = MIN_CAPTURE_CHANCE;
-		currentSelection = Battle.Select.throwRock;
 	}
 	
 	private void setCaptureChance(){

@@ -87,6 +87,10 @@ public class GameTest {
 		
 		assertEquals(map2, game.getMap());
 		
+		game.moveUp();
+		
+		assertEquals(map, game.getMap());
+		
 	}
 	
 }
