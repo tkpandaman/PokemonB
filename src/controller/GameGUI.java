@@ -110,10 +110,12 @@ public class GameGUI extends JFrame {
 			if(game.getState() == State.BATTLE){
 				GameGUI.this.remove(mapView);
 				GameGUI.this.add(battleView);
+				GameGUI.this.revalidate();
 				GameGUI.this.repaint();
 			} else {
 				GameGUI.this.remove(battleView);
 				GameGUI.this.add(mapView);
+				GameGUI.this.revalidate();
 				GameGUI.this.repaint();
 			}
 
