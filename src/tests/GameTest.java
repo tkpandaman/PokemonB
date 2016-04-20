@@ -47,6 +47,11 @@ public class GameTest {
 		assertEquals(game.getPlayerX(), 2);
 		assertEquals(game.getPlayerY(), 2);
 		
+		game.select();
+		
+		assertEquals(game.getPlayerX(), 2);
+		assertEquals(game.getPlayerY(), 2);
+		
 		game.moveUp();
 		assertEquals(game.getPlayerX(), 2);
 		assertEquals(game.getPlayerY(), 1);
