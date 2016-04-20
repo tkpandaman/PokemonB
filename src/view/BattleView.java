@@ -5,26 +5,31 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import model.BattleMenu;
+import model.BattleMenu.MenuItem;
 import model.Game;
 
-public class BattleView extends JPanel {
+public class BattleView extends JPanel implements Observer{
 	
-	private Image trainer;
+	private Image trainer, arrow;
 	private BattleMenu menu;
 
 	public BattleView(Game game){
 		try {
 			trainer = ImageIO.read(new File("images/battle_trainer.png"));
+			arrow = ImageIO.read(new File("images/arrow.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		//menu = game.getMenu();
+		menu = game.getBattleMenu();
+		menu.addObserver(this);
 	}
 	
 	public void paintComponent(Graphics g){
@@ -33,6 +38,22 @@ public class BattleView extends JPanel {
 		g2.clearRect(0, 0, 100000, 100000);
 		
 		g2.drawImage(trainer, 400, 400, null);
+		
+		MenuItem[] items = menu.getItems();
+		
+		for (MenuItem item : items){
+			g2.drawString(item.getText(), 400+50*item.getX(), 500+50*item.getY());
+		}
+		
+		MenuItem currentItem = items[menu.getIndex()];
+		
+		g2.drawImage(arrow, 380+50*currentItem.getX(), 488+50*currentItem.getY(), null);
+		
+	}
+
+	@Override
+	public void update(Observable o, Object obj) {
+		repaint();
 	}
 	
 }

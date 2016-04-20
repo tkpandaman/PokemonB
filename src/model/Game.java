@@ -15,8 +15,12 @@ public class Game extends Observable implements Serializable {
 	private int playerY = 0;
 
 	private State state = State.NORMAL;
+	
+	private BattleMenu battleMenu;
 
 	public Game(Map map){
+		
+		battleMenu = new BattleMenu();
 
 		//Load map
 		this.map = map;
@@ -105,6 +109,10 @@ public class Game extends Observable implements Serializable {
 
 	public State getState(){
 		return state;
+	}
+	
+	public BattleMenu getBattleMenu(){
+		return battleMenu;
 	}
 
 }
