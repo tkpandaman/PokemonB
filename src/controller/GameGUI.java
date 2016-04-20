@@ -115,6 +115,7 @@ public class GameGUI extends JFrame {
 			} else {
 				GameGUI.this.remove(battleView);
 				GameGUI.this.add(mapView);
+				GameGUI.this.revalidate();
 				GameGUI.this.repaint();
 			}
 
