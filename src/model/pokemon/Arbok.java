@@ -1,7 +1,7 @@
 package model.pokemon;
 
 /**
- * This is a Snorlax pokemon
+ * This is a Arbok pokemon
  * @author itsjaked
  *
  */

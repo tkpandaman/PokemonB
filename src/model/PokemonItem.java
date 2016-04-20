@@ -26,5 +26,5 @@ public abstract class PokemonItem extends Item
      * @param pokemon
      *    Pokemon to use the item on
      */
-    public abstract boolean use( Pokemon pokemon );
+    public abstract boolean use( Object obj );
 }
