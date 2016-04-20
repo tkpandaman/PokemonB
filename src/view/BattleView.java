@@ -77,6 +77,7 @@ public class BattleView extends JPanel implements Observer{
 
 	@Override
 	public void update(Observable o, Object obj) {
+		menu = (BattleMenu)o;
 		if (obj != null){
 			if ((int)obj == 1){
 				//load pokemon image

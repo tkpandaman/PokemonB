@@ -97,6 +97,10 @@ public class Game extends Observable implements Serializable {
 				transitionToMap();
 			}
 		}
+		if( trainer.openPack().getPokeballsLeft() == 0 )
+        {
+            state = State.WIN;
+        }
 		if (state == State.BATTLE){
 			battleMenu.left();
 		}
@@ -110,6 +114,10 @@ public class Game extends Observable implements Serializable {
 				}
 			}
 		}
+		if( trainer.openPack().getPokeballsLeft() == 0 )
+        {
+            state = State.WIN;
+        }
 		if (state == State.BATTLE){
 			battleMenu.right();
 		}
@@ -126,7 +134,10 @@ public class Game extends Observable implements Serializable {
 				transitionToMap();
 			}
 		}
-
+		if( trainer.openPack().getPokeballsLeft() == 0 )
+        {
+            state = State.WIN;
+        }
 		if (state == State.BATTLE){
 			battleMenu.up();
 		}
@@ -141,7 +152,10 @@ public class Game extends Observable implements Serializable {
 				}
 			}
 		}
-		
+		if( trainer.openPack().getPokeballsLeft() == 0 )
+		{
+		    state = State.WIN;
+		}
 		if (state == State.BATTLE){
 			battleMenu.down();
 		}

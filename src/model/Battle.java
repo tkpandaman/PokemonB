@@ -89,7 +89,10 @@ public class Battle extends Observable implements Serializable {
 	public double getCaptureChance(){
 		return this.chanceOfCapture;
 	}
-	
+	public Trainer getTrainer()
+	{
+	    return t;
+	}
 	/**
 	 * Gets the flee chance.
 	 *
