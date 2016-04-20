@@ -122,6 +122,12 @@ public class Game extends Observable implements Serializable {
 			battleMenu.down();
 		}
 	}
+	
+	public void select(){
+		if (state == State.BATTLE){
+			battleMenu.select();
+		}
+	}
 
 	public int getPlayerX(){
 		return playerX;

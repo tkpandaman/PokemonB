@@ -8,6 +8,8 @@ public class BattleMenu extends Observable {
 	private MenuItem[] buttons;
 	private Battle battle;
 	
+	private String text = "test";
+	
 	private enum BattleAction{Ball, Bait, Rock, Run};
 	
 	public BattleMenu(){
@@ -15,9 +17,9 @@ public class BattleMenu extends Observable {
 		
 		buttons = new MenuItem[4];
 		buttons[0] = new MenuItem("BALL", BattleAction.Ball, 0, 0);
-		buttons[1] = new MenuItem("BAIT", BattleAction.Ball, 1, 0);
-		buttons[2] = new MenuItem("ROCK", BattleAction.Ball, 0, 1);
-		buttons[3] = new MenuItem("RUN", BattleAction.Ball, 1, 1);
+		buttons[1] = new MenuItem("BAIT", BattleAction.Bait, 1, 0);
+		buttons[2] = new MenuItem("ROCK", BattleAction.Rock, 0, 1);
+		buttons[3] = new MenuItem("RUN", BattleAction.Run, 1, 1);
 	}
 	
 	public int getIndex(){
@@ -66,17 +68,25 @@ public class BattleMenu extends Observable {
 		MenuItem item = buttons[menuIndex];
 		switch(item.getAction()){
 		case Ball:
-			battle.throwSafariBall();
+			text = "You threw a safari ball! \r\n";
+			boolean result = battle.throwSafariBall();
+			if (result) text += "Success!";
+			else text += "Failure!";
 			break;
 		case Bait:
+			text = "You threw bait!";
 			battle.throwBait();
 			break;
 		case Rock:
+			text = "You threw a rock!";
 			battle.throwRock();
 			break;
 		case Run:
 			break;
 		}
+		
+		if (battle.pokemonRanAway())
+			text = "The pokemon ran away!";
 		
 		//TODO: if battle.pokemonRanAway, end battle
 		setChanged();
@@ -85,6 +95,10 @@ public class BattleMenu extends Observable {
 	
 	public MenuItem[] getItems(){
 		return buttons;
+	}
+	
+	public String getText(){
+		return text;
 	}
 	
 	public class MenuItem{

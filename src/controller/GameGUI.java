@@ -83,6 +83,9 @@ public class GameGUI extends JFrame {
 			if (event.getKeyCode() == KeyEvent.VK_RIGHT)
 				game.moveRight();
 			
+			if (event.getKeyCode() == KeyEvent.VK_Z)
+				game.select();
+			
 			if(game.getState() == State.BATTLE){
 				GameGUI.this.remove(mapView);
 				GameGUI.this.add(battleView);

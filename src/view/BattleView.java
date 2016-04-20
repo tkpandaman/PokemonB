@@ -59,6 +59,8 @@ public class BattleView extends JPanel implements Observer{
 		
 		g2.drawImage(arrow, 380+50*currentItem.getX(), 488+50*currentItem.getY(), null);
 		
+		g2.drawString(menu.getText(), 400, 600);
+		
 	}
 
 	@Override
