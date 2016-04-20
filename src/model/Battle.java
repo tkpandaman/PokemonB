@@ -79,7 +79,7 @@ public class Battle extends Observable {
 		this.rand = rand;
 		this.poke = randomPokemon(pokemonChoice);
 		this.turnsTillFlee = poke.getTurnsTillFlee();
-		this.chanceOfRun = poke.getLikelyRun() / 100;
+		this.chanceOfRun = (double)poke.getLikelyRun() / 100;
 		this.turn = 1;
 		this.willFlee = false;
 		this.chanceOfCapture = MIN_CAPTURE_CHANCE;
