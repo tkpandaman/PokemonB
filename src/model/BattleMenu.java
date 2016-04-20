@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Observable;
 
-public class BattleMenu extends Observable {
+public class BattleMenu extends Observable implements Serializable {
 	
 	private int menuIndex;
 	private MenuItem[] buttons;
@@ -115,7 +116,7 @@ public class BattleMenu extends Observable {
 		return text;
 	}
 	
-	public class MenuItem{
+	public class MenuItem implements Serializable{
 		private String text;
 		private BattleAction battleAction;
 		private int x, y;
