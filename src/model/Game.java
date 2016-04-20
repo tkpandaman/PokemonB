@@ -16,10 +16,14 @@ public class Game extends Observable implements Serializable {
 
 	private State state = State.NORMAL;
 	
+	private Battle battle;
+	private BattleMenu battleMenu;
 	public boolean isTransition;
 
 	public Game(ArrayList<Map> maps){
-
+		
+		battleMenu = new BattleMenu();
+		
 		//Load map
 		this.maps = maps;
 		this.map = maps.get(0); //This should probably change later (1 = emerald, 0 = viridian)
@@ -73,45 +77,83 @@ public class Game extends Observable implements Serializable {
 		
 		if(isPokemon){
 			state = State.BATTLE;
+			battle = new Battle(trainer);
+			battleMenu.startBattle(battle);
 		}
 	}
 	
+	public Battle getBattle(){
+		return battle;
+	}
 
 	public void moveLeft(){
-		if (playerX > 0){
-			if (!map.tileAt(playerX-1, playerY).isSolid()){
-				takeStep(-1, 0);
+		if (state == State.NORMAL){
+			if (playerX > 0){
+				if (!map.tileAt(playerX-1, playerY).isSolid()){
+					takeStep(-1, 0);
+				}
 			}
+			else{
+				transitionToMap();
+			}
+		}
+		if (state == State.BATTLE){
+			battleMenu.left();
 		}
 	}
 
 	public void moveRight(){
-		if (playerX < map.getWidth()-1){
-			if (!map.tileAt(playerX+1, playerY).isSolid()){
-				takeStep(1, 0);
+		if (state == State.NORMAL){
+			if (playerX < map.getWidth()-1){
+				if (!map.tileAt(playerX+1, playerY).isSolid()){
+					takeStep(1, 0);
+				}
 			}
+		}
+		if (state == State.BATTLE){
+			battleMenu.right();
 		}
 	}
 
 	public void moveUp(){
-		if (playerY > 0){
-			if (!map.tileAt(playerX, playerY-1).isSolid()){
-				takeStep(0, -1);
+		if (state == State.NORMAL){
+			if (playerY > 0){
+				if (!map.tileAt(playerX, playerY-1).isSolid()){
+					takeStep(0, -1);
+				}
+			}
+			else{
+				transitionToMap();
 			}
 		}
-		else{
-			transitionToMap();
+
+		if (state == State.BATTLE){
+			battleMenu.up();
 		}
+		
 	}
 
 	public void moveDown(){
-		if (playerY < map.getHeight()-1){
-			if (!map.tileAt(playerX, playerY+1).isSolid()){
-				takeStep(0, 1);
+		if (state == State.NORMAL){
+			if (playerY < map.getHeight()-1){
+				if (!map.tileAt(playerX, playerY+1).isSolid()){
+					takeStep(0, 1);
+				}
 			}
 		}
-		else{
-			transitionToMap();
+		
+		if (state == State.BATTLE){
+			battleMenu.down();
+		}
+	}
+	
+	public void select(){
+		if (state == State.BATTLE){
+			battleMenu.select();
+		}
+		
+		if (battleMenu.battleOver()){
+			state = State.NORMAL;
 		}
 	}
 
@@ -136,5 +178,8 @@ public class Game extends Observable implements Serializable {
 		return state;
 	}
 	
+	public BattleMenu getBattleMenu(){
+		return battleMenu;
+	}
 
 }

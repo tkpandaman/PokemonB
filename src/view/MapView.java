@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -23,7 +24,7 @@ import model.Map;
 import model.MapTile;
 import model.State;
 import model.Tileset;
-import model.pokemon.Charizard;
+import model.pokemon.*;
 
 public class MapView extends JPanel implements Observer {
 	

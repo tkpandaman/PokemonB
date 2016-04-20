@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import model.Battle;
 import model.Game;
 import model.Map;
+import view.BattleView;
 import model.State;
 import view.MapView;
 
@@ -31,6 +32,7 @@ public class GameGUI extends JFrame {
 	private Map map;
 	private ArrayList<Map> maps;
 	private MapView mapView;
+	private BattleView battleView;
 
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
@@ -49,12 +51,18 @@ public class GameGUI extends JFrame {
 		game = new Game(maps);
 
 		mapView = new MapView(game);
-
+		battleView = new BattleView(game);
+		
 		game.addObserver(mapView);
 
 		this.add(mapView);
-
+		//this.add(battleView);
+		
 		this.addKeyListener(new ArrowKeyListener());
+		
+		this.repaint();
+		mapView.repaint();
+		battleView.repaint();
 
 	}
 
@@ -94,9 +102,19 @@ public class GameGUI extends JFrame {
 				game.moveLeft();
 			if (event.getKeyCode() == KeyEvent.VK_RIGHT)
 				game.moveRight();
+			
+			if (event.getKeyCode() == KeyEvent.VK_Z)
+				game.select();
+			
 
 			if(game.getState() == State.BATTLE){
-				battle = new Battle(game.getTrainer());
+				GameGUI.this.remove(mapView);
+				GameGUI.this.add(battleView);
+				GameGUI.this.repaint();
+			} else {
+				GameGUI.this.remove(battleView);
+				GameGUI.this.add(mapView);
+				GameGUI.this.repaint();
 			}
 
 			//System.out.println(game.getPlayerX() + ", " + game.getPlayerY());
