@@ -10,6 +10,8 @@ public class BattleMenu extends Observable {
 	
 	private String text = "test";
 	
+	private boolean battleOver;
+	
 	private enum BattleAction{Ball, Bait, Rock, Run};
 	
 	public BattleMenu(){
@@ -24,6 +26,10 @@ public class BattleMenu extends Observable {
 	
 	public int getIndex(){
 		return menuIndex;
+	}
+	
+	public boolean battleOver(){
+		return battleOver;
 	}
 	
 	public void left(){
@@ -54,8 +60,10 @@ public class BattleMenu extends Observable {
 		notifyObservers();
 	}
 	
-	public void setBattle(Battle battle){
+	public void startBattle(Battle battle){
 		this.battle = battle;
+		text = "";
+		battleOver = false;
 		setChanged();
 		notifyObservers(1);
 	}
@@ -70,7 +78,10 @@ public class BattleMenu extends Observable {
 		case Ball:
 			text = "You threw a safari ball! \r\n";
 			boolean result = battle.throwSafariBall();
-			if (result) text += "Success!";
+			if (result){
+				text += "Success!";
+				battleOver = true;
+			}
 			else text += "Failure!";
 			break;
 		case Bait:
@@ -82,11 +93,14 @@ public class BattleMenu extends Observable {
 			battle.throwRock();
 			break;
 		case Run:
+			battleOver = true;
 			break;
 		}
 		
-		if (battle.pokemonRanAway())
+		if (battle.pokemonRanAway()){
 			text = "The pokemon ran away!";
+			battleOver = true;
+		}
 		
 		//TODO: if battle.pokemonRanAway, end battle
 		setChanged();

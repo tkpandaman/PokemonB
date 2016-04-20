@@ -78,7 +78,7 @@ public class Game extends Observable implements Serializable {
 		if(isPokemon){
 			state = State.BATTLE;
 			battle = new Battle(trainer);
-			battleMenu.setBattle(battle);
+			battleMenu.startBattle(battle);
 		}
 	}
 	
@@ -150,6 +150,10 @@ public class Game extends Observable implements Serializable {
 	public void select(){
 		if (state == State.BATTLE){
 			battleMenu.select();
+		}
+		
+		if (battleMenu.battleOver()){
+			state = State.NORMAL;
 		}
 	}
 

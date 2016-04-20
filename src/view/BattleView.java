@@ -52,11 +52,6 @@ public class BattleView extends JPanel implements Observer{
 		battle = game.getBattle();
 	}
 	
-	public void setBattle(){
-		//TODO set battle, yo
-		//and load image
-	}
-	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D)g;
 		
