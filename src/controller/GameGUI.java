@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 
 import model.Game;
 import model.Map;
+import view.BattleView;
 import view.MapView;
 
 public class GameGUI extends JFrame {
@@ -24,6 +25,7 @@ public class GameGUI extends JFrame {
 	private Game game;
 	private Map map;
 	private MapView mapView;
+	private BattleView battleView;
 	
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
@@ -53,10 +55,12 @@ public class GameGUI extends JFrame {
 		game = new Game(map);
 		
 		mapView = new MapView(game);
+		battleView = new BattleView(game);
 		
 		game.addObserver(mapView);
 		
-		this.add(mapView);
+		//this.add(mapView);
+		this.add(battleView);
 		
 		this.addKeyListener(new ArrowKeyListener());
 		
