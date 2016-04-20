@@ -28,7 +28,7 @@ public class Game extends Observable implements Serializable {
 		this.maps = maps;
 		this.map = maps.get(0); //This should probably change later (1 = emerald, 0 = viridian)
 		trainer = new Trainer("Sir Dumplestein");
-		playerX = 1;
+		playerX = 2;
 		playerY = 2;
 		isTransition = false;
 		update();
@@ -60,7 +60,7 @@ public class Game extends Observable implements Serializable {
 	}
 	
 	//Need to improve this later
-	public void transitionToMap(){
+	private void transitionToMap(){
 		if (map.equals(maps.get(0))){
 			map = maps.get(1);
 		}
@@ -163,6 +163,11 @@ public class Game extends Observable implements Serializable {
 
 	public int getPlayerY(){
 		return playerY;
+	}
+	
+	public void setPlayerPos(int x, int y){
+		this.playerX = x;
+		this.playerY = y;
 	}
 
 	public Trainer getTrainer(){

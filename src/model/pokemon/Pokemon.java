@@ -1,6 +1,7 @@
 package model.pokemon;
 
 import java.io.Serializable;
+import model.Item;
 
 /*
  * Inheritance hierarchy exists for Pokémon with at least 3 concrete classes.
@@ -67,31 +68,15 @@ public abstract class Pokemon implements Serializable {
 	
 	abstract PokemonType getType();
 	
-	@Override
-	public boolean equals(Object other) {
-		// In an equals method you should always confirm that the instance of the Object
-		// is the type you are looking for.
-		if (!(other instanceof Pokemon)) {
-			return false;
-		} else {
-			Pokemon otherPokemon = (Pokemon)other;
-			
-			if(this.HP != otherPokemon.getCurHP())
-				return false;
-			
-			if(this.maxHP != otherPokemon.getMaxHP())
-				return false;
-			
-			if(this.maxDur != otherPokemon.getTurnsTillFlee())
-				return false;
-			
-			if(this.runLikely != otherPokemon.getLikelyRun())
-				return false;
-			
-			if(this.getType() != otherPokemon.getType())
-				return false;
-			
-			return true;
-		}
-	}
+	 @Override
+	    public boolean equals(Object other) {
+	        // In an equals method you should always confirm that the instance of the Object
+	        // is the type you are looking for.
+	        if (!(other instanceof Pokemon)) {
+	            return false;
+	        } else {
+	            Pokemon otherPokemon = (Pokemon)other;
+	            return this.getClass().getName().equals(otherPokemon.getClass().getName());
+	        }
+	    }
 }

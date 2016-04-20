@@ -46,5 +46,11 @@ public class BackpackTest {
 		bp.addPokemon(charizard);
 		assertEquals(bp.getPokemonCaptured(), 1);
 	}
-
+    @Test
+    public void testBackpackPokemonAt()
+    {
+        Charizard charizard = new Charizard();
+        bp.addPokemon(charizard);
+        assertEquals( "Charizard", bp.getPokemonAt( 0 ).getClass().getSimpleName() );
+    }
 }
