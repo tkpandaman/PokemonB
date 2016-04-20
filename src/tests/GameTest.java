@@ -2,10 +2,13 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import model.Game;
 import model.Map;
+import model.State;
 
 public class GameTest {
 
@@ -50,6 +53,18 @@ public class GameTest {
 		// test that gamestate is keeping up when game updates
 		assertEquals(game.getPlayerX(), 4);
 		assertEquals(game.getPlayerY(), 0);
+	}
+	
+	@Test
+	public void testCheckPok(){
+		Map map = new Map(512, 512, "", 32);
+		Game game = new Game(map);
+		
+		game.checkForPokemon(new TestRandom(Arrays.asList(2)));
+		assertEquals(game.getState(), State.NORMAL);
+		
+		game.checkForPokemon(new TestRandom(Arrays.asList(0)));
+		assertEquals(game.getState(), State.BATTLE);
 	}
 
 }
