@@ -160,6 +160,7 @@ public class GameGUI extends JFrame {
 				}
 
 				game.addObserver(mapView);
+				game.getBattleMenu().addObserver(battleView);
 				game.update();
 			};
 			// change GUI after data loaded
