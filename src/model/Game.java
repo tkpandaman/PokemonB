@@ -14,6 +14,7 @@ public class Game extends Observable implements Serializable {
 
 	private State state = State.NORMAL;
 	
+	private Battle battle;
 	private BattleMenu battleMenu;
 
 	public Game(Map map){
@@ -61,39 +62,64 @@ public class Game extends Observable implements Serializable {
 		
 		if(isPokemon){
 			state = State.BATTLE;
+			battle = new Battle(trainer);
+			battleMenu.setBattle(battle);
 		}
 	}
 	
+	public Battle getBattle(){
+		return battle;
+	}
 
 	public void moveLeft(){
-		if (playerX > 0){
-			if (!map.tileAt(playerX-1, playerY).isSolid()){
-				takeStep(-1, 0);
+		if (state == State.NORMAL){
+			if (playerX > 0){
+				if (!map.tileAt(playerX-1, playerY).isSolid()){
+					takeStep(-1, 0);
+				}
 			}
+		}
+		if (state == State.BATTLE){
+			battleMenu.left();
 		}
 	}
 
 	public void moveRight(){
-		if (playerX < map.getWidth()-1){
-			if (!map.tileAt(playerX+1, playerY).isSolid()){
-				takeStep(1, 0);
+		if (state == State.NORMAL){
+			if (playerX < map.getWidth()-1){
+				if (!map.tileAt(playerX+1, playerY).isSolid()){
+					takeStep(1, 0);
+				}
 			}
+		}
+		if (state == State.BATTLE){
+			battleMenu.right();
 		}
 	}
 
 	public void moveUp(){
-		if (playerY > 0){
-			if (!map.tileAt(playerX, playerY-1).isSolid()){
-				takeStep(0, -1);
+		if (state == State.NORMAL){
+			if (playerY > 0){
+				if (!map.tileAt(playerX, playerY-1).isSolid()){
+					takeStep(0, -1);
+				}
 			}
+		}
+		if (state == State.BATTLE){
+			battleMenu.up();
 		}
 	}
 
 	public void moveDown(){
-		if (playerY < map.getHeight()-1){
-			if (!map.tileAt(playerX, playerY+1).isSolid()){
-				takeStep(0, 1);
+		if (state == State.NORMAL){
+			if (playerY < map.getHeight()-1){
+				if (!map.tileAt(playerX, playerY+1).isSolid()){
+					takeStep(0, 1);
+				}
 			}
+		}
+		if (state == State.BATTLE){
+			battleMenu.down();
 		}
 	}
 

@@ -6,6 +6,7 @@ public class BattleMenu extends Observable {
 	
 	private int menuIndex;
 	private MenuItem[] buttons;
+	private Battle battle;
 	
 	private enum BattleAction{Ball, Bait, Rock, Run};
 	
@@ -49,6 +50,16 @@ public class BattleMenu extends Observable {
 		if (menuIndex < 0) menuIndex -= 4;
 		setChanged();
 		notifyObservers();
+	}
+	
+	public void setBattle(Battle battle){
+		this.battle = battle;
+		setChanged();
+		notifyObservers();
+	}
+	
+	public Battle battle(){
+		return battle;
 	}
 	
 	public void select(){

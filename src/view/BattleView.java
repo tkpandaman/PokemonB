@@ -11,6 +11,7 @@ import java.util.Observer;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import model.Battle;
 import model.BattleMenu;
 import model.BattleMenu.MenuItem;
 import model.Game;
@@ -19,8 +20,10 @@ public class BattleView extends JPanel implements Observer{
 	
 	private Image trainer, arrow;
 	private BattleMenu menu;
+	private Battle battle;
 
 	public BattleView(Game game){
+		
 		try {
 			trainer = ImageIO.read(new File("images/battle_trainer.png"));
 			arrow = ImageIO.read(new File("images/arrow.png"));
@@ -30,6 +33,13 @@ public class BattleView extends JPanel implements Observer{
 		
 		menu = game.getBattleMenu();
 		menu.addObserver(this);
+		
+		battle = game.getBattle();
+	}
+	
+	public void setBattle(){
+		//TODO set battle, yo
+		//and load image
 	}
 	
 	public void paintComponent(Graphics g){

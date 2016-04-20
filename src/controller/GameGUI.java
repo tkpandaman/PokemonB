@@ -63,8 +63,8 @@ public class GameGUI extends JFrame {
 		
 		game.addObserver(mapView);
 		
-		//this.add(mapView);
-		this.add(battleView);
+		this.add(mapView);
+		//this.add(battleView);
 		
 		this.addKeyListener(new ArrowKeyListener());
 		
@@ -84,7 +84,9 @@ public class GameGUI extends JFrame {
 				game.moveRight();
 			
 			if(game.getState() == State.BATTLE){
-				battle = new Battle(game.getTrainer());
+				GameGUI.this.remove(mapView);
+				GameGUI.this.add(battleView);
+				battleView.repaint();
 			}
 			
 			//System.out.println(game.getPlayerX() + ", " + game.getPlayerY());
