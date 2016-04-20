@@ -2,6 +2,8 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import model.Game;
@@ -13,7 +15,9 @@ public class GameTest {
 	public void test() {
 		
 		Map map = new Map(512, 512, "", 32);
-		Game game = new Game(map);
+		ArrayList<Map> maps = new ArrayList<Map>();
+		maps.add(map);
+		Game game = new Game(maps);
 		
 		assertEquals(game.getPlayerX(), 0);
 		assertEquals(game.getPlayerY(), 0);
