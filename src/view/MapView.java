@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -23,7 +24,7 @@ import model.Map;
 import model.MapTile;
 import model.State;
 import model.Tileset;
-import model.pokemon.Charizard;
+import model.pokemon.*;
 
 public class MapView extends JPanel implements Observer {
 	
@@ -43,6 +44,18 @@ public class MapView extends JPanel implements Observer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		HashMap<Class<? extends Pokemon>, String> fileNameMap = new HashMap<>();
+        fileNameMap.put(Arbok.class, "images/pokemon/Arbok.png");
+        fileNameMap.put(Beedrill.class, "images/pokemon/Beedrill.png");
+        fileNameMap.put(Butterfree.class, "images/pokemon/Butterfree.png");
+        fileNameMap.put(Charizard.class, "images/pokemon/Charizard.png");
+        fileNameMap.put(Pidgeot.class, "images/pokemon/Pidgeot.png");
+        fileNameMap.put(Pikachu.class, "images/pokemon/Pikachu.png");
+        fileNameMap.put(Snorlax.class, "images/pokemon/Snorlax.png");
+        fileNameMap.put(Spearow.class, "images/pokemon/Spearow.png");
+        fileNameMap.put(Squirtle.class, "images/pokemon/Squirtle.png");
+        fileNameMap.put(Voltorb.class, "images/pokemon/Voltorb.png");
 		
 		updateCamera();
 	}
