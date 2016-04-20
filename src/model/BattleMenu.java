@@ -47,7 +47,7 @@ public class BattleMenu extends Observable {
 	
 	public void down(){
 		menuIndex += 2;
-		if (menuIndex < 0) menuIndex -= 4;
+		if (menuIndex > 3) menuIndex -= 4;
 		setChanged();
 		notifyObservers();
 	}
@@ -63,7 +63,22 @@ public class BattleMenu extends Observable {
 	}
 	
 	public void select(){
-		//TODO: talk to Battle based on selected button's BattleAction
+		MenuItem item = buttons[menuIndex];
+		switch(item.getAction()){
+		case Ball:
+			battle.throwSafariBall();
+			break;
+		case Bait:
+			battle.throwBait();
+			break;
+		case Rock:
+			battle.throwRock();
+			break;
+		case Run:
+			break;
+		}
+		
+		//TODO: if battle.pokemonRanAway, end battle
 		setChanged();
 		notifyObservers();
 	}
