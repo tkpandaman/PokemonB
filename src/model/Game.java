@@ -1,26 +1,38 @@
 package model;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
 
 public class Game extends Observable implements Serializable {
 
-	private Map map;
-	private Trainer trainer = new Trainer("Sir Dumplestein");
-	private int playerX = 0;
-	private int playerY = 0;
+    private static final long serialVersionUID = -1241442352734346332L;
+    private ArrayList<Map> maps;
+    private Map map;
+	private Trainer trainer;
+	private int playerX;
+	private int playerY;
 
 	private State state = State.NORMAL;
+	
+	private Battle battle;
+	private BattleMenu battleMenu;
+	public boolean isTransition;
 
-	public Game(Map map){
-
+	public Game(ArrayList<Map> maps){
+		
+		battleMenu = new BattleMenu();
+		
 		//Load map
-		this.map = map;
+		this.maps = maps;
+		this.map = maps.get(0); //This should probably change later (1 = emerald, 0 = viridian)
+		trainer = new Trainer("Sir Dumplestein");
+		playerX = 2;
+		playerY = 2;
+		isTransition = false;
 		update();
+		
 
 	}
 	
@@ -47,6 +59,16 @@ public class Game extends Observable implements Serializable {
 		}
 	}
 	
+	//Need to improve this later
+	private void transitionToMap(){
+		if (map.equals(maps.get(0))){
+			map = maps.get(1);
+		}
+		else map = maps.get(0);
+		isTransition = true;
+		update();
+	}
+	
 	public void checkForPokemon(Random r){
 		
 		MapTile t = map.tileAt(playerX, playerY);
@@ -55,39 +77,97 @@ public class Game extends Observable implements Serializable {
 		
 		if(isPokemon){
 			state = State.BATTLE;
+			battle = new Battle(trainer);
+			battleMenu.startBattle(battle);
 		}
 	}
 	
+	public Battle getBattle(){
+		return battle;
+	}
 
 	public void moveLeft(){
-		if (playerX > 0){
-			if (!map.tileAt(playerX-1, playerY).isSolid()){
-				takeStep(-1, 0);
+		if (state == State.NORMAL){
+			if (playerX > 0){
+				if (!map.tileAt(playerX-1, playerY).isSolid()){
+					takeStep(-1, 0);
+				}
 			}
+			else{
+				transitionToMap();
+			}
+		}
+		if( trainer.openPack().getPokeballsLeft() == 0 )
+        {
+            state = State.WIN;
+        }
+		if (state == State.BATTLE){
+			battleMenu.left();
 		}
 	}
 
 	public void moveRight(){
-		if (playerX < map.getWidth()-1){
-			if (!map.tileAt(playerX+1, playerY).isSolid()){
-				takeStep(1, 0);
+		if (state == State.NORMAL){
+			if (playerX < map.getWidth()-1){
+				if (!map.tileAt(playerX+1, playerY).isSolid()){
+					takeStep(1, 0);
+				}
 			}
+		}
+		if( trainer.openPack().getPokeballsLeft() == 0 )
+        {
+            state = State.WIN;
+        }
+		if (state == State.BATTLE){
+			battleMenu.right();
 		}
 	}
 
 	public void moveUp(){
-		if (playerY > 0){
-			if (!map.tileAt(playerX, playerY-1).isSolid()){
-				takeStep(0, -1);
+		if (state == State.NORMAL){
+			if (playerY > 0){
+				if (!map.tileAt(playerX, playerY-1).isSolid()){
+					takeStep(0, -1);
+				}
+			}
+			else{
+				transitionToMap();
 			}
 		}
+		if( trainer.openPack().getPokeballsLeft() == 0 )
+        {
+            state = State.WIN;
+        }
+		if (state == State.BATTLE){
+			battleMenu.up();
+		}
+		
 	}
 
 	public void moveDown(){
-		if (playerY < map.getHeight()-1){
-			if (!map.tileAt(playerX, playerY+1).isSolid()){
-				takeStep(0, 1);
+		if (state == State.NORMAL){
+			if (playerY < map.getHeight()-1){
+				if (!map.tileAt(playerX, playerY+1).isSolid()){
+					takeStep(0, 1);
+				}
 			}
+		}
+		if( trainer.openPack().getPokeballsLeft() == 0 )
+		{
+		    state = State.WIN;
+		}
+		if (state == State.BATTLE){
+			battleMenu.down();
+		}
+	}
+	
+	public void select(){
+		if (state == State.BATTLE){
+			battleMenu.select();
+		}
+		
+		if (battleMenu.battleOver()){
+			state = State.NORMAL;
 		}
 	}
 
@@ -98,6 +178,11 @@ public class Game extends Observable implements Serializable {
 	public int getPlayerY(){
 		return playerY;
 	}
+	
+	public void setPlayerPos(int x, int y){
+		this.playerX = x;
+		this.playerY = y;
+	}
 
 	public Trainer getTrainer(){
 		return trainer;
@@ -105,6 +190,10 @@ public class Game extends Observable implements Serializable {
 
 	public State getState(){
 		return state;
+	}
+	
+	public BattleMenu getBattleMenu(){
+		return battleMenu;
 	}
 
 }

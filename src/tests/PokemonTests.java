@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import org.junit.Test;
-
+import model.Potion;
 import model.pokemon.Arbok;
 import model.pokemon.Beedrill;
 import model.pokemon.Butterfree;
@@ -169,5 +169,17 @@ public class PokemonTests extends SerializableTestCase{
 		p.takeDamage(5);
 		assertEquals(100, p.getCurHP());
 	}
-	
+	@Test
+    public void testPokemonNotEqualToObject()
+    {
+        Charizard charizard = new Charizard();
+        Potion potion = new Potion();
+        assertTrue( charizard.equals( charizard ) );
+        assertFalse( charizard.equals( potion ) );
+    }
+	@Test
+	public void testPokemonType()
+	{
+	    PokemonType.valueOf( PokemonType.ARBOK.toString() );
+	}
 }

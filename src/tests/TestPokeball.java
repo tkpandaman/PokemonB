@@ -28,15 +28,15 @@ public class TestPokeball extends SerializableTestCase
     public void testPokeballNotCapturePokemon()
     {
         Charizard charizard = new Charizard();
-        Pokeball p = new Pokeball( new Random(12L) ); // controlled random pokeball that will not catch
-        assertFalse( p.use( charizard ) );
+        Pokeball p = new Pokeball( new Random(1234L) ); // controlled random pokeball that will not catch
+        assertFalse( p.use( 0.0 ) );
     }
     @Test
     public void testPokeballCapturePokemon()
     {
         Charizard charizard = new Charizard();
-        Pokeball p = new Pokeball( new Random( 1234L ) ); // controlled random pokeball that will catch
-        assertTrue( p.use( charizard ) );
+        Pokeball p = new Pokeball( new Random( 12L ) ); // controlled random pokeball that will catch
+        assertTrue( p.use( 1.0 ) );
     }
     @Test
     public void testPokeballSerializable() throws ClassNotFoundException, IOException
