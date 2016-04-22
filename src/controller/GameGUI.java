@@ -185,7 +185,6 @@ public class GameGUI extends JFrame {
 		@Override
 		public void windowClosing( WindowEvent e )
 		{
-		    System.out.println( mapView.animating );
 			if (game.getState() != State.BATTLE){
 				int selectedChoice = JOptionPane.showConfirmDialog( null, "Save data?", "Select an option", JOptionPane.YES_NO_CANCEL_OPTION );
 				if( selectedChoice == JOptionPane.NO_OPTION )
