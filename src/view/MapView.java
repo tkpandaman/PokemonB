@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +31,6 @@ public class MapView extends JPanel implements Observer {
 	private int trainerOldX;
 	private int trainerOldY;
 	public boolean animating;
-	private int imageX;
-	private int imageY;
 	private final int spriteSize = 32;
 	private BufferedImage facing;
 	private BufferedImage forward;
@@ -49,14 +46,12 @@ public class MapView extends JPanel implements Observer {
     private BufferedImage right_walking_left;
     private BufferedImage right_walking_right;
     private boolean isUsingLeftFoot;
+    public boolean initial;
+    private final int DELAY_TIME = 75;
 	public MapView(Game game){
 		this.game = game;
 		this.map = game.getMap();
 		this.animating = false;
-		this.imageX = 0;
-		this.imageY = 64;
-		//this.trainerOldX = 2;
-		//this.trainerOldY = 2;
 		this.tileset = new Tileset(map.getTileset(), map.getTileSize());
 		try {
 			trainer = ImageIO.read(new File("images/red.png"));
@@ -77,6 +72,7 @@ public class MapView extends JPanel implements Observer {
 		}
 		isUsingLeftFoot = true;
 		facing = trainer.getSubimage( 0, 64, spriteSize, spriteSize );
+		initial = false;
 		updateCamera();
 	}
 	public void paintComponent(Graphics g){
@@ -99,7 +95,6 @@ public class MapView extends JPanel implements Observer {
             for(int y=0; y<tiles[0].length; y++){
 				if (x==game.getPlayerX() && y==game.getPlayerY()){
 				    //g2.drawImage(trainer, trainerOldX, trainerOldY, null);
-				    
 				    if( animating ){
 				        if( trainerOldY < y*tileSize )
 				        {
@@ -114,12 +109,11 @@ public class MapView extends JPanel implements Observer {
 				            isUsingLeftFoot = !isUsingLeftFoot;
 				            try
                             {
-                                Thread.sleep( 75 );
+                                Thread.sleep( DELAY_TIME );
                                 repaint();
                             }
                             catch( InterruptedException e )
                             {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
 	                        //g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize()+16);
@@ -138,12 +132,11 @@ public class MapView extends JPanel implements Observer {
                             isUsingLeftFoot = !isUsingLeftFoot;
                             try
                             {
-                                Thread.sleep( 75 );
+                                Thread.sleep( DELAY_TIME );
                                 repaint();
                             }
                             catch( InterruptedException e )
                             {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
                             //g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize()+16);
@@ -161,7 +154,7 @@ public class MapView extends JPanel implements Observer {
 				            isUsingLeftFoot = !isUsingLeftFoot;    
                             try
                             {
-                                Thread.sleep( 50 );
+                                Thread.sleep( DELAY_TIME );
                                 repaint();
                             }
                             catch( InterruptedException e )
@@ -182,7 +175,7 @@ public class MapView extends JPanel implements Observer {
 				            isUsingLeftFoot = !isUsingLeftFoot;
                             try
                             {
-                                Thread.sleep( 50 );
+                                Thread.sleep( DELAY_TIME );
                                 repaint();
                             }
                             catch( InterruptedException e )
@@ -201,6 +194,15 @@ public class MapView extends JPanel implements Observer {
 				        trainerOldX = x*tileSize;
                         trainerOldY = y*tileSize;
 				        g2.drawImage(facing, trainerOldX, trainerOldY, null);
+				        try
+                        {
+                            Thread.sleep( DELAY_TIME );
+                        }
+                        catch( InterruptedException e )
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
 				    }
 				}
 			}
@@ -312,7 +314,9 @@ public class MapView extends JPanel implements Observer {
 			updateTileset();
 		}
 		map = game.getMap();
-		animating = true;
+		if( initial ){
+		    animating = true;
+		};
 		updateCamera();
 		repaint();
 	}

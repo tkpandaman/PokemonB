@@ -16,7 +16,8 @@ import model.pokemon.Pokemon;
  */
 public class Backpack implements Serializable{
 
-	//Create pockets in the backpack for different objects
+    private static final long serialVersionUID = -3247840845559132102L;
+    //Create pockets in the backpack for different objects
 	private List<Pokemon> pokemonList;
 	private List<TrainerItem> trainerItemList;
 	private List<PokemonItem> pokemonItemList;

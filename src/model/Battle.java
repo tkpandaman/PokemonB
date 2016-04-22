@@ -21,7 +21,8 @@ import model.pokemon.Voltorb;
  */
 public class Battle extends Observable implements Serializable {
 	
-	private double chanceOfRun;
+    private static final long serialVersionUID = -8112809181561931812L;
+    private double chanceOfRun;
 	private double chanceOfCapture;
 	private int turnsTillFlee;
 	private int turn; 

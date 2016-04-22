@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Trainer is in charge of attributes associated with the playable trainer character, 
@@ -12,7 +11,8 @@ import java.util.List;
  */
 public class Trainer implements Serializable {
 	
-	private Backpack bp;
+    private static final long serialVersionUID = -2930426271401956697L;
+    private Backpack bp;
 	private String name;
 	private int steps;
 	private double speed;

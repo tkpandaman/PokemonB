@@ -13,7 +13,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
@@ -161,6 +160,7 @@ public class GameGUI extends JFrame {
 			};
 			if( selectedChoice == JOptionPane.YES_OPTION )
 			{
+			    //System.out.println( mapView.animating );
 				try
 				{
 					FileInputStream fis = new FileInputStream( SAVED_COLLECTION_LOCATION );
@@ -177,12 +177,15 @@ public class GameGUI extends JFrame {
 				game.addObserver(mapView);
 				game.getBattleMenu().addObserver(battleView);
 				game.update();
+				//System.out.println( mapView.animating );
 			};
+			mapView.initial = true;
 			// change GUI after data loaded
 		};
 		@Override
 		public void windowClosing( WindowEvent e )
 		{
+		    System.out.println( mapView.animating );
 			if (game.getState() != State.BATTLE){
 				int selectedChoice = JOptionPane.showConfirmDialog( null, "Save data?", "Select an option", JOptionPane.YES_NO_CANCEL_OPTION );
 				if( selectedChoice == JOptionPane.NO_OPTION )

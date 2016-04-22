@@ -5,7 +5,8 @@ import java.util.Observable;
 
 public class BattleMenu extends Observable implements Serializable{
 	
-	private int menuIndex;
+    private static final long serialVersionUID = 7058713038305325130L;
+    private int menuIndex;
 	private MenuItem[] buttons;
 	private Battle battle;
 	
@@ -121,7 +122,8 @@ public class BattleMenu extends Observable implements Serializable{
 	}
 	
 	public class MenuItem implements Serializable{
-		private String text;
+        private static final long serialVersionUID = -5678340590630203587L;
+        private String text;
 		private BattleAction battleAction;
 		private int x, y;
 		
