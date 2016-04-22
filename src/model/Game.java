@@ -70,9 +70,9 @@ public class Game extends Observable implements Serializable {
 	}
 	
 	public void checkForPokemon(Random r){
+		
 		MapTile t = map.tileAt(playerX, playerY);
 		int chance = t.getRandomEncounterChance();
-		
 		boolean isPokemon = r.nextInt(chance) == 0;
 		
 		if(isPokemon){
