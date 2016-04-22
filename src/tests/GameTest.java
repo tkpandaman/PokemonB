@@ -75,7 +75,10 @@ public class GameTest {
 	@Test
 	public void testCheckPok(){
 		Map map = new Map(512, 512, "", 32);
-		Game game = new Game(map);
+		
+		ArrayList<Map> maps = new ArrayList<Map>();
+		maps.add(map);
+		Game game = new Game(maps);
 		
 		game.checkForPokemon(new TestRandom(Arrays.asList(2)));
 		assertEquals(game.getState(), State.NORMAL);
