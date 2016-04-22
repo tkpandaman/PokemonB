@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -24,9 +25,9 @@ public class GameTest {
 				tile.setTileType(TileType.Floor);
 			}
 		}
-		ArrayList<Map> maps = new ArrayList<Map>();
-		maps.add(map);
-		Game game = new Game(maps);
+		HashMap<String, Map> maps = new HashMap<String, Map>();
+		maps.put("start", map);
+		Game game = new Game(maps, map);
 		
 		assertEquals(game.getPlayerX(), 2);
 		assertEquals(game.getPlayerY(), 2);
@@ -74,9 +75,9 @@ public class GameTest {
 	public void testGetters()
 	{
 	    Map map = new Map(512, 512, "tileset-x2", 32);
-        ArrayList<Map> maps = new ArrayList<Map>();
-        maps.add(map);
-        Game game = new Game(maps);
+	    HashMap<String, Map> maps = new HashMap<String, Map>();
+	    maps.put("start", map);
+        Game game = new Game(maps, map);
         assertEquals( "Sir Dumplestein", game.getTrainer().getName() );
         assertEquals( "Map", game.getMap().getClass().getSimpleName() );
         assertEquals( 2, game.getPlayerX() );
@@ -89,10 +90,10 @@ public class GameTest {
 	{
 		Map map = new Map(512, 512, "tileset-x2", 32);
 		Map map2 = new Map(512, 512, "tileset-x2", 32);
-		ArrayList<Map> maps = new ArrayList<Map>();
-		maps.add(map);
-		maps.add(map2);
-		Game game = new Game(maps);
+		HashMap<String, Map> maps = new HashMap<String, Map>();
+		maps.put("start", map);
+		maps.put("map2", map2);
+		Game game = new Game(maps, map);
 		
 		game.setPlayerPos(2,1);
 		game.moveUp();

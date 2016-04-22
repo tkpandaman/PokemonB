@@ -2,13 +2,14 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Random;
 
 public class Game extends Observable implements Serializable {
 
     private static final long serialVersionUID = -1241442352734346332L;
-    private ArrayList<Map> maps;
+    private HashMap<String, Map> maps;
     private Map map;
 	private Trainer trainer;
 	private int playerX;
@@ -20,13 +21,13 @@ public class Game extends Observable implements Serializable {
 	private BattleMenu battleMenu;
 	public boolean isTransition;
 
-	public Game(ArrayList<Map> maps){
+	public Game(HashMap<String, Map> maps, Map startMap){
 		
 		battleMenu = new BattleMenu();
 		
 		//Load map
 		this.maps = maps;
-		this.map = maps.get(0); //This should probably change later (1 = emerald, 0 = viridian)
+		this.map = startMap; //This should probably change later (1 = emerald, 0 = viridian)
 		trainer = new Trainer("Sir Dumplestein");
 		playerX = 2;
 		playerY = 2;
@@ -60,13 +61,21 @@ public class Game extends Observable implements Serializable {
 	}
 	
 	//Need to improve this later
-	private void transitionToMap(){
-		if (map.equals(maps.get(0))){
-			map = maps.get(1);
+	private void transitionToMap(int x, int y){
+		Map nextMap = null;
+		if (x > 0) nextMap = maps.get(map.getRightMap());
+		if (x < 0) nextMap = maps.get(map.getLeftMap());
+		if (y > 0) nextMap = maps.get(map.getDownMap());
+		if (y < 0) nextMap = maps.get(map.getUpMap());
+		if (nextMap != null) {
+			map = nextMap;
+			if (x<0) playerX = map.getWidth();
+			if (x>0) playerX = 0;
+			if (y<0) playerY = map.getHeight();
+			if (y>0) playerY = 0;
+			isTransition = true;
+			update();
 		}
-		else map = maps.get(0);
-		isTransition = true;
-		update();
 	}
 	
 	public void checkForPokemon(Random r){
@@ -94,7 +103,7 @@ public class Game extends Observable implements Serializable {
 				}
 			}
 			else{
-				transitionToMap();
+				transitionToMap(-1, 0);
 			}
 		}
 		if( trainer.openPack().getPokeballsLeft() == 0 )
@@ -112,6 +121,8 @@ public class Game extends Observable implements Serializable {
 				if (!map.tileAt(playerX+1, playerY).isSolid()){
 					takeStep(1, 0);
 				}
+			} else {
+				transitionToMap(1, 0);
 			}
 		}
 		if( trainer.openPack().getPokeballsLeft() == 0 )
@@ -131,7 +142,7 @@ public class Game extends Observable implements Serializable {
 				}
 			}
 			else{
-				transitionToMap();
+				transitionToMap(0, -1);
 			}
 		}
 		if( trainer.openPack().getPokeballsLeft() == 0 )
@@ -150,6 +161,8 @@ public class Game extends Observable implements Serializable {
 				if (!map.tileAt(playerX, playerY+1).isSolid()){
 					takeStep(0, 1);
 				}
+			} else {
+				transitionToMap(0, 1);
 			}
 		}
 		if( trainer.openPack().getPokeballsLeft() == 0 )

@@ -30,7 +30,7 @@ public class GameGUI extends JFrame {
 	private Battle battle;
 	//private BattleView battleView;
 	private Map map;
-	private ArrayList<Map> maps;
+	private HashMap<String, Map> maps;
 	private MapView mapView;
 	private BattleView battleView;
 
@@ -48,7 +48,7 @@ public class GameGUI extends JFrame {
 
 		loadMaps();
 
-		game = new Game(maps);
+		game = new Game(maps, maps.get("viridian-forest"));
 
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
@@ -68,7 +68,7 @@ public class GameGUI extends JFrame {
 
 	private void loadMaps(){
 
-		this.maps = new ArrayList<Map>();
+		this.maps = new HashMap<String, Map>();
 
 		ArrayList<File> mapFiles = new ArrayList<File>();
 		mapFiles.add(new File("levels/viridian-forest"));
@@ -80,13 +80,16 @@ public class GameGUI extends JFrame {
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 
 				//read objects from saved data
-				maps.add((Map) in.readObject());
+				maps.put(mapFiles.get(i).getName(), (Map) in.readObject());
 
 				in.close();
 				fileIn.close();
 			} catch(Exception ee){
 			}
 		}
+		
+		maps.get("viridian-forest").setUpMap("emerald-test");
+		maps.get("emerald-test").setDownMap("viridian-forest");
 
 	}
 
