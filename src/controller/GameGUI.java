@@ -94,20 +94,35 @@ public class GameGUI extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent event) {
-			if (event.getKeyCode() == KeyEvent.VK_UP)
-				game.moveUp();
-			if (event.getKeyCode() == KeyEvent.VK_DOWN)
-				game.moveDown();
-			if (event.getKeyCode() == KeyEvent.VK_LEFT)
-				game.moveLeft();
-			if (event.getKeyCode() == KeyEvent.VK_RIGHT)
-				game.moveRight();
-			
+			if (event.getKeyCode() == KeyEvent.VK_UP){
+			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+			    {
+			        game.moveUp();
+			    }
+		    }
+			if (event.getKeyCode() == KeyEvent.VK_DOWN){
+			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+                {
+                    game.moveDown();
+                }
+			}
+			if (event.getKeyCode() == KeyEvent.VK_LEFT ){
+			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+                {
+                    game.moveLeft();
+                }
+			}
+			if (event.getKeyCode() == KeyEvent.VK_RIGHT ){
+			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+                {
+                    game.moveRight();
+                }
+		    }
 			if (event.getKeyCode() == KeyEvent.VK_Z)
 				game.select();
 			
 
-			if(game.getState() == State.BATTLE){
+			if( !mapView.animating && game.getState() == State.BATTLE){
 				GameGUI.this.remove(mapView);
 				GameGUI.this.add(battleView);
 				GameGUI.this.revalidate();

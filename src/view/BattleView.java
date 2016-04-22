@@ -20,7 +20,8 @@ import model.Game;
 
 public class BattleView extends JPanel implements Observer{
 	
-	private Image trainer, arrow, pokemonImg;
+    private static final long serialVersionUID = 2777359359845616783L;
+    private Image trainer, arrow, pokemonImg;
 	private BattleMenu menu;
 	private Battle battle;
 	
