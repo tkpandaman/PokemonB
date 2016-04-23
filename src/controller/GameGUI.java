@@ -132,8 +132,6 @@ public class GameGUI extends JFrame {
 				GameGUI.this.revalidate();
 				GameGUI.this.repaint();
 			}
-
-			//System.out.println(game.getPlayerX() + ", " + game.getPlayerY());
 		}
 
 		@Override
@@ -160,7 +158,6 @@ public class GameGUI extends JFrame {
 			};
 			if( selectedChoice == JOptionPane.YES_OPTION )
 			{
-			    //System.out.println( mapView.animating );
 				try
 				{
 					FileInputStream fis = new FileInputStream( SAVED_COLLECTION_LOCATION );
@@ -177,7 +174,6 @@ public class GameGUI extends JFrame {
 				game.addObserver(mapView);
 				game.getBattleMenu().addObserver(battleView);
 				game.update();
-				//System.out.println( mapView.animating );
 			};
 			mapView.initial = true;
 			// change GUI after data loaded
