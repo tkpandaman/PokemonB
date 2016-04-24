@@ -35,6 +35,7 @@ public class GameGUI extends JFrame {
 	private MapView mapView;
 	private BattleView battleView;
 	private Menu menu;
+	private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
 		gui.setVisible(true);
@@ -151,6 +152,23 @@ public class GameGUI extends JFrame {
 			{
 				if( game.getState() == State.MENU )
                 {
+					if( menu.getSelected() == 2 )
+                    {
+						game.chooseMenu();
+                    	mapView.remove( menu );
+						try
+						{
+							// save current state of pokemon game (Trainer, pokemon, items, backpack, etc.)
+							FileOutputStream fos = new FileOutputStream(SAVED_COLLECTION_LOCATION);
+							ObjectOutputStream oos = new ObjectOutputStream(fos);
+							// save all data we need to a file
+							oos.writeObject(game);
+							oos.close();
+							fos.close();
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+                    }
                     if( menu.getSelected() == 3 )
                     {
                     	game.chooseMenu();
@@ -184,7 +202,6 @@ public class GameGUI extends JFrame {
 
 	private class SaveAndLoad extends WindowAdapter
 	{
-		private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
 
 		@Override
 		public void windowOpened( WindowEvent e )

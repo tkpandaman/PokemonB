@@ -23,14 +23,14 @@ public class Menu extends JPanel{
 	private int selected;
 	private int numMenuItems;
 	private Image arrow;
-	public enum MenuItem
+	public enum MenuChoice
 	{
 		ITEMS(0),
 		POKEMON(1),
 		SAVE(2),
 		EXIT(3);
 		private int id;
-		MenuItem( int id )
+		MenuChoice( int id )
 		{
 			this.id = id;
 		}
@@ -50,7 +50,7 @@ public class Menu extends JPanel{
 	private void layoutPanel()
 	{
 		this.setLayout(null);
-		for( MenuItem item : MenuItem.values() )
+		for( MenuChoice item : MenuChoice.values() )
 		{
 			numMenuItems++;
 		}
@@ -64,7 +64,7 @@ public class Menu extends JPanel{
         title.setLocation( 75, 5 );
         this.add( title );
         int count = 0;
-		for( MenuItem item : MenuItem.values() )
+		for( MenuChoice item : MenuChoice.values() )
 		{
 			JLabel menuItem = new JLabel( item.name() );
 			menuItem.setFont( new Font( "Serif", Font.BOLD, 20 ) );
@@ -97,7 +97,7 @@ public class Menu extends JPanel{
 	}
 	public void moveDown()
 	{
-		if( selected < 3 )
+		if( selected < numMenuItems - 1 )
 		{
 			selected++;
 			this.repaint();
