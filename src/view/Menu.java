@@ -23,7 +23,7 @@ public class Menu extends JPanel{
 	private int selected;
 	private int numMenuItems;
 	private Image arrow;
-	private enum MenuItem
+	public enum MenuItem
 	{
 		ITEMS(0),
 		POKEMON(1),
@@ -102,5 +102,9 @@ public class Menu extends JPanel{
 			selected++;
 			this.repaint();
 		}
+	}
+	public int getSelected()
+	{
+		return selected;
 	}
 }

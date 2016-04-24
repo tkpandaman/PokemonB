@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import model.Battle;
+import model.BattleMenu.MenuItem;
 import model.Game;
 import model.Map;
 import view.BattleView;
@@ -146,7 +147,17 @@ public class GameGUI extends JFrame {
 		    }
 			if (event.getKeyCode() == KeyEvent.VK_Z)
 				game.select();
-			
+			if( event.getKeyCode() == KeyEvent.VK_ENTER )
+			{
+				if( game.getState() == State.MENU )
+                {
+                    if( menu.getSelected() == 3 )
+                    {
+                    	game.chooseMenu();
+                    	mapView.remove( menu );
+                    }
+                }
+			}
 
 			if( !mapView.animating && game.getState() == State.BATTLE){
 				GameGUI.this.remove(mapView);

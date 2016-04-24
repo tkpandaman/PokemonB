@@ -51,7 +51,7 @@ public class MapView extends JPanel implements Observer {
     private BufferedImage right_walking_right;
     private boolean isUsingLeftFoot;
     public boolean initial;
-    private final int DELAY_TIME = 75;
+    private final int DELAY_TIME = 80;
 	public MapView(Game game){
 		this.game = game;
 		this.map = game.getMap();
@@ -111,7 +111,7 @@ public class MapView extends JPanel implements Observer {
 				        g2.drawImage(facing, trainerOldX, trainerOldY, null);
 				        try
                         {
-                            Thread.sleep( DELAY_TIME );
+                            Thread.sleep( DELAY_TIME / (int)game.getTrainer().getSpeed() );
                         }
                         catch( InterruptedException e )
                         {
@@ -137,49 +137,6 @@ public class MapView extends JPanel implements Observer {
 			viewPokemon.setLocation(100, 250);
 			this.add( viewPokemon );
 		}
-		if (game.getState() == State.MENU)
-		{
-			/*Menu menu = new Menu( game );
-			//System.out.println("hi");
-			menu.addKeyListener(new KeyListener(){
-
-				@Override
-				public void keyPressed(KeyEvent e) {
-					if(e.getKeyCode() == KeyEvent.VK_UP){
-						menu.moveUp();
-					}
-					if(e.getKeyCode() == KeyEvent.VK_DOWN){
-						menu.moveDown();
-					}
-					if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
-						MapView.this.remove(menu);
-						//menu.transferFocus();
-						//menu.transferFocusBackward();
-						//MapView.this.repaint();
-						MapView.this.game.chooseMenu();
-					}
-				}
-
-				@Override
-				public void keyReleased(KeyEvent arg0) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void keyTyped(KeyEvent arg0) {
-					// TODO Auto-generated method stub
-					//if(arg0.getKeyCode() == KeyEvent.KEY_TYPED)
-					//System.out.println("hi");
-				}
-				
-			});
-			this.add(menu);
-			menu.setVisible(true);
-			menu.setFocusable(true);
-			menu.setRequestFocusEnabled(true);
-			menu.grabFocus();*/
-		}
 	}
 	private void animate(Graphics2D g2, int x, int y)
 	{
@@ -198,7 +155,7 @@ public class MapView extends JPanel implements Observer {
             isUsingLeftFoot = !isUsingLeftFoot;
             try
             {
-                Thread.sleep( DELAY_TIME );
+                Thread.sleep( DELAY_TIME / (int)game.getTrainer().getSpeed() );
                 repaint();
             }
             catch( InterruptedException e )
@@ -221,7 +178,7 @@ public class MapView extends JPanel implements Observer {
             isUsingLeftFoot = !isUsingLeftFoot;
             try
             {
-                Thread.sleep( DELAY_TIME );
+                Thread.sleep( DELAY_TIME / (int)game.getTrainer().getSpeed() );
                 repaint();
             }
             catch( InterruptedException e )
@@ -242,7 +199,7 @@ public class MapView extends JPanel implements Observer {
             isUsingLeftFoot = !isUsingLeftFoot;    
             try
             {
-                Thread.sleep( DELAY_TIME );
+                Thread.sleep( DELAY_TIME / (int)game.getTrainer().getSpeed() );
                 repaint();
             }
             catch( InterruptedException e )
@@ -263,7 +220,7 @@ public class MapView extends JPanel implements Observer {
             isUsingLeftFoot = !isUsingLeftFoot;
             try
             {
-                Thread.sleep( DELAY_TIME );
+                Thread.sleep( DELAY_TIME / (int)game.getTrainer().getSpeed() );
                 repaint();
             }
             catch( InterruptedException e )
@@ -292,20 +249,6 @@ public class MapView extends JPanel implements Observer {
 	public void updateTileset(){
 		this.tileset = new Tileset(map.getTileset(), map.getTileSize());
 	}
-	/*public void menuUp()
-	{
-		if( game.getState() ==State.MENU )
-		{
-			menu.moveUp();
-		}
-	}
-	public void menuDown()
-	{
-		if( game.getState() ==State.MENU )
-		{
-			menu.moveDown();
-		}
-	}*/
 	@Override
 	public void update(Observable o, Object obj) {
 		game = (Game)o;
