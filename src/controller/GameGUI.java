@@ -33,7 +33,7 @@ public class GameGUI extends JFrame {
 	private ArrayList<Map> maps;
 	private MapView mapView;
 	private BattleView battleView;
-
+	private Menu menu;
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
 		gui.setVisible(true);
@@ -63,7 +63,9 @@ public class GameGUI extends JFrame {
 		this.repaint();
 		mapView.repaint();
 		battleView.repaint();
-
+		//menu = new Menu( game );
+		//menu.setVisible(false);
+		//mapView.add(menu);
 	}
 
 	private void loadMaps(){
@@ -98,6 +100,16 @@ public class GameGUI extends JFrame {
 				if( game.getState() == State.NORMAL || game.getState() == State.MENU )
 			    {
 					game.chooseMenu();
+					if( game.getState() == State.MENU )
+					{
+						menu = new Menu( game );
+						mapView.add(menu);
+					}
+					else
+					{
+						mapView.remove(menu);
+					}
+					mapView.repaint();
 				}
 			}
 			if (event.getKeyCode() == KeyEvent.VK_UP){
@@ -105,12 +117,20 @@ public class GameGUI extends JFrame {
 			    {
 			        game.moveUp();
 			    }
+			    if( game.getState() == State.MENU )
+				{
+			    	menu.moveUp();
+				}
 		    }
 			if (event.getKeyCode() == KeyEvent.VK_DOWN){
 			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
                 {
                     game.moveDown();
                 }
+			    if( game.getState() == State.MENU )
+				{
+			    	menu.moveDown();
+				}
 			}
 			if (event.getKeyCode() == KeyEvent.VK_LEFT ){
 			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
@@ -133,7 +153,7 @@ public class GameGUI extends JFrame {
 				GameGUI.this.add(battleView);
 				GameGUI.this.revalidate();
 				GameGUI.this.repaint();
-			} else {
+			} else if( game.getState() != State.MENU ){
 				GameGUI.this.remove(battleView);
 				GameGUI.this.add(mapView);
 				GameGUI.this.revalidate();

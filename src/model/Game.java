@@ -199,10 +199,12 @@ public class Game extends Observable implements Serializable {
 	{
 		if( state ==State.NORMAL ) {
 			state = State.MENU;
+			//update();
 			return;
 		}
 		if( state ==State.MENU ) {
 			state = State.NORMAL;
+			//update();
 			return;
 		}
 	}
