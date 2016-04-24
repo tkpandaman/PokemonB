@@ -14,6 +14,8 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import controller.GameGUI;
 import model.Game;
 import model.Map;
 import model.MapTile;
@@ -132,7 +134,12 @@ public class MapView extends JPanel implements Observer {
 			viewPokemon.setLocation(100, 250);
 			this.add( viewPokemon );
 		}
-		
+		if(game.getState() == State.MENU )
+		{
+			Menu menu = new Menu(game);
+			menu.setVisible(true);
+			this.add(menu);
+		}
 	}
 	private void animate(Graphics2D g2, int x, int y)
 	{
@@ -181,7 +188,6 @@ public class MapView extends JPanel implements Observer {
             {
                 e.printStackTrace();
             }
-            //g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize()+16);
         }
         if( trainerOldX > x*tileSize){
             facing = left;

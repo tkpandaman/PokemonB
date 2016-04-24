@@ -22,6 +22,7 @@ import model.Map;
 import view.BattleView;
 import model.State;
 import view.MapView;
+import view.Menu;
 
 public class GameGUI extends JFrame {
 
@@ -93,6 +94,12 @@ public class GameGUI extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent event) {
+			if(event.getKeyCode() == KeyEvent.VK_ESCAPE){
+				if( game.getState() == State.NORMAL || game.getState() == State.MENU )
+			    {
+					game.chooseMenu();
+				}
+			}
 			if (event.getKeyCode() == KeyEvent.VK_UP){
 			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
 			    {

@@ -195,5 +195,15 @@ public class Game extends Observable implements Serializable {
 	public BattleMenu getBattleMenu(){
 		return battleMenu;
 	}
-
+	public void chooseMenu()
+	{
+		if( state ==State.NORMAL ) {
+			state = State.MENU;
+			return;
+		}
+		if( state ==State.MENU ) {
+			state = State.NORMAL;
+			return;
+		}
+	}
 }
