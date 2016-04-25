@@ -237,12 +237,18 @@ public class MapView extends JPanel implements Observer {
 		checkCamera();
 	}
 	
+	private void updateTrainerPos(){
+		trainerOldX = game.getPlayerX();
+		trainerOldY = game.getPlayerY();
+		animating = false;
+	}
+	
 	private void checkCamera()
 	{
 	    if (cameraX < 0) cameraX = 0;
         if (cameraX+32 > map.getWidth()) cameraX = map.getWidth()-32;
         if (cameraY < 0) cameraY = 0;
-        if (cameraY+32 > map.getHeight()) cameraY = map.getHeight()-32;
+        if (cameraY+28 > map.getHeight()) cameraY = map.getHeight()-28;
 	}
 	
 	public void updateTileset(){
@@ -260,6 +266,9 @@ public class MapView extends JPanel implements Observer {
 		if( initial ){
 		    animating = true;
 		};
+		if (obj != null){
+			if ((int)obj == 1) updateTrainerPos();
+		}
 		updateCamera();
 		repaint();
 	}

@@ -40,7 +40,12 @@ public class Game extends Observable implements Serializable {
 		setChanged();
 		notifyObservers();
 	}
-
+	
+	//call to update observers
+	public void update(int x){
+		setChanged();
+		notifyObservers(x);
+	}
 
 	// Returns the current map.
 	public Map getMap(){
@@ -59,10 +64,9 @@ public class Game extends Observable implements Serializable {
 	}
 	
 	private void transitionToMap(String name){
-
 		Map nextMap = maps.get(name);
 		this.map = nextMap;
-		update();
+		update(1);
 	}
 	
 	public void checkForPokemon(Random r){
