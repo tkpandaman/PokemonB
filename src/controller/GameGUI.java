@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import model.Battle;
-import model.BattleMenu.MenuItem;
 import model.Game;
 import model.Map;
 import view.BattleView;
