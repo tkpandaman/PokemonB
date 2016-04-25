@@ -4,11 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Arrays;
-import java.util.ArrayList;
 
 import org.junit.Test;
 
-import controller.GameGUI;
 import model.Game;
 import model.Map;
 import model.State;
