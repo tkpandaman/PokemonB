@@ -3,8 +3,12 @@ package tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
+
 import org.junit.Test;
+
+import model.Backpack;
 import model.RunningShoes;
 import model.Trainer;
 
@@ -25,7 +29,8 @@ public class TestRunningShoes extends SerializableTestCase
     @Test
     public void testRunningShoesIncreaseSpeed()
     {
-        Trainer t = new Trainer("Bob");
+    	Backpack bp = new Backpack();
+        Trainer t = new Trainer("Bob", bp);
         RunningShoes shoe = new RunningShoes();
         assertEquals( 1.0, t.getSpeed(), 0.000000000000000000001 );
         shoe.use( t );
@@ -39,7 +44,8 @@ public class TestRunningShoes extends SerializableTestCase
     @Test
     public void testRunningShoesNotEqualToObject()
     {
-        Trainer t = new Trainer("Bob");
+    	Backpack bp = new Backpack();
+        Trainer t = new Trainer("Bob", bp);
         RunningShoes shoe = new RunningShoes();
         assertFalse( shoe.equals( t ) );
         assertTrue( shoe.equals( shoe ) );

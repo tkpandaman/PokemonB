@@ -122,4 +122,16 @@ public class GameTest {
 		assertEquals(map, game.getMap());
 		
 	}
+	
+	@Test
+	public void chooseMenuTest(){
+		Game game = new Game();
+	}
+	
+	
+	
+	
+	
+	
+	
 }

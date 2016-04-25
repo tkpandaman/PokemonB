@@ -9,7 +9,7 @@ public enum TileType implements Serializable {
 	Floor("Floor", "F", false, Integer.MAX_VALUE),
 	Grass("Grass", "G", false, 100), // 1/100 chance
 	LongGrass("Long Grass", "L", false, 20), // 1/20 change
-	Wall("Wall", "W", true, 100000);
+	Wall("Wall", "W", true, Integer.MAX_VALUE);
 	
 	private String name;
 	private String abbrev;

@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
@@ -48,39 +49,36 @@ public class GameGUI extends JFrame {
 
 		this.addWindowListener(new SaveAndLoad());
 
-		loadMaps();
+		maps = loadMaps();
 
 		game = new Game(maps);
-
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
-		
+
 		game.addObserver(mapView);
 
 		this.add(mapView);
 		//this.add(battleView);
-		
+
 		this.addKeyListener(new ArrowKeyListener());
-		
-		this.repaint();
+
+		//this.repaint();
 		mapView.repaint();
 		battleView.repaint();
-		//menu = new Menu( game );
-		//menu.setVisible(false);
-		//mapView.add(menu);
 	}
 
-	private void loadMaps(){
+	/**
+	 * This method loads all of the maps from the folder levels.
+	 * @return ArrayList of Map objects
+	 */
+	private ArrayList<Map> loadMaps(){ 
 
-		this.maps = new ArrayList<Map>();
+		ArrayList<Map> maps = new ArrayList<Map>();
 
-		ArrayList<File> mapFiles = new ArrayList<File>();
-		mapFiles.add(new File("levels/viridian-forest"));
-		mapFiles.add(new File("levels/emerald-test"));
-
-		for(int i = 0; i < mapFiles.size(); i++){
+		for(File mapFile : mapFiles()){
+			System.out.println(mapFile.getAbsolutePath());
 			try{
-				FileInputStream fileIn = new FileInputStream(mapFiles.get(i));
+				FileInputStream fileIn = new FileInputStream(mapFile);
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 
 				//read objects from saved data
@@ -89,8 +87,34 @@ public class GameGUI extends JFrame {
 				in.close();
 				fileIn.close();
 			} catch(Exception ee){
+				ee.printStackTrace();
 			}
 		}
+		System.out.println(maps);
+		return maps;
+
+	}
+	
+	/**
+	 * This method returns the files in the levels folder.
+	 * @return ArrayList of Files as map files
+	 */
+	public static ArrayList<File> mapFiles(){ 
+
+		ArrayList<File> mapFiles = new ArrayList<File>();
+
+		File dir = new File("levels");
+		File[] directoryListing = dir.listFiles();
+		if (directoryListing != null) {
+			for (File child : directoryListing) {
+				mapFiles.add(child);
+			}
+		} else {
+			System.err.println("No Directory found");
+		}
+		
+		System.out.println(mapFiles.get(0).getName());
+		return mapFiles;
 
 	}
 
@@ -100,7 +124,7 @@ public class GameGUI extends JFrame {
 		public void keyPressed(KeyEvent event) {
 			if(event.getKeyCode() == KeyEvent.VK_ESCAPE){
 				if( game.getState() == State.NORMAL || game.getState() == State.MENU )
-			    {
+				{
 					game.chooseMenu();
 					if( game.getState() == State.MENU )
 					{
@@ -115,47 +139,47 @@ public class GameGUI extends JFrame {
 				}
 			}
 			if (event.getKeyCode() == KeyEvent.VK_UP){
-			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
-			    {
-			        game.moveUp();
-			    }
-			    if( game.getState() == State.MENU )
+				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
 				{
-			    	menu.moveUp();
+					game.moveUp();
 				}
-		    }
-			if (event.getKeyCode() == KeyEvent.VK_DOWN){
-			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
-                {
-                    game.moveDown();
-                }
-			    if( game.getState() == State.MENU )
+				if( game.getState() == State.MENU )
 				{
-			    	menu.moveDown();
+					menu.moveUp();
+				}
+			}
+			if (event.getKeyCode() == KeyEvent.VK_DOWN){
+				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+				{
+					game.moveDown();
+				}
+				if( game.getState() == State.MENU )
+				{
+					menu.moveDown();
 				}
 			}
 			if (event.getKeyCode() == KeyEvent.VK_LEFT ){
-			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
-                {
-                    game.moveLeft();
-                }
+				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+				{
+					game.moveLeft();
+				}
 			}
 			if (event.getKeyCode() == KeyEvent.VK_RIGHT ){
-			    if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
-                {
-                    game.moveRight();
-                }
-		    }
+				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+				{
+					game.moveRight();
+				}
+			}
 			if (event.getKeyCode() == KeyEvent.VK_Z)
 				game.select();
 			if( event.getKeyCode() == KeyEvent.VK_ENTER )
 			{
 				if( game.getState() == State.MENU )
-                {
+				{
 					if( menu.getSelected() == 2 )
-                    {
+					{
 						game.chooseMenu();
-                    	mapView.remove( menu );
+						mapView.remove( menu );
 						try
 						{
 							// save current state of pokemon game (Trainer, pokemon, items, backpack, etc.)
@@ -168,13 +192,13 @@ public class GameGUI extends JFrame {
 						} catch (Exception exception) {
 							exception.printStackTrace();
 						}
-                    }
-                    if( menu.getSelected() == 3 )
-                    {
-                    	game.chooseMenu();
-                    	mapView.remove( menu );
-                    }
-                }
+					}
+					if( menu.getSelected() == 3 )
+					{
+						game.chooseMenu();
+						mapView.remove( menu );
+					}
+				}
 			}
 
 			if( !mapView.animating && game.getState() == State.BATTLE){
@@ -260,6 +284,6 @@ public class GameGUI extends JFrame {
 			}
 		};
 	};
-	
+
 
 }
