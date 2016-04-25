@@ -11,7 +11,7 @@ import model.pokemon.Pokemon;
 public class Potion extends PokemonItem implements Serializable
 {
     private static final long serialVersionUID = 6171109725928356151L;
-
+    private final int HP_GAINED = 20;
     public Potion()
     {
         super( "Potion", "Heals a pokemon's health by 20 HP" );
@@ -24,13 +24,13 @@ public class Potion extends PokemonItem implements Serializable
         {
             return false;
         };
-        if( ((Pokemon)pokemon).getCurHP() + 20 > ((Pokemon)pokemon).getMaxHP() )
+        if( ((Pokemon)pokemon).getCurHP() + HP_GAINED > ((Pokemon)pokemon).getMaxHP() )
         {
             int diff = ((Pokemon)pokemon).getMaxHP() - ((Pokemon)pokemon).getCurHP();
             ((Pokemon)pokemon).takeDamage( -diff );
             return true;
         }
-        ((Pokemon)pokemon).takeDamage( -20 );
+        ((Pokemon)pokemon).takeDamage( -HP_GAINED );
         return true;
     }
 }

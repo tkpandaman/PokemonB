@@ -3,11 +3,15 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
+import controller.GameGUI;
 import model.Game;
 import model.Map;
+import model.State;
 import model.MapTile;
 import model.State;
 import model.TileType;
@@ -70,6 +74,22 @@ public class GameTest {
 		assertEquals(5,game.getPlayerX());
 		assertEquals(0,game.getPlayerY());
 	}
+
+	@Test
+	public void testCheckPok(){
+		Map map = new Map(512, 512, "", 32);
+		
+		HashMap<String, Map> maps = new HashMap<String, Map>();
+		maps.put("start", map);
+		Game game = new Game(maps, map);
+		
+		game.checkForPokemon(new TestRandom(Arrays.asList(2)));
+		assertEquals(game.getState(), State.NORMAL);
+		
+		game.checkForPokemon(new TestRandom(Arrays.asList(0)));
+		assertEquals(game.getState(), State.BATTLE);
+	}
+
 	@Test
 	public void testGetters()
 	{
@@ -77,7 +97,7 @@ public class GameTest {
 	    HashMap<String, Map> maps = new HashMap<String, Map>();
 	    maps.put("start", map);
         Game game = new Game(maps, map);
-        assertEquals( "Sir Dumplestein", game.getTrainer().getName() );
+        assertEquals( "Ash Ketchup", game.getTrainer().getName() );
         assertEquals( "Map", game.getMap().getClass().getSimpleName() );
         assertEquals( 2, game.getPlayerX() );
         assertEquals( 2, game.getPlayerY() );
@@ -92,6 +112,8 @@ public class GameTest {
 		HashMap<String, Map> maps = new HashMap<String, Map>();
 		maps.put("start", map);
 		maps.put("map2", map2);
+		map.setUpMap("map2");
+		map2.setDownMap("start");
 		Game game = new Game(maps, map);
 		
 		game.setPlayerPos(2,1);
@@ -100,7 +122,7 @@ public class GameTest {
 		
 		assertEquals(map2, game.getMap());
 		
-		game.moveUp();
+		game.moveDown();
 		
 		assertEquals(map, game.getMap());
 		

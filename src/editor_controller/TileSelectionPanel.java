@@ -83,7 +83,7 @@ public class TileSelectionPanel extends JPanel implements Observer{
 		// if the tileset has changed, update the layout.
 		if (obj == LevelEditor.UpdateType.TilesetChanged){
 			setupLayout();
-			repaint();
+			//repaint();
 		}
 	}
 	

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Random;
 
+import model.Backpack;
 import model.Battle;
 import model.BattleMenu;
 import model.Trainer;
@@ -17,7 +18,8 @@ public class BattleMenuTest {
 	@Test
 	public void startBattleTest() {
 		BattleMenu menu = new BattleMenu();
-		Trainer t = new Trainer("Ash");
+		Backpack bp = new Backpack();
+		Trainer t = new Trainer("Ash", bp);
 		Battle b = new Battle(t,rand,0.8);
 		menu.startBattle(b);
 		assertEquals(b, menu.getBattle());
@@ -26,7 +28,8 @@ public class BattleMenuTest {
 	@Test
 	public void directionTest() {
 		BattleMenu menu = new BattleMenu();
-		Trainer t = new Trainer("Ash");
+		Backpack bp = new Backpack();
+		Trainer t = new Trainer("Ash", bp);
 		Battle b = new Battle(t,rand,0.8);
 		menu.startBattle(b);
 		menu.select();
@@ -50,7 +53,8 @@ public class BattleMenuTest {
 	@Test
 	public void getTextTest() {
 		BattleMenu menu = new BattleMenu();
-		Trainer t = new Trainer("Ash");
+		Backpack bp = new Backpack();
+		Trainer t = new Trainer("Ash", bp);
 		Battle b = new Battle(t,rand,0.8);
 		menu.startBattle(b);
 		assertEquals("",menu.getText());
@@ -60,7 +64,8 @@ public class BattleMenuTest {
 	@Test
 	public void getMenuItemTest() {
 		BattleMenu menu = new BattleMenu();
-		Trainer t = new Trainer("Ash");
+		Backpack bp = new Backpack();
+		Trainer t = new Trainer("Ash", bp);
 		Battle b = new Battle(t,rand,0.8);
 		menu.startBattle(b);
 		assertEquals("BALL",menu.getItems()[0].getText());

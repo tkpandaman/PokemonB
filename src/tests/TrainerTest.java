@@ -1,13 +1,15 @@
 package tests;
 
 import static org.junit.Assert.*;
+import model.Backpack;
 import model.Trainer;
 
 import org.junit.Test;
 
 public class TrainerTest {
 	
-	private Trainer ash = new Trainer("Ash");
+	private Backpack bp = new Backpack();
+	private Trainer ash = new Trainer("Ash", bp);
 
 	@Test
 	public void nameTest() {

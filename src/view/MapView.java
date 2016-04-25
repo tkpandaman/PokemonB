@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +16,8 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import controller.GameGUI;
 import model.Game;
 import model.Map;
 import model.MapTile;
@@ -31,8 +35,6 @@ public class MapView extends JPanel implements Observer {
 	private int trainerOldX;
 	private int trainerOldY;
 	public boolean animating;
-	private int imageX;
-	private int imageY;
 	private final int spriteSize = 32;
 	private BufferedImage facing;
 	private BufferedImage forward;
@@ -48,14 +50,12 @@ public class MapView extends JPanel implements Observer {
     private BufferedImage right_walking_left;
     private BufferedImage right_walking_right;
     private boolean isUsingLeftFoot;
+    public boolean initial;
+    private final int DELAY_TIME = 80;
 	public MapView(Game game){
 		this.game = game;
 		this.map = game.getMap();
 		this.animating = false;
-		this.imageX = 0;
-		this.imageY = 64;
-		//this.trainerOldX = 2;
-		//this.trainerOldY = 2;
 		this.tileset = new Tileset(map.getTileset(), map.getTileSize());
 		try {
 			trainer = ImageIO.read(new File("images/red.png"));
@@ -76,9 +76,11 @@ public class MapView extends JPanel implements Observer {
 		}
 		isUsingLeftFoot = true;
 		facing = trainer.getSubimage( 0, 64, spriteSize, spriteSize );
+		initial = false;
 		updateCamera();
 	}
 	public void paintComponent(Graphics g){
+		super.paintComponent( g );
 		Graphics2D g2 = (Graphics2D)g;
 		g2.clearRect(0, 0, 100000, 100000);
 		
@@ -98,108 +100,24 @@ public class MapView extends JPanel implements Observer {
             for(int y=0; y<tiles[0].length; y++){
 				if (x==game.getPlayerX() && y==game.getPlayerY()){
 				    //g2.drawImage(trainer, trainerOldX, trainerOldY, null);
-				    
-				    if( animating ){
-				        if( trainerOldY < y*tileSize )
-				        {
-				            facing = forward;
-				            if( isUsingLeftFoot ){
-				                g2.drawImage( forward_walking_left, trainerOldX, trainerOldY+=8, null );
-				            }
-				            else
-				            {
-				                g2.drawImage( forward_walking_right, trainerOldX, trainerOldY+=8, null );
-				            };
-				            isUsingLeftFoot = !isUsingLeftFoot;
-				            try
-                            {
-                                Thread.sleep( 75 );
-                                repaint();
-                            }
-                            catch( InterruptedException e )
-                            {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-	                        //g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize()+16);
-				        }
-				        if( trainerOldY > y*tileSize )
-                        {
-                            facing = backward;
-                            if( isUsingLeftFoot )
-                            {
-                                g2.drawImage( backward_walking_left, trainerOldX, trainerOldY-=8, null );
-                            }
-                            else
-                            {
-                                g2.drawImage( backward_walking_right, trainerOldX, trainerOldY-=8, null );
-                            }
-                            isUsingLeftFoot = !isUsingLeftFoot;
-                            try
-                            {
-                                Thread.sleep( 75 );
-                                repaint();
-                            }
-                            catch( InterruptedException e )
-                            {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                            //g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize()+16);
-                        }
-				        if( trainerOldX > x*tileSize){
-				            facing = left;
-				            if( isUsingLeftFoot )
-				            {
-				                g2.drawImage( left_walking_left, trainerOldX-=8, trainerOldY, null );
-				            }
-				            else
-				            {
-				                g2.drawImage( left_walking_right, trainerOldX-=8, trainerOldY, null );
-				            }
-				            isUsingLeftFoot = !isUsingLeftFoot;    
-                            try
-                            {
-                                Thread.sleep( 50 );
-                                repaint();
-                            }
-                            catch( InterruptedException e )
-                            {
-                                e.printStackTrace();
-                            }
-				        }
-				        if( trainerOldX < x*tileSize){
-				            facing = right;
-				            if( isUsingLeftFoot )
-				            {
-				                g2.drawImage( right_walking_left, trainerOldX+=8, trainerOldY, null );
-				            }
-				            else
-				            {
-				                g2.drawImage( right_walking_right, trainerOldX+=8, trainerOldY, null );
-				            }
-				            isUsingLeftFoot = !isUsingLeftFoot;
-                            try
-                            {
-                                Thread.sleep( 50 );
-                                repaint();
-                            }
-                            catch( InterruptedException e )
-                            {
-                                e.printStackTrace();
-                            }
-                        }
-				        if(trainerOldX == x*tileSize && trainerOldY==y*tileSize)
-				        {
-	                        animating = false;
-	                    };
-	                    
+				    if( animating )
+				    {
+				        animate(g2,x,y);
 				    }
 				    else
 				    {
 				        trainerOldX = x*tileSize;
                         trainerOldY = y*tileSize;
 				        g2.drawImage(facing, trainerOldX, trainerOldY, null);
+				        try
+                        {
+                            Thread.sleep( DELAY_TIME / (int)game.getTrainer().getSpeed() );
+                        }
+                        catch( InterruptedException e )
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
 				    }
 				}
 			}
@@ -211,81 +129,110 @@ public class MapView extends JPanel implements Observer {
 		g2.setColor(Color.BLUE);
 		if (game.getState() == State.WIN)
 		{
-		    // Panel to display stats after game ends
-            JPanel stats = new JPanel();
-            stats.setLayout( null );
-            stats.setSize( 800, 100 );
-            stats.setLocation( 100, 100 );
-            stats.setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
-            // game over label
-            JLabel end = new JLabel("GAME OVER" );
-            end.setFont( new Font( "Serif", Font.BOLD + Font.ITALIC, 20 ) );
-            end.setSize( 500, 20 );
-            end.setLocation( 10, 10 );
-            stats.add( end );
-            // player name label
-            JLabel name = new JLabel("PLAYER: " + game.getTrainer().getName() );
-            name.setFont( new Font( "Serif", Font.BOLD, 20 ) );
-            name.setSize( 500, 20 );
-            name.setLocation( 10, 40 );
-            stats.add( name );
-            /*JButton newGame = new JButton( "New Game" );
-            newGame.setSize( 150, 25 );
-            newGame.setLocation( 10, 60 );
-            newGame.addActionListener( new ActionListener()
-            {
-                @Override
-                public void actionPerformed( ActionEvent e )
-                {
-                    // need a new game method for game if we want this button to work
-                }
-            });
-            stats.add( newGame );*/
-            // pokemon caught label
-            JLabel pokemonCaught = new JLabel( "POKEMON CAUGHT: " + game.getTrainer().openPack().getPokemonCaptured() );
-            pokemonCaught.setFont( new Font( "Serif", Font.BOLD, 20 ) );
-            pokemonCaught.setSize( 500, 20 );
-            pokemonCaught.setLocation( 410, 10 );
-            stats.add( pokemonCaught );
-            // pokebalsl remaining label
-            JLabel pokeballs = new JLabel( "POKEBALLS REMAINING: " + game.getTrainer().openPack().getPokeballsLeft() );
-            pokeballs.setFont( new Font( "Serif", Font.BOLD, 20 ) );
-            pokeballs.setSize( 500, 20 );
-            pokeballs.setLocation( 410, 40 );
-            stats.add( pokeballs );
-            // steps taken label
-            JLabel steps = new JLabel( "STEPS TAKEN: " + ( 500 - game.getTrainer().getStepsLeft() ) );
-            steps.setFont( new Font( "Serif", Font.BOLD, 20 ) );
-            steps.setSize( 500, 20 );
-            steps.setLocation( 410, 70 );
-            stats.add( steps );
-            this.add( stats );
+			EndGame endGame = new EndGame( game );
+			endGame.setLocation( 100, 100 );
+			this.add( endGame );
             
-            // Panel to display pokemon caught after game ends
-            JPanel pokemon = new JPanel();
-            pokemon.setLayout( null );
-            pokemon.setSize( 200, 30 + ( 30 * game.getTrainer().openPack().getPokemonCaptured() ) );
-            pokemon.setLocation( 100, 250 );
-            pokemon.setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
-            // pokemon label
-            JLabel pokemonLabel = new JLabel( "POKEMON (" + game.getTrainer().openPack().getPokemonCaptured() + "):" );
-            pokemonLabel.setFont( new Font( "Serif", Font.BOLD, 20 ) );
-            pokemonLabel.setSize( 200, 20 );
-            pokemonLabel.setLocation( 5, 5 );
-            pokemon.add( pokemonLabel );
-            for( int i = 0; i < game.getTrainer().openPack().getPokemonCaptured(); i++ )
-            {
-                JLabel poke = new JLabel( ( i + 1 ) + ".) " +game.getTrainer().openPack().getPokemonAt( i ).getClass().getSimpleName() );
-                poke.setFont( new Font( "Serif", Font.BOLD, 20 ) );
-                poke.setSize( 200, 20 );
-                poke.setLocation( 5, 30 + ( 30 * i ) );
-                pokemon.add( poke );
-            }
-            this.add( pokemon );
+			PokemonView viewPokemon = new PokemonView( game );
+			viewPokemon.setLocation(100, 250);
+			this.add( viewPokemon );
 		}
-		
 	}
-	
+	private void animate(Graphics2D g2, int x, int y)
+	{
+		int tileSize = map.getTileSize();
+		final int MOVE_PIXELS = 8;
+		if( trainerOldY < y*tileSize )
+        {
+            facing = forward;
+            if( isUsingLeftFoot ){
+                g2.drawImage( forward_walking_left, trainerOldX, trainerOldY+=MOVE_PIXELS, null );
+            }
+            else
+            {
+                g2.drawImage( forward_walking_right, trainerOldX, trainerOldY+=MOVE_PIXELS, null );
+            };
+            isUsingLeftFoot = !isUsingLeftFoot;
+            try
+            {
+                Thread.sleep( DELAY_TIME / (int)game.getTrainer().getSpeed() );
+                repaint();
+            }
+            catch( InterruptedException e )
+            {
+                e.printStackTrace();
+            }
+            //g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize()+16);
+        }
+        if( trainerOldY > y*tileSize )
+        {
+            facing = backward;
+            if( isUsingLeftFoot )
+            {
+                g2.drawImage( backward_walking_left, trainerOldX, trainerOldY-=MOVE_PIXELS, null );
+            }
+            else
+            {
+                g2.drawImage( backward_walking_right, trainerOldX, trainerOldY-=MOVE_PIXELS, null );
+            }
+            isUsingLeftFoot = !isUsingLeftFoot;
+            try
+            {
+                Thread.sleep( DELAY_TIME / (int)game.getTrainer().getSpeed() );
+                repaint();
+            }
+            catch( InterruptedException e )
+            {
+                e.printStackTrace();
+            }
+        }
+        if( trainerOldX > x*tileSize){
+            facing = left;
+            if( isUsingLeftFoot )
+            {
+                g2.drawImage( left_walking_left, trainerOldX-=MOVE_PIXELS, trainerOldY, null );
+            }
+            else
+            {
+                g2.drawImage( left_walking_right, trainerOldX-=MOVE_PIXELS, trainerOldY, null );
+            }
+            isUsingLeftFoot = !isUsingLeftFoot;    
+            try
+            {
+                Thread.sleep( DELAY_TIME / (int)game.getTrainer().getSpeed() );
+                repaint();
+            }
+            catch( InterruptedException e )
+            {
+                e.printStackTrace();
+            }
+        }
+        if( trainerOldX < x*tileSize){
+            facing = right;
+            if( isUsingLeftFoot )
+            {
+                g2.drawImage( right_walking_left, trainerOldX+=MOVE_PIXELS, trainerOldY, null );
+            }
+            else
+            {
+                g2.drawImage( right_walking_right, trainerOldX+=MOVE_PIXELS, trainerOldY, null );
+            }
+            isUsingLeftFoot = !isUsingLeftFoot;
+            try
+            {
+                Thread.sleep( DELAY_TIME / (int)game.getTrainer().getSpeed() );
+                repaint();
+            }
+            catch( InterruptedException e )
+            {
+                e.printStackTrace();
+            }
+        }
+        if(trainerOldX == x*tileSize && trainerOldY==y*tileSize)
+        {
+            animating = false;
+        };
+	}
 	private void updateCamera(){
 		cameraX = game.getPlayerX()-15;
 		cameraY = game.getPlayerY()-11;
@@ -302,7 +249,6 @@ public class MapView extends JPanel implements Observer {
 	public void updateTileset(){
 		this.tileset = new Tileset(map.getTileset(), map.getTileSize());
 	}
-
 	@Override
 	public void update(Observable o, Object obj) {
 		game = (Game)o;
@@ -311,7 +257,9 @@ public class MapView extends JPanel implements Observer {
 			updateTileset();
 		}
 		map = game.getMap();
-		animating = true;
+		if( initial ){
+		    animating = true;
+		};
 		updateCamera();
 		repaint();
 	}

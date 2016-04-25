@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Trainer is in charge of attributes associated with the playable trainer character, 
@@ -12,7 +11,8 @@ import java.util.List;
  */
 public class Trainer implements Serializable {
 	
-	private Backpack bp;
+    private static final long serialVersionUID = -2930426271401956697L;
+    private Backpack bp;
 	private String name;
 	private int steps;
 	private double speed;
@@ -21,8 +21,8 @@ public class Trainer implements Serializable {
 	 * Construct a new Trainer with 500 steps and given name.
 	 * @param name as the Trainer's name
 	 */
-	public Trainer(String name){
-		this.bp = new Backpack();
+	public Trainer(String name, Backpack bp){
+		this.bp = bp;
 		this.name = name;
 		this.steps = 500;
 		this.speed = 1.0;
