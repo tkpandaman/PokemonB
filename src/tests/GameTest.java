@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 import org.junit.Test;
+
+import controller.GameGUI;
 import model.Game;
 import model.Map;
 import model.State;
@@ -27,7 +29,7 @@ public class GameTest {
 		}
 		ArrayList<Map> maps = new ArrayList<Map>();
 		maps.add(map);
-		Game game = new Game(maps);
+		Game game = new Game(GameGUI.loadMaps());
 		
 		assertEquals(game.getPlayerX(), 2);
 		assertEquals(game.getPlayerY(), 2);
@@ -78,7 +80,7 @@ public class GameTest {
 		
 		ArrayList<Map> maps = new ArrayList<Map>();
 		maps.add(map);
-		Game game = new Game(maps);
+		Game game = new Game(GameGUI.loadMaps());
 		
 		game.checkForPokemon(new TestRandom(Arrays.asList(2)));
 		assertEquals(game.getState(), State.NORMAL);
@@ -93,7 +95,7 @@ public class GameTest {
 	    Map map = new Map(512, 512, "tileset-x2", 32);
         ArrayList<Map> maps = new ArrayList<Map>();
         maps.add(map);
-        Game game = new Game(maps);
+        Game game = new Game(GameGUI.loadMaps());
         assertEquals( "Sir Dumplestein", game.getTrainer().getName() );
         assertEquals( "Map", game.getMap().getClass().getSimpleName() );
         assertEquals( 2, game.getPlayerX() );
@@ -109,7 +111,7 @@ public class GameTest {
 		ArrayList<Map> maps = new ArrayList<Map>();
 		maps.add(map);
 		maps.add(map2);
-		Game game = new Game(maps);
+		Game game = new Game(GameGUI.loadMaps());
 		
 		game.setPlayerPos(2,1);
 		game.moveUp();
@@ -125,7 +127,7 @@ public class GameTest {
 	
 	@Test
 	public void chooseMenuTest(){
-		Game game = new Game();
+		Game game = new Game(GameGUI.loadMaps());
 	}
 	
 	

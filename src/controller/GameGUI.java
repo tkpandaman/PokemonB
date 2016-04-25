@@ -71,12 +71,11 @@ public class GameGUI extends JFrame {
 	 * This method loads all of the maps from the folder levels.
 	 * @return ArrayList of Map objects
 	 */
-	private ArrayList<Map> loadMaps(){ 
+	public static ArrayList<Map> loadMaps(){ 
 
 		ArrayList<Map> maps = new ArrayList<Map>();
 
 		for(File mapFile : mapFiles()){
-			System.out.println(mapFile.getAbsolutePath());
 			try{
 				FileInputStream fileIn = new FileInputStream(mapFile);
 				ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -90,7 +89,6 @@ public class GameGUI extends JFrame {
 				ee.printStackTrace();
 			}
 		}
-		System.out.println(maps);
 		return maps;
 
 	}
@@ -113,7 +111,6 @@ public class GameGUI extends JFrame {
 			System.err.println("No Directory found");
 		}
 		
-		System.out.println(mapFiles.get(0).getName());
 		return mapFiles;
 
 	}

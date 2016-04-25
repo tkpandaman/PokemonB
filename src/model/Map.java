@@ -11,7 +11,7 @@ public class Map implements Serializable {
 	private MapTile[][] tile;  //array of Tile objects which comprise the map
 	private int width, height; //width and height of the map (in tiles)
 
-	public static enum names{none,default_map,emerald_test,viridian_forest}; //Add new maps here
+	//public static enum names{none,default_map,emerald_test,viridian_forest}; //Add new maps here
 
 	private String tileset;
 	private int tileSize;

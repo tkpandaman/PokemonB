@@ -87,6 +87,8 @@ public class MenuBar extends JMenuBar {
 				levelEditor.saveLevel(f);
 				System.out.println("Level Saved!");
 			}
+			
+			//Sorry don't need this anymore lol
 			//			final JFileChooser fc = new JFileChooser();
 			//			Path currentRelativePath = Paths.get("");
 			//			File currentPath = currentRelativePath.toAbsolutePath().toFile();
@@ -95,6 +97,7 @@ public class MenuBar extends JMenuBar {
 			//			if (returnVal == JFileChooser.APPROVE_OPTION) {
 			//				levelEditor.saveLevel(fc.getSelectedFile());
 			//			}
+			
 		}
 	}
 
