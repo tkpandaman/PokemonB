@@ -17,7 +17,6 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
-import model.Battle;
 import model.Game;
 import model.Map;
 import view.BattleView;
@@ -27,9 +26,6 @@ import view.MapView;
 public class GameGUI extends JFrame {
 
 	private Game game;
-	private Battle battle;
-	//private BattleView battleView;
-	private Map map;
 	private HashMap<String, Map> maps;
 	private MapView mapView;
 	private BattleView battleView;

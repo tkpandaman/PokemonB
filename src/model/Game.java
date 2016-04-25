@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Random;
@@ -33,7 +32,6 @@ public class Game extends Observable implements Serializable {
 		playerY = 2;
 		isTransition = false;
 		update();
-		
 
 	}
 	
