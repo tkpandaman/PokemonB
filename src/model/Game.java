@@ -1,14 +1,14 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Random;
 
 public class Game extends Observable implements Serializable {
 
     private static final long serialVersionUID = -1241442352734346332L;
-    private ArrayList<Map> maps;
+    private HashMap<String, Map> maps;
     private Map map;
 	private Trainer trainer;
 	private int playerX;
@@ -20,19 +20,18 @@ public class Game extends Observable implements Serializable {
 	private BattleMenu battleMenu;
 	public boolean isTransition;
 
-	public Game(ArrayList<Map> maps){
+	public Game(HashMap<String, Map> maps, Map startMap){
 		
 		battleMenu = new BattleMenu();
 		
 		//Load map
 		this.maps = maps;
-		this.map = maps.get(0); //This should probably change later (1 = emerald, 0 = viridian)
-		trainer = new Trainer("Sir Dumplestein");
+		this.map = startMap;
+		Backpack bp = new Backpack();
+		trainer = new Trainer("Ash Ketchup", bp);
 		playerX = 2;
 		playerY = 2;
-		isTransition = false;
 		update();
-		
 
 	}
 	
@@ -41,13 +40,18 @@ public class Game extends Observable implements Serializable {
 		setChanged();
 		notifyObservers();
 	}
-
+	
+	//call to update observers
+	public void update(int x){
+		setChanged();
+		notifyObservers(x);
+	}
 
 	// Returns the current map.
 	public Map getMap(){
 		return map;
 	}
-
+	
 	public void takeStep(int x, int y){
 		if (state == State.NORMAL){
 			playerX += x;
@@ -59,14 +63,10 @@ public class Game extends Observable implements Serializable {
 		}
 	}
 	
-	//Need to improve this later
-	private void transitionToMap(){
-		if (map.equals(maps.get(0))){
-			map = maps.get(1);
-		}
-		else map = maps.get(0);
-		isTransition = true;
-		update();
+	private void transitionToMap(String name){
+		Map nextMap = maps.get(name);
+		this.map = nextMap;
+		update(1);
 	}
 	
 	public void checkForPokemon(Random r){
@@ -93,8 +93,9 @@ public class Game extends Observable implements Serializable {
 					takeStep(-1, 0);
 				}
 			}
-			else{
-				transitionToMap();
+			else if(map.getLeftMap() != null){ //change this to null?
+				transitionToMap(map.getLeftMap()); //need to see which map is left of this one
+				playerX = map.getWidth()-1;
 			}
 		}
 		if( trainer.openPack().getPokeballsLeft() == 0 )
@@ -113,6 +114,10 @@ public class Game extends Observable implements Serializable {
 					takeStep(1, 0);
 				}
 			}
+			else if(map.getRightMap() != null){
+				transitionToMap(map.getRightMap()); //need to see which map is right of this one
+				playerX = 0;
+			}
 		}
 		if( trainer.openPack().getPokeballsLeft() == 0 )
         {
@@ -130,8 +135,9 @@ public class Game extends Observable implements Serializable {
 					takeStep(0, -1);
 				}
 			}
-			else{
-				transitionToMap();
+			else if(map.getUpMap() != null){
+				transitionToMap(map.getUpMap()); //need to see which map is up of this one
+				playerY = map.getHeight()-1;
 			}
 		}
 		if( trainer.openPack().getPokeballsLeft() == 0 )
@@ -150,6 +156,10 @@ public class Game extends Observable implements Serializable {
 				if (!map.tileAt(playerX, playerY+1).isSolid()){
 					takeStep(0, 1);
 				}
+			}
+			else if(map.getDownMap() != null){
+				transitionToMap(map.getDownMap()); //need to see which map is down of this one
+				playerY = 0;
 			}
 		}
 		if( trainer.openPack().getPokeballsLeft() == 0 )
@@ -206,4 +216,5 @@ public class Game extends Observable implements Serializable {
 			return;
 		}
 	}
+	
 }

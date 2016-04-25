@@ -1,11 +1,8 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,11 +10,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controller.GameGUI;
 import model.Game;
 import model.Map;
 import model.MapTile;
@@ -52,6 +46,7 @@ public class MapView extends JPanel implements Observer {
     private boolean isUsingLeftFoot;
     public boolean initial;
     private final int DELAY_TIME = 80;
+    
 	public MapView(Game game){
 		this.game = game;
 		this.map = game.getMap();
@@ -79,6 +74,7 @@ public class MapView extends JPanel implements Observer {
 		initial = false;
 		updateCamera();
 	}
+	
 	public void paintComponent(Graphics g){
 		super.paintComponent( g );
 		Graphics2D g2 = (Graphics2D)g;
@@ -138,6 +134,7 @@ public class MapView extends JPanel implements Observer {
 			this.add( viewPokemon );
 		}
 	}
+	
 	private void animate(Graphics2D g2, int x, int y)
 	{
 		int tileSize = map.getTileSize();
@@ -233,22 +230,31 @@ public class MapView extends JPanel implements Observer {
             animating = false;
         };
 	}
+	
 	private void updateCamera(){
 		cameraX = game.getPlayerX()-15;
 		cameraY = game.getPlayerY()-11;
 		checkCamera();
 	}
+	
+	private void updateTrainerPos(){
+		trainerOldX = game.getPlayerX();
+		trainerOldY = game.getPlayerY();
+		animating = false;
+	}
+	
 	private void checkCamera()
 	{
 	    if (cameraX < 0) cameraX = 0;
         if (cameraX+32 > map.getWidth()) cameraX = map.getWidth()-32;
         if (cameraY < 0) cameraY = 0;
-        if (cameraY+32 > map.getHeight()) cameraY = map.getHeight()-32;
+        if (cameraY+28 > map.getHeight()) cameraY = map.getHeight()-28;
 	}
 	
 	public void updateTileset(){
 		this.tileset = new Tileset(map.getTileset(), map.getTileSize());
 	}
+	
 	@Override
 	public void update(Observable o, Object obj) {
 		game = (Game)o;
@@ -260,6 +266,9 @@ public class MapView extends JPanel implements Observer {
 		if( initial ){
 		    animating = true;
 		};
+		if (obj != null){
+			if ((int)obj == 1) updateTrainerPos();
+		}
 		updateCamera();
 		repaint();
 	}

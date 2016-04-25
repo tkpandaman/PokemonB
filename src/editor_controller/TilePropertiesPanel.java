@@ -1,5 +1,8 @@
 package editor_controller;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -11,10 +14,12 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import model.Map;
 import model.MapTile;
 import model.TileType;
 
@@ -34,6 +39,8 @@ public class TilePropertiesPanel extends JPanel implements Observer {
 		
 		this.add(Box.createVerticalStrut(15));
 		
+		//this.setPreferredSize(new Dimension(200, 100));
+		
 		//add tile preview image
 		MapTile currentTile = levelEditor.getCurrentTile();
 		BufferedImage tileImg = levelEditor.getTileset().tileAt(currentTile.getTilesetX(), currentTile.getTilesetY());
@@ -52,7 +59,7 @@ public class TilePropertiesPanel extends JPanel implements Observer {
 			radioButton.addActionListener(listener);
 			selectionListeners.add(listener);
 			tileTypeSelection.add(radioButton);
-			this.add(radioButton);
+			this.add(radioButton, BorderLayout.LINE_START);
 			//set the correct radio button to be selected by default
 			if(levelEditor.getCurrentTile().getTileType() == type){
 				radioButton.setSelected(true);

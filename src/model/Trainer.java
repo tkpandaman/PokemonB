@@ -21,8 +21,8 @@ public class Trainer implements Serializable {
 	 * Construct a new Trainer with 500 steps and given name.
 	 * @param name as the Trainer's name
 	 */
-	public Trainer(String name){
-		this.bp = new Backpack();
+	public Trainer(String name, Backpack bp){
+		this.bp = bp;
 		this.name = name;
 		this.steps = 500;
 		this.speed = 1.0;
