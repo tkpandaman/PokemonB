@@ -46,6 +46,7 @@ public class MapView extends JPanel implements Observer {
     private boolean isUsingLeftFoot;
     public boolean initial;
     private final int DELAY_TIME = 80;
+    
 	public MapView(Game game){
 		this.game = game;
 		this.map = game.getMap();
@@ -73,6 +74,7 @@ public class MapView extends JPanel implements Observer {
 		initial = false;
 		updateCamera();
 	}
+	
 	public void paintComponent(Graphics g){
 		super.paintComponent( g );
 		Graphics2D g2 = (Graphics2D)g;
@@ -132,6 +134,7 @@ public class MapView extends JPanel implements Observer {
 			this.add( viewPokemon );
 		}
 	}
+	
 	private void animate(Graphics2D g2, int x, int y)
 	{
 		int tileSize = map.getTileSize();
@@ -227,11 +230,13 @@ public class MapView extends JPanel implements Observer {
             animating = false;
         };
 	}
+	
 	private void updateCamera(){
 		cameraX = game.getPlayerX()-15;
 		cameraY = game.getPlayerY()-11;
 		checkCamera();
 	}
+	
 	private void checkCamera()
 	{
 	    if (cameraX < 0) cameraX = 0;
@@ -243,6 +248,7 @@ public class MapView extends JPanel implements Observer {
 	public void updateTileset(){
 		this.tileset = new Tileset(map.getTileset(), map.getTileSize());
 	}
+	
 	@Override
 	public void update(Observable o, Object obj) {
 		game = (Game)o;

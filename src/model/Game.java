@@ -31,7 +31,6 @@ public class Game extends Observable implements Serializable {
 		trainer = new Trainer("Ash Ketchup", bp);
 		playerX = 2;
 		playerY = 2;
-		isTransition = false;
 		update();
 
 	}
@@ -60,21 +59,9 @@ public class Game extends Observable implements Serializable {
 	}
 	
 	private void transitionToMap(String name){
-		/*if (name.equals(Map.names.default_map)){
-			map = maps.get(0); //set to default map
-		}
-		else if (name.equals(Map.names.emerald_test)){
-			map = maps.get(1); //set to emerald test
-		}
-		else if (name.equals(Map.names.viridian_forest)){
-			map = maps.get(2); //set to viridian forest
-		}
-		isTransition = true;
-		update();*/
 
 		Map nextMap = maps.get(name);
 		this.map = nextMap;
-		isTransition = true;
 		update();
 	}
 	
