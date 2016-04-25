@@ -17,23 +17,21 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
-import model.Battle;
 import model.Game;
 import model.Map;
 import view.BattleView;
 import model.State;
 import view.MapView;
+import view.Menu;
 
 public class GameGUI extends JFrame {
 
 	private Game game;
-	private Battle battle;
-	//private BattleView battleView;
-	private Map map;
-	private ArrayList<Map> maps;
+	private HashMap<String, Map> maps;
 	private MapView mapView;
 	private BattleView battleView;
-
+	private Menu menu;
+	private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
 		gui.setVisible(true);
@@ -46,47 +44,65 @@ public class GameGUI extends JFrame {
 
 		this.addWindowListener(new SaveAndLoad());
 
-		loadMaps();
+		maps = loadMaps();
 
-		game = new Game(maps);
-
+		game = new Game(maps, maps.get("viridian-forest"));
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
-		
+
 		game.addObserver(mapView);
 
 		this.add(mapView);
 		//this.add(battleView);
-		
+
 		this.addKeyListener(new ArrowKeyListener());
-		
-		this.repaint();
+
+		//this.repaint();
 		mapView.repaint();
 		battleView.repaint();
-
 	}
 
-	private void loadMaps(){
+	private HashMap<String, Map> loadMaps(){
 
-		this.maps = new ArrayList<Map>();
+		this.maps = new HashMap<String, Map>();
 
-		ArrayList<File> mapFiles = new ArrayList<File>();
-		mapFiles.add(new File("levels/viridian-forest"));
-		mapFiles.add(new File("levels/emerald-test"));
-
-		for(int i = 0; i < mapFiles.size(); i++){
+		for(File mapFile : mapFiles()){
 			try{
-				FileInputStream fileIn = new FileInputStream(mapFiles.get(i));
+				FileInputStream fileIn = new FileInputStream(mapFile);
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 
 				//read objects from saved data
-				maps.add((Map) in.readObject());
+				maps.put(mapFile.getName(), (Map) in.readObject());
 
 				in.close();
 				fileIn.close();
 			} catch(Exception ee){
+				ee.printStackTrace();
 			}
 		}
+		return maps;
+
+	}
+	
+	/**
+	 * This method returns the files in the levels folder.
+	 * @return ArrayList of Files as map files
+	 */
+	public static ArrayList<File> mapFiles(){ 
+
+		ArrayList<File> mapFiles = new ArrayList<File>();
+
+		File dir = new File("levels");
+		File[] directoryListing = dir.listFiles();
+		if (directoryListing != null) {
+			for (File child : directoryListing) {
+				mapFiles.add(child);
+			}
+		} else {
+			System.err.println("No Directory found");
+		}
+		
+		return mapFiles;
 
 	}
 
@@ -94,32 +110,96 @@ public class GameGUI extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent event) {
-			if (event.getKeyCode() == KeyEvent.VK_UP)
-				game.moveUp();
-			if (event.getKeyCode() == KeyEvent.VK_DOWN)
-				game.moveDown();
-			if (event.getKeyCode() == KeyEvent.VK_LEFT)
-				game.moveLeft();
-			if (event.getKeyCode() == KeyEvent.VK_RIGHT)
-				game.moveRight();
-			
+			if(event.getKeyCode() == KeyEvent.VK_ESCAPE){
+				if( game.getState() == State.NORMAL || game.getState() == State.MENU )
+				{
+					game.chooseMenu();
+					if( game.getState() == State.MENU )
+					{
+						menu = new Menu( game );
+						mapView.add(menu);
+					}
+					else
+					{
+						mapView.remove(menu);
+					}
+					mapView.repaint();
+				}
+			}
+			if (event.getKeyCode() == KeyEvent.VK_UP){
+				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+				{
+					game.moveUp();
+				}
+				if( game.getState() == State.MENU )
+				{
+					menu.moveUp();
+				}
+			}
+			if (event.getKeyCode() == KeyEvent.VK_DOWN){
+				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+				{
+					game.moveDown();
+				}
+				if( game.getState() == State.MENU )
+				{
+					menu.moveDown();
+				}
+			}
+			if (event.getKeyCode() == KeyEvent.VK_LEFT ){
+				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+				{
+					game.moveLeft();
+				}
+			}
+			if (event.getKeyCode() == KeyEvent.VK_RIGHT ){
+				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
+				{
+					game.moveRight();
+				}
+			}
 			if (event.getKeyCode() == KeyEvent.VK_Z)
 				game.select();
-			
+			if( event.getKeyCode() == KeyEvent.VK_ENTER )
+			{
+				if( game.getState() == State.MENU )
+				{
+					if( menu.getSelected() == 2 )
+					{
+						game.chooseMenu();
+						mapView.remove( menu );
+						try
+						{
+							// save current state of pokemon game (Trainer, pokemon, items, backpack, etc.)
+							FileOutputStream fos = new FileOutputStream(SAVED_COLLECTION_LOCATION);
+							ObjectOutputStream oos = new ObjectOutputStream(fos);
+							// save all data we need to a file
+							oos.writeObject(game);
+							oos.close();
+							fos.close();
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
+					if( menu.getSelected() == 3 )
+					{
+						game.chooseMenu();
+						mapView.remove( menu );
+					}
+				}
+			}
 
-			if(game.getState() == State.BATTLE){
+			if( !mapView.animating && game.getState() == State.BATTLE){
 				GameGUI.this.remove(mapView);
 				GameGUI.this.add(battleView);
 				GameGUI.this.revalidate();
 				GameGUI.this.repaint();
-			} else {
+			} else if( game.getState() != State.MENU ){
 				GameGUI.this.remove(battleView);
 				GameGUI.this.add(mapView);
 				GameGUI.this.revalidate();
 				GameGUI.this.repaint();
 			}
-
-			//System.out.println(game.getPlayerX() + ", " + game.getPlayerY());
 		}
 
 		@Override
@@ -134,7 +214,6 @@ public class GameGUI extends JFrame {
 
 	private class SaveAndLoad extends WindowAdapter
 	{
-		private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
 
 		@Override
 		public void windowOpened( WindowEvent e )
@@ -163,6 +242,7 @@ public class GameGUI extends JFrame {
 				game.getBattleMenu().addObserver(battleView);
 				game.update();
 			};
+			mapView.initial = true;
 			// change GUI after data loaded
 		};
 		@Override
@@ -192,6 +272,6 @@ public class GameGUI extends JFrame {
 			}
 		};
 	};
-	
+
 
 }
