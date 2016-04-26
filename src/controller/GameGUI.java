@@ -105,6 +105,29 @@ public class GameGUI extends JFrame {
 		return mapFiles;
 
 	}
+	
+	/**
+	 * This method returns the files in the Items folder.
+	 * @return ArrayList of Files as Item image files
+	 */
+	public static ArrayList<File> itemImageFiles(){ 
+
+		ArrayList<File> imgFiles = new ArrayList<File>();
+
+		File dir = new File("images/items");
+		File[] directoryListing = dir.listFiles();
+		if (directoryListing != null) {
+			for (File child : directoryListing) {
+				imgFiles.add(child);
+			}
+		} else {
+			System.err.println("No Directory found");
+		}
+		
+		return imgFiles;
+
+	}
+	
 
 	private class ArrowKeyListener implements KeyListener{
 

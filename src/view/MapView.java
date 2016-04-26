@@ -25,11 +25,14 @@ public class MapView extends JPanel implements Observer {
 	private Game game;
 	private Map map;
 	private Tileset tileset;
-	private BufferedImage trainer;
+
 	private int trainerOldX;
 	private int trainerOldY;
 	public boolean animating;
 	private final int spriteSize = 32;
+	
+	//Trainer Images
+	private BufferedImage trainer;
 	private BufferedImage facing;
 	private BufferedImage forward;
 	private BufferedImage backward;
@@ -43,6 +46,7 @@ public class MapView extends JPanel implements Observer {
     private BufferedImage left_walking_right;
     private BufferedImage right_walking_left;
     private BufferedImage right_walking_right;
+    
     private boolean isUsingLeftFoot;
     public boolean initial;
     private final int DELAY_TIME = 80;
@@ -52,23 +56,9 @@ public class MapView extends JPanel implements Observer {
 		this.map = game.getMap();
 		this.animating = false;
 		this.tileset = new Tileset(map.getTileset(), map.getTileSize());
-		try {
-			trainer = ImageIO.read(new File("images/red.png"));
-			forward = trainer.getSubimage( 0, 64, spriteSize, spriteSize );
-			backward = trainer.getSubimage( 0, 0, spriteSize, spriteSize );
-			left = trainer.getSubimage( 0, 32, spriteSize, spriteSize );
-			right = trainer.getSubimage( 0, 96, spriteSize, spriteSize );
-			forward_walking_left = trainer.getSubimage( 32, 64, spriteSize, spriteSize );
-			forward_walking_right = trainer.getSubimage( 64, 64, spriteSize, spriteSize );
-			backward_walking_left = trainer.getSubimage( 32, 0, spriteSize, spriteSize );
-			backward_walking_right = trainer.getSubimage( 64, 0, spriteSize, spriteSize );
-			left_walking_left = trainer.getSubimage( 32, 32, spriteSize, spriteSize );
-			left_walking_right = trainer.getSubimage( 64, 32, spriteSize, spriteSize );
-			right_walking_left = trainer.getSubimage( 32, 96, spriteSize, spriteSize );
-			right_walking_right = trainer.getSubimage( 64, 96, spriteSize, spriteSize );
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		loadTrainerImages();
+		
 		isUsingLeftFoot = true;
 		facing = trainer.getSubimage( 0, 64, spriteSize, spriteSize );
 		initial = false;
@@ -82,6 +72,7 @@ public class MapView extends JPanel implements Observer {
 		
 		g2.translate(-cameraX*map.getTileSize(), -cameraY*map.getTileSize());
 		
+		//Draw map as a series of tiles
 		MapTile[][] tiles = map.getTiles();
 		int tileSize = map.getTileSize();
 		for(int x=0; x<tiles.length; x++){
@@ -92,6 +83,8 @@ public class MapView extends JPanel implements Observer {
 				//g2.drawImage( trainer.getSubimage( 64, 0, 32, 32 ), 0, 0, null );
 			}
 		}
+		
+		//Used for animations (should probably use another thread if possible)
 		for(int x=0; x<tiles.length; x++){
             for(int y=0; y<tiles[0].length; y++){
 				if (x==game.getPlayerX() && y==game.getPlayerY()){
@@ -132,6 +125,26 @@ public class MapView extends JPanel implements Observer {
 			PokemonView viewPokemon = new PokemonView( game );
 			viewPokemon.setLocation(100, 250);
 			this.add( viewPokemon );
+		}
+	}
+	
+	private void loadTrainerImages(){
+		try {
+			trainer = ImageIO.read(new File("images/red.png"));
+			forward = trainer.getSubimage( 0, 64, spriteSize, spriteSize );
+			backward = trainer.getSubimage( 0, 0, spriteSize, spriteSize );
+			left = trainer.getSubimage( 0, 32, spriteSize, spriteSize );
+			right = trainer.getSubimage( 0, 96, spriteSize, spriteSize );
+			forward_walking_left = trainer.getSubimage( 32, 64, spriteSize, spriteSize );
+			forward_walking_right = trainer.getSubimage( 64, 64, spriteSize, spriteSize );
+			backward_walking_left = trainer.getSubimage( 32, 0, spriteSize, spriteSize );
+			backward_walking_right = trainer.getSubimage( 64, 0, spriteSize, spriteSize );
+			left_walking_left = trainer.getSubimage( 32, 32, spriteSize, spriteSize );
+			left_walking_right = trainer.getSubimage( 64, 32, spriteSize, spriteSize );
+			right_walking_left = trainer.getSubimage( 32, 96, spriteSize, spriteSize );
+			right_walking_right = trainer.getSubimage( 64, 96, spriteSize, spriteSize );
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

@@ -1,6 +1,7 @@
 
 package editor_controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -8,9 +9,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Observable;
+import java.util.Random;
 
+import model.Item;
 import model.Map;
 import model.MapTile;
+import model.Pokeball;
 import model.TileType;
 import model.Tileset;
 
@@ -25,6 +29,10 @@ public class LevelEditor extends Observable{
 	private Tileset currentTileset;
 	private int tileSize;
 	
+	private Item currentItem;
+	public String cursor;
+	private BufferedImage currentItemImage;
+	
 	MapTile currentTile = new MapTile(0,0);
 	
 	public enum EditorView{Normal, Collisions, TileType};
@@ -34,14 +42,35 @@ public class LevelEditor extends Observable{
 	
 	public LevelEditor(String tileset, int tileSize){
 		setTileset(tileset, tileSize);
+		cursor = "Tiles";
+		currentItem = new Pokeball(new Random()); //Default Item
+		currentItemImage = null;
 		
 		map = new Map(width, height, tileset, tileSize);
 		setTileImage(0, 0);
 	}
 	
+	public BufferedImage getCurrentItemImage(){
+		return currentItemImage;
+	}
+	
+	public void setCurrentItemImage(BufferedImage b){
+		currentItemImage = b;
+	}
+	
 	// Gets the current Tileset.
 	public Tileset getTileset(){
 		return currentTileset;
+	}
+	
+	// Returns the item currently selected by radio buttons
+	public Item getCurrentItem(){
+		return currentItem;
+	}
+	
+	// Sets the currentItem to the one selected by buttons
+	public void setCurrentItem(Item m){
+		currentItem = m;
 	}
 	
 	// Changes the current Tileset.

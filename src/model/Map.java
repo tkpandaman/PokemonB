@@ -16,6 +16,7 @@ public class Map implements Serializable {
 	private String tileset;
 	private int tileSize;
 	private String curMap, leftMap, rightMap, upMap, downMap; //what maps are adjacent to this one?
+	private ArrayList<MapItem> mapItems;
 
 
 
@@ -24,6 +25,7 @@ public class Map implements Serializable {
 		this.tileset = tileset;
 		this.tileSize = tileSize;
 		tile = new MapTile[width][height];
+		mapItems = new ArrayList<MapItem>();
 
 		//populate the map with default grass tiles
 		for(int i=0; i<width; i++){
@@ -33,6 +35,29 @@ public class Map implements Serializable {
 				else tile[i][j] = new MapTile(0, 0, TileType.Grass);
 			}
 		}
+	}
+	
+	// Returns the MapItems associated with this Map
+	public ArrayList<MapItem> getMapItems(){
+		return mapItems;
+	}
+	
+	public MapItem popMapItemAt(int x, int y){
+		for (MapItem m : mapItems){
+			if (m.getX() == x && m.getY() == y){
+				mapItems.remove(m);
+				return m;
+			}
+		}
+		return null;
+	}
+	
+	// Add a MapItem to the list
+	public void addMapItem(MapItem m){
+		for (MapItem mItem : mapItems){
+			if(mItem.getX() == m.getX() && mItem.getY() == m.getY()) return; //probably should have used a Set
+		}
+		mapItems.add(m);
 	}
 
 	// Sets the tile at x, y to the tile provided.
