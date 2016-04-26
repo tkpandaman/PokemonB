@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import model.Backpack;
+import model.PokemonItem;
 import model.RunningShoes;
 import model.TrainerItem;
 import model.pokemon.Charizard;
@@ -55,10 +56,17 @@ public class BackpackTest {
         assertEquals( "Charizard", bp.getPokemonAt( 0 ).getClass().getSimpleName() );
     }
     @Test
-    public void testBackpackGetItems()
+    public void testBackpackGetTrainerItems()
     {
         Backpack b = new Backpack();
         List<TrainerItem> items = new ArrayList<TrainerItem>();
-        assertEquals( items, b.getItems() );
+        assertEquals( items, b.getTrainerItems() );
+    }
+    @Test
+    public void testBackpackGetPokemonItems()
+    {
+        Backpack b = new Backpack();
+        List<PokemonItem> items = new ArrayList<PokemonItem>();
+        assertEquals( items, b.getPokemonItems() );
     }
 }

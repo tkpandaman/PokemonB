@@ -20,13 +20,17 @@ import javax.swing.JOptionPane;
 import model.Battle;
 import model.Game;
 import model.Map;
+import model.PokemonItem;
+import model.Potion;
 import model.RunningShoes;
 import view.BattleView;
 import view.ItemSelector;
 import model.State;
+import model.TrainerItem;
 import model.WalkingShoes;
 import view.MapView;
 import view.Menu;
+import view.PokemonSelector;
 import view.PokemonView;
 
 public class GameGUI extends JFrame {
@@ -41,6 +45,8 @@ public class GameGUI extends JFrame {
 	private boolean pokemonList;
 	private ItemSelector items;
 	private PokemonView pokemon;
+	private boolean selectingPokemon;
+	private PokemonSelector pokemonChoice;
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
 		gui.setVisible(true);
@@ -60,16 +66,13 @@ public class GameGUI extends JFrame {
 		battleView = new BattleView(game);
 		selectingItem = false;
         pokemonList = false;
-		//shoes.use( game.getTrainer() );
-		//System.out.println( game.getTrainer().getSpeed() );
+        selectingPokemon = false;
 		game.addObserver(mapView);
 
 		this.add(mapView);
-		//this.add(battleView);
 
 		this.addKeyListener(new ArrowKeyListener());
 
-		//this.repaint();
 		mapView.repaint();
 		battleView.repaint();
 	}
@@ -122,6 +125,15 @@ public class GameGUI extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent event) {
+		    if( event.getKeyCode() == KeyEvent.VK_J )
+		    {
+		        Potion p = new Potion();
+		        RunningShoes r = new RunningShoes();
+		        WalkingShoes w = new WalkingShoes();
+		        game.getTrainer().openPack().addPokemonItem( p );
+		        game.getTrainer().openPack().addTrainerItem( r );
+		        game.getTrainer().openPack().addTrainerItem( w );
+		    }
 			if(event.getKeyCode() == KeyEvent.VK_ESCAPE){
 				if( game.getState() == State.NORMAL || game.getState() == State.MENU )
 				{
@@ -139,10 +151,15 @@ public class GameGUI extends JFrame {
 					    pokemonList = false;
                         mapView.remove( pokemon );
                     }
-					if( selectingItem )
+					if( selectingItem && !selectingPokemon )
 					{
 					    selectingItem = false;
 					    mapView.remove( items );
+					}
+					if( selectingPokemon )
+					{
+					    selectingPokemon = false;
+					    mapView.remove( pokemonChoice );
 					}
 					mapView.repaint();
 				}
@@ -160,7 +177,14 @@ public class GameGUI extends JFrame {
 				    }
 				    if( selectingItem )
 				    {
-				        items.moveUp();
+				        if( selectingPokemon )
+				        {
+				            pokemonChoice.moveUp();
+				        }
+				        else
+				        {
+				            items.moveUp();
+				        }
 				    }
 				}
 			}
@@ -177,7 +201,14 @@ public class GameGUI extends JFrame {
 				    }
 				    if( selectingItem )
 				    {
-				        items.moveDown();
+				        if( selectingPokemon )
+				        {
+				            pokemonChoice.moveDown();
+				        }
+				        else
+				        {
+				            items.moveDown();
+				        }
 				    }
 				}
 			}
@@ -199,17 +230,39 @@ public class GameGUI extends JFrame {
 			{
 				if( game.getState() == State.MENU )
 				{
-				    if( selectingItem )
+				    if( selectingItem && !selectingPokemon)
                     {
-				        if( game.getTrainer().openPack().getItems().size() > 0 )
+				        if( items.getNumItems() > 0 )
 				        {
-				            game.getTrainer().openPack().getItems().get( items.getSelected() ).use( game.getTrainer() );
-				            selectingItem = false;
-				            mapView.remove( items );
-				            mapView.repaint();
+				            if( items.getSelected() instanceof PokemonItem )
+				            {
+				                selectingPokemon = true;
+				                pokemonChoice = new PokemonSelector( game );
+				                pokemonChoice.setLocation( 300, 10 );
+				                pokemonChoice.setVisible( true );
+				                mapView.add( pokemonChoice );
+				                mapView.repaint();
+				            }
+				            else
+				            {
+				                ( (TrainerItem)items.getSelected() ).use( game.getTrainer() );
+				                selectingItem = false;
+				                mapView.remove( items );
+				                mapView.repaint();
+				            };
 				        };
                     }
-				    else if( !pokemonList && ! selectingItem )
+				    else if( selectingPokemon )
+				    {
+				        if( game.getTrainer().openPack().getPokemonCaptured() > 0 )
+				        {
+				            ( (PokemonItem)items.getSelected() ).use( game.getTrainer().openPack().getPokemonAt( pokemonChoice.getSelected() ) );
+				            selectingPokemon = false;
+				            mapView.remove( pokemonChoice );
+				            mapView.repaint();
+				        }
+				    }
+				    else if( !pokemonList && !selectingItem )
 				    {
 				        if( menu.getSelected() == 0 )
 				        {

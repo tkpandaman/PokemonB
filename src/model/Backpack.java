@@ -99,7 +99,10 @@ public class Backpack implements Serializable{
 	public void addTrainerItem(TrainerItem ti){
 		trainerItemList.add(ti);
 	}
-	
+	public void addPokemonItem( PokemonItem pi )
+	{
+	    pokemonItemList.add( pi );
+	}
 	/**
 	 * Return the number of captured pokemon
 	 * @return int as number of pokemon
@@ -120,9 +123,12 @@ public class Backpack implements Serializable{
 		pokemonList.add(p);
 	}
 	
-	public List<TrainerItem> getItems()
+	public List<TrainerItem> getTrainerItems()
 	{
 	    return trainerItemList;
 	}
-	
+	public List<PokemonItem> getPokemonItems()
+    {
+        return pokemonItemList;
+    }
 }
