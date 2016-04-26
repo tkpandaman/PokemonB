@@ -120,6 +120,9 @@ public class Backpack implements Serializable{
 		pokemonList.add(p);
 	}
 	
-	
+	public List<TrainerItem> getItems()
+	{
+	    return trainerItemList;
+	}
 	
 }

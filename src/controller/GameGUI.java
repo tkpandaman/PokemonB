@@ -20,10 +20,14 @@ import javax.swing.JOptionPane;
 import model.Battle;
 import model.Game;
 import model.Map;
+import model.RunningShoes;
 import view.BattleView;
+import view.ItemSelector;
 import model.State;
+import model.WalkingShoes;
 import view.MapView;
 import view.Menu;
+import view.PokemonView;
 
 public class GameGUI extends JFrame {
 
@@ -33,6 +37,10 @@ public class GameGUI extends JFrame {
 	private BattleView battleView;
 	private Menu menu;
 	private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
+	private boolean selectingItem;
+	private boolean pokemonList;
+	private ItemSelector items;
+	private PokemonView pokemon;
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
 		gui.setVisible(true);
@@ -50,7 +58,10 @@ public class GameGUI extends JFrame {
 		game = new Game(maps, maps.get("viridian-forest"));
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
-
+		selectingItem = false;
+        pokemonList = false;
+		//shoes.use( game.getTrainer() );
+		//System.out.println( game.getTrainer().getSpeed() );
 		game.addObserver(mapView);
 
 		this.add(mapView);
@@ -114,15 +125,24 @@ public class GameGUI extends JFrame {
 			if(event.getKeyCode() == KeyEvent.VK_ESCAPE){
 				if( game.getState() == State.NORMAL || game.getState() == State.MENU )
 				{
-					game.chooseMenu();
-					if( game.getState() == State.MENU )
+				    if( !pokemonList && !selectingItem )
+				    {    
+				        game.chooseMenu();
+				        if( game.getState() == State.MENU )
+	                    {
+	                        menu = new Menu( game );
+	                        mapView.add(menu);
+	                    }
+				    }
+					if( pokemonList )
+                    {
+					    pokemonList = false;
+                        mapView.remove( pokemon );
+                    }
+					if( selectingItem )
 					{
-						menu = new Menu( game );
-						mapView.add(menu);
-					}
-					else
-					{
-						mapView.remove(menu);
+					    selectingItem = false;
+					    mapView.remove( items );
 					}
 					mapView.repaint();
 				}
@@ -134,7 +154,14 @@ public class GameGUI extends JFrame {
 				}
 				if( game.getState() == State.MENU )
 				{
-					menu.moveUp();
+				    if( !pokemonList && !selectingItem )
+				    {
+				        menu.moveUp();
+				    }
+				    if( selectingItem )
+				    {
+				        items.moveUp();
+				    }
 				}
 			}
 			if (event.getKeyCode() == KeyEvent.VK_DOWN){
@@ -144,7 +171,14 @@ public class GameGUI extends JFrame {
 				}
 				if( game.getState() == State.MENU )
 				{
-					menu.moveDown();
+				    if( !pokemonList && !selectingItem )
+				    {
+				        menu.moveDown();
+				    }
+				    if( selectingItem )
+				    {
+				        items.moveDown();
+				    }
 				}
 			}
 			if (event.getKeyCode() == KeyEvent.VK_LEFT ){
@@ -165,27 +199,58 @@ public class GameGUI extends JFrame {
 			{
 				if( game.getState() == State.MENU )
 				{
-					if( menu.getSelected() == 2 )
-					{
-						game.chooseMenu();
-						mapView.remove( menu );
-						try
-						{
-							// save current state of pokemon game (Trainer, pokemon, items, backpack, etc.)
-							FileOutputStream fos = new FileOutputStream(SAVED_COLLECTION_LOCATION);
-							ObjectOutputStream oos = new ObjectOutputStream(fos);
-							// save all data we need to a file
-							oos.writeObject(game);
-							oos.close();
-							fos.close();
-						} catch (Exception exception) {
-							exception.printStackTrace();
-						}
-					}
-					if( menu.getSelected() == 3 )
-					{
-						game.chooseMenu();
-						mapView.remove( menu );
+				    if( selectingItem )
+                    {
+				        if( game.getTrainer().openPack().getItems().size() > 0 )
+				        {
+				            game.getTrainer().openPack().getItems().get( items.getSelected() ).use( game.getTrainer() );
+				            selectingItem = false;
+				            mapView.remove( items );
+				            mapView.repaint();
+				        };
+                    }
+				    else if( !pokemonList && ! selectingItem )
+				    {
+				        if( menu.getSelected() == 0 )
+				        {
+				            selectingItem = true;
+				            items = new ItemSelector( game );
+				            items.setLocation( 10, 10 );
+				            items.setVisible( true );
+				            mapView.add( items );
+				            mapView.repaint();
+				        }
+				        if( menu.getSelected() == 1 )
+				        {
+				            pokemonList = true;
+				            pokemon = new PokemonView( game );
+				            pokemon.setLocation( 10, 10 );
+				            pokemon.setVisible( true );
+				            mapView.add( pokemon );
+				            mapView.repaint();
+				        }
+				        if( menu.getSelected() == 2 )
+				        {
+				            game.chooseMenu();
+				            mapView.remove( menu );
+				            try
+				            {
+				                // save current state of pokemon game (Trainer, pokemon, items, backpack, etc.)
+				                FileOutputStream fos = new FileOutputStream(SAVED_COLLECTION_LOCATION);
+				                ObjectOutputStream oos = new ObjectOutputStream(fos);
+				                // save all data we need to a file
+				                oos.writeObject(game);
+				                oos.close();
+				                fos.close();
+				            } catch (Exception exception) {
+				                exception.printStackTrace();
+				            }
+				        }
+				        if( menu.getSelected() == 3 )
+	                    {
+	                        game.chooseMenu();
+	                        mapView.remove( menu );
+	                    }
 					}
 				}
 			}
@@ -249,28 +314,6 @@ public class GameGUI extends JFrame {
 		@Override
 		public void windowClosing( WindowEvent e )
 		{
-			if (game.getState() != State.BATTLE){
-				int selectedChoice = JOptionPane.showConfirmDialog( null, "Save data?", "Select an option", JOptionPane.YES_NO_CANCEL_OPTION );
-				if( selectedChoice == JOptionPane.NO_OPTION )
-				{
-					System.exit( 0 );
-				};
-				if( selectedChoice == JOptionPane.YES_OPTION )
-				{
-					try
-					{
-						// save current state of pokemon game (Trainer, pokemon, items, backpack, etc.)
-						FileOutputStream fos = new FileOutputStream(SAVED_COLLECTION_LOCATION);
-						ObjectOutputStream oos = new ObjectOutputStream(fos);
-						// save all data we need to a file
-						oos.writeObject(game);
-						oos.close();
-						fos.close();
-					} catch (Exception exception) {
-						exception.printStackTrace();
-					}
-				};
-			}
 		};
 	};
 

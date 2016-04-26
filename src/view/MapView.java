@@ -45,6 +45,7 @@ public class MapView extends JPanel implements Observer {
     private BufferedImage right_walking_right;
     private boolean isUsingLeftFoot;
     public boolean initial;
+    public boolean selectingItem;
     private final int DELAY_TIME = 80;
     
 	public MapView(Game game){
@@ -72,6 +73,7 @@ public class MapView extends JPanel implements Observer {
 		isUsingLeftFoot = true;
 		facing = trainer.getSubimage( 0, 64, spriteSize, spriteSize );
 		initial = false;
+		selectingItem = false;
 		updateCamera();
 	}
 	
