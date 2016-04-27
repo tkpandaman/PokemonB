@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.util.Random;
 
 import model.Backpack;
+import model.PokemonItem;
+import model.Potion;
 import model.RunningShoes;
 import model.TrainerItem;
 import model.pokemon.Charizard;
@@ -47,6 +49,33 @@ public class BackpackTest {
 		bp.addPokemon(charizard);
 		assertEquals(bp.getPokemonCaptured(), 1);
 	}
+	
+	@Test
+	public void backpackAddPokemonItemTest(){
+		Backpack bp = new Backpack(r);
+		PokemonItem pi = new Potion();
+		bp.addPokemonItem(pi);
+		assertEquals(pi, bp.getPokemonItems().get(0));
+	}
+	
+	@Test
+	public void backpackGetPokemonItemNamedTest(){
+		Backpack bp = new Backpack(r);
+		PokemonItem pi = new Potion();
+		bp.addPokemonItem(pi);
+		assertEquals(pi, bp.getPokemonItemNamed("Potion"));
+		assertEquals(null, bp.getPokemonItemNamed("something"));
+	}
+	
+	@Test
+	public void backpackGetTrainerItemsTest(){
+		Backpack bp = new Backpack(r);
+		TrainerItem ti = new RunningShoes();
+		bp.addTrainerItem(ti);
+		assertEquals(ti, bp.getTrainerItems().get(0));
+	}
+	
+	
     @Test
     public void testBackpackPokemonAt()
     {

@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import model.Map;
+import model.MapItem;
 import model.MapTile;
+import model.Potion;
 import model.TileType;
 
 public class MapTest {
@@ -50,6 +52,35 @@ public class MapTest {
 		assertTrue(map.getTileset().equals("tileset"));
 		assertEquals(map.getTileSize(), 16);
 		
+	}
+	
+	@Test
+	public void curMapTest() {
+		Map map = new Map(10,50,"tileset-x2",32);
+		map.setCurMap("test");
+		assertEquals("test", map.getCurMap());
+	}
+	
+	@Test
+	public void addMapItemTest() {
+		Map map = new Map(10,50,"tileset-x2",32);
+		MapItem m = new MapItem(0,0,new Potion());
+		map.addMapItem(m);
+		assertEquals(m, map.getMapItems().get(0));
+		map.addMapItem(m);
+		assertEquals(m, map.getMapItems().get(0));
+	}
+	
+	@Test
+	public void popMapItemTest() {
+		Map map = new Map(10,50,"tileset-x2",32);
+		MapItem m = new MapItem(0,0,new Potion());
+		map.addMapItem(m);
+		assertEquals(m, map.getMapItems().get(0));
+		MapItem mTwo = map.popMapItemAt(0, 0);
+		assertEquals(m, mTwo);
+		assertEquals(0, map.getMapItems().size());
+		assertEquals(null, map.popMapItemAt(0, 0));
 	}
 
 }

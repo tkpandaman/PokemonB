@@ -13,6 +13,7 @@ public class Game extends Observable implements Serializable {
 	private Trainer trainer;
 	private int playerX;
 	private int playerY;
+	private Random rand;
 
 	private State state = State.NORMAL;
 
@@ -20,7 +21,7 @@ public class Game extends Observable implements Serializable {
 	private BattleMenu battleMenu;
 	public boolean isTransition;
 
-	public Game(HashMap<String, Map> maps, Map startMap){
+	public Game(HashMap<String, Map> maps, Map startMap, Random r){
 
 		battleMenu = new BattleMenu();
 
@@ -31,6 +32,7 @@ public class Game extends Observable implements Serializable {
 		trainer = new Trainer("Ash Ketchup", bp);
 		playerX = 2;
 		playerY = 2;
+		rand = r;
 		update();
 
 	}
@@ -58,7 +60,7 @@ public class Game extends Observable implements Serializable {
 			playerY += y;
 			trainer.takeStep();
 			if (trainer.getStepsLeft() <= 0) state = State.WIN;
-			checkForPokemon(new Random());
+			checkForPokemon(rand);
 			checkForItem();
 			update();
 		}
