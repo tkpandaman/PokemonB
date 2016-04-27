@@ -54,7 +54,7 @@ public class GameGUI extends JFrame {
 	private boolean selectingPokemon;
 	private PokemonSelector pokemonChoice;
 	private boolean pressing;
-	private static final String DEFAULT_MAP = "viridian-forest";
+	private static final String DEFAULT_MAP = "safari-zone-1";
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
 		gui.setVisible(true);
@@ -70,6 +70,7 @@ public class GameGUI extends JFrame {
 		maps = loadMaps();
 
 		game = new Game(maps, maps.get(DEFAULT_MAP), new Random());
+		game.setPlayerPos(25,40);
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
 		selectingItem = false;
