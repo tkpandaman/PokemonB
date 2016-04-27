@@ -17,6 +17,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -38,7 +40,7 @@ import view.PokemonSelector;
 import view.PokemonView;
 import view.Stats;
 
-public class GameGUI extends JFrame {
+public class GameGUI extends JFrame implements Observer {
 
 	private Game game;
 	private HashMap<String, Map> maps;
@@ -77,6 +79,7 @@ public class GameGUI extends JFrame {
         selectingPokemon = false;
         pressing = false;
 		game.addObserver(mapView);
+		game.addObserver(this);
 
 		this.add(mapView);
 
@@ -386,6 +389,7 @@ public class GameGUI extends JFrame {
                 GameGUI.this.revalidate();
                 GameGUI.this.repaint();
             }
+            
         }
 
         @Override
@@ -398,6 +402,17 @@ public class GameGUI extends JFrame {
         }
 
     }
+	
+	@Override
+	public void update(Observable o, Object obj) {
+		if (game.getState() == State.BATTLE){
+			remove(mapView);
+            add(battleView);
+            battleView.fadeIn();
+            revalidate();
+            repaint();
+		}
+	};
 
 	private class SaveAndLoad extends WindowAdapter
 	{
@@ -426,6 +441,7 @@ public class GameGUI extends JFrame {
 				}
 
 				game.addObserver(mapView);
+				game.addObserver(GameGUI.this);
 				game.getBattleMenu().addObserver(battleView);
 				game.update();
 			};
@@ -436,8 +452,6 @@ public class GameGUI extends JFrame {
 		public void windowClosing( WindowEvent e )
 		{
 		};
-	};
-	
-
+	}
 
 }
