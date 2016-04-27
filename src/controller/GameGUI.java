@@ -127,7 +127,7 @@ public class GameGUI extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent event) {
-		    if( event.getKeyCode() == KeyEvent.VK_J && !pressing )
+		    /*if( event.getKeyCode() == KeyEvent.VK_J && !pressing )
 		    {
 		        pressing = true;
 		        Potion p = new Potion();
@@ -136,7 +136,7 @@ public class GameGUI extends JFrame {
 		        game.getTrainer().openPack().addPokemonItem( p );
 		        game.getTrainer().openPack().addTrainerItem( r );
 		        game.getTrainer().openPack().addTrainerItem( w );
-		    }
+		    }*/
 			if(event.getKeyCode() == KeyEvent.VK_ESCAPE && !pressing ){
 			    pressing = true;
 				if( game.getState() == State.NORMAL || game.getState() == State.MENU )
