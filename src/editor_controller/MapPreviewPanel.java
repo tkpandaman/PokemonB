@@ -28,7 +28,7 @@ public class MapPreviewPanel extends JPanel implements Observer {
 	private static final long serialVersionUID = -2053840851750981450L;
 
 	private LevelEditor levelEditor;
-	
+
 	private HashMap<String,BufferedImage> itemImages;
 
 	private int mouseoverX = -1; //coords of tile that the mouse is currently hovering over
@@ -36,7 +36,7 @@ public class MapPreviewPanel extends JPanel implements Observer {
 
 	public MapPreviewPanel(LevelEditor levelEditor){
 		this.levelEditor = levelEditor;
-		itemImages = MapItemPanel.loadItemImages();
+		itemImages = GameGUI.loadItemImages();
 
 		//set mouse listeners
 		MapMouseListener mouseListener = new MapMouseListener();
@@ -76,11 +76,12 @@ public class MapPreviewPanel extends JPanel implements Observer {
 					g2.setColor(new Color(1.0f, 1.0f, 1.0f, 1));
 					g2.drawString(map[x][y].getTileType().getAbbreviation(), x*tileSize+tileSize/2-4, y*tileSize+tileSize/2+4);
 				}
-
-				for(MapItem m : levelEditor.getMap().getMapItems()){
-					g2.drawImage(itemImages.get(m.getItem().getName()), m.getX()*levelEditor.getTileSize(), m.getY()*levelEditor.getTileSize(), null);
-				}
 			}
+		}
+
+		//Draw all of the items on top of the tiles
+		for(MapItem m : levelEditor.getMap().getMapItems()){
+			g2.drawImage(itemImages.get(m.getItem().getName()), m.getX()*levelEditor.getTileSize(), m.getY()*levelEditor.getTileSize(), null);
 		}
 
 		//draw preview for cursor
@@ -90,8 +91,8 @@ public class MapPreviewPanel extends JPanel implements Observer {
 			BufferedImage ghostImage = levelEditor.getTileset().tileAt(imgx, imgy);
 			g2.drawImage(ghostImage, mouseoverX*tileSize, mouseoverY*tileSize, null);
 		}
-		else if(levelEditor.cursor.equals("Items")){
-			BufferedImage ghostItemImage = levelEditor.getCurrentItemImage();
+		else if(levelEditor.cursor.equals("Items") && levelEditor.getCurrentItem() != null){
+			BufferedImage ghostItemImage = itemImages.get(levelEditor.getCurrentItem().getName());
 			g2.drawImage(ghostItemImage, mouseoverX*tileSize, mouseoverY*tileSize, null);
 		}
 
@@ -117,7 +118,12 @@ public class MapPreviewPanel extends JPanel implements Observer {
 					levelEditor.drawTile(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
 				}
 				else if(levelEditor.cursor.equals("Items")){
-					levelEditor.getMap().addMapItem(new MapItem(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize(), levelEditor.getCurrentItem()));
+					if(levelEditor.getCurrentItem() != null){
+						levelEditor.getMap().addMapItem(new MapItem(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize(), levelEditor.getCurrentItem()));
+					}
+					else {
+						levelEditor.getMap().popMapItemAt(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
+					}
 				}
 			} catch (ArrayIndexOutOfBoundsException ex){
 				//don't do anything if user clicked out of bounds
@@ -130,7 +136,17 @@ public class MapPreviewPanel extends JPanel implements Observer {
 			mouseoverX = e.getX()/levelEditor.getTileSize();
 			mouseoverY = e.getY()/levelEditor.getTileSize();
 			try{
-				levelEditor.drawTile(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
+				if(levelEditor.cursor.equals("Tiles")){
+					levelEditor.drawTile(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
+				}
+				else if(levelEditor.cursor.equals("Items")){
+					if(levelEditor.getCurrentItem() != null){
+						levelEditor.getMap().addMapItem(new MapItem(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize(), levelEditor.getCurrentItem()));
+					}
+					else {
+						levelEditor.getMap().popMapItemAt(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
+					}
+				}
 			} catch (ArrayIndexOutOfBoundsException ex){
 				//don't do anything if user clicked out of bounds
 			}

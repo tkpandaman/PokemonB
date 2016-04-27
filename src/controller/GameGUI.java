@@ -3,13 +3,16 @@ package controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -31,7 +34,10 @@ public class GameGUI extends JFrame {
 	private MapView mapView;
 	private BattleView battleView;
 	private Menu menu;
+	
 	private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
+	private static final String DEFAULT_MAP = "viridian-forest";
+	
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
 		gui.setVisible(true);
@@ -46,7 +52,7 @@ public class GameGUI extends JFrame {
 
 		maps = loadMaps();
 
-		game = new Game(maps, maps.get("viridian-forest"));
+		game = new Game(maps, maps.get(DEFAULT_MAP));
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
 
@@ -127,6 +133,34 @@ public class GameGUI extends JFrame {
 		return imgFiles;
 
 	}
+	
+	/**
+	 * This method returns a HashMap linking Item Images with their name.
+	 * @return HashMap of Strings and BufferedImages
+	 */
+	public static HashMap<String, BufferedImage> loadItemImages(){
+		HashMap<String, BufferedImage> itemImages = new HashMap<String, BufferedImage>();
+		ArrayList<File> itemFiles = GameGUI.itemImageFiles();
+		try{
+			for(File f : itemFiles){
+				if (f.getName().equals("pokemon_item_safariBall.png")){
+					itemImages.put("Pokeball", ImageIO.read(f));
+				}
+				else if (f.getName().equals("pokemon_item_shoes.png")){
+					itemImages.put("Running Shoes", ImageIO.read(f));
+				}
+				else if (f.getName().equals("pokemon_item_healthPot.png")){
+					itemImages.put("Potion", ImageIO.read(f));
+				}
+			}
+		}
+		catch(IOException e){
+			System.err.println("Couldn't read image file into a BufferedImage");
+		}
+		return itemImages;
+
+	}
+	
 	
 
 	private class ArrowKeyListener implements KeyListener{

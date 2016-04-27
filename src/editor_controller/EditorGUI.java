@@ -66,7 +66,6 @@ public class EditorGUI extends JFrame {
 			public void stateChanged(ChangeEvent e) {
 				if(propertiesPane.getSelectedIndex() == 1){
 					levelEditor.cursor = "Items";
-					levelEditor.setCurrentItemImage(mapItems.getDefaultImage());
 				}
 				else if(propertiesPane.getSelectedIndex() == 0){
 					levelEditor.cursor = "Tiles";

@@ -1,7 +1,6 @@
 
 package editor_controller;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,7 +30,6 @@ public class LevelEditor extends Observable{
 	
 	private Item currentItem;
 	public String cursor;
-	private BufferedImage currentItemImage;
 	
 	MapTile currentTile = new MapTile(0,0);
 	
@@ -42,20 +40,12 @@ public class LevelEditor extends Observable{
 	
 	public LevelEditor(String tileset, int tileSize){
 		setTileset(tileset, tileSize);
-		cursor = "Tiles";
+		
+		cursor = "Tiles"; //Default cursor
 		currentItem = new Pokeball(new Random()); //Default Item
-		currentItemImage = null;
 		
 		map = new Map(width, height, tileset, tileSize);
 		setTileImage(0, 0);
-	}
-	
-	public BufferedImage getCurrentItemImage(){
-		return currentItemImage;
-	}
-	
-	public void setCurrentItemImage(BufferedImage b){
-		currentItemImage = b;
 	}
 	
 	// Gets the current Tileset.

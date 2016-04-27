@@ -46,7 +46,7 @@ public class Map implements Serializable {
 		for (MapItem m : mapItems){
 			if (m.getX() == x && m.getY() == y){
 				mapItems.remove(m);
-				return m;
+				return m; //Could be sketchy? Needs testing
 			}
 		}
 		return null;

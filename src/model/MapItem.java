@@ -1,7 +1,9 @@
 package model;
 
+import java.io.Serializable;
+
 //Wrapper class for Item that allows for an Item's X and Y position to be stored for the Map.
-public class MapItem {
+public class MapItem implements Serializable {
 	
 	private int X,Y;
 	private Item item;
