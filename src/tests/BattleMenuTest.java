@@ -102,7 +102,8 @@ public class BattleMenuTest {
 		BattleMenu menu = new BattleMenu();
 		Backpack bp = new Backpack(rand);
 		Trainer t = new Trainer("Ash", bp);
-		Battle b = new Battle(t,rand,0.8);
+		Pokemon p = new Pokedex(rand).getPokemon();
+		Battle b = new Battle(t,p,rand);
 		menu.startBattle(b);
 		
 		menu.resultAction();
