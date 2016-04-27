@@ -6,6 +6,7 @@ import java.util.Random;
 
 import model.Backpack;
 import model.Battle;
+import model.BattleAction;
 import model.BattleMenu;
 import model.Trainer;
 
@@ -82,5 +83,38 @@ public class BattleMenuTest {
 		assertEquals(0,menu.getItems()[0].getY());
 	}
 	
+	@Test
+	public void testMoveGetterandSetter() {
+		BattleMenu m = new BattleMenu();
+		assertEquals(BattleAction.Start, m.getMove());
+		m.setMove(BattleAction.Bait);
+		assertEquals(BattleAction.Bait, m.getMove());
+	}
+	
+	@Test
+	public void testResultAction(){
+		BattleMenu menu = new BattleMenu();
+		Backpack bp = new Backpack(rand);
+		Trainer t = new Trainer("Ash", bp);
+		Battle b = new Battle(t,rand,0.8);
+		menu.startBattle(b);
+		
+		menu.resultAction();
+		assertEquals(menu.getMove(), BattleAction.End);
+		
+		menu.setBattleOver(false);
+		b.setPokemonRanAway(true);
+		
+		menu.resultAction();
+		assertEquals(menu.getMove(), BattleAction.PokeRun);
+		
+		b.setPokemonRanAway(true);
+		menu.setBattleOver(false);
+		menu.setMove(BattleAction.PokeRun);
+		System.out.println("Again");
+		menu.resultAction();
+		assertEquals(menu.getMove(), BattleAction.End);
+		assertEquals(menu.battleOver(), true);
+	}
 
 }

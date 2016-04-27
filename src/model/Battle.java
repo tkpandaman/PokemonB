@@ -176,6 +176,11 @@ public class Battle extends Observable implements Serializable {
 		return this.willFlee;
 	}
 	
+	public void setPokemonRanAway(boolean val){
+		this.willFlee = val;
+	}
+	
+	
 	/**
 	 * Throw rock. Increases chance of capturing pokemon.
 	 */
