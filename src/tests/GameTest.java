@@ -125,5 +125,22 @@ public class GameTest {
 		assertEquals(map, game.getMap());
 		
 	}
+	@Test
+	public void testChangingStateToMenuAndBack()
+	{
+	    Map map = new Map(512, 512, "tileset-x2", 32);
+        Map map2 = new Map(512, 512, "tileset-x2", 32);
+        HashMap<String, Map> maps = new HashMap<String, Map>();
+        maps.put("start", map);
+        maps.put("map2", map2);
+        map.setUpMap("map2");
+        map2.setDownMap("start");
+        Game game = new Game(maps, map);
+        assertEquals( State.NORMAL, game.getState() );
+        game.chooseMenu();
+        assertEquals( State.MENU, game.getState() );
+        game.chooseMenu();
+        assertEquals( State.NORMAL, game.getState() );
+	}
 	
 }

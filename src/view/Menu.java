@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -25,19 +23,10 @@ public class Menu extends JPanel{
 	private Image arrow;
 	public enum MenuChoice
 	{
-		ITEMS(0),
-		POKEMON(1),
-		SAVE(2),
-		EXIT(3);
-		private int id;
-		MenuChoice( int id )
-		{
-			this.id = id;
-		}
-		public int getID()
-		{
-			return this.id;
-		}
+		ITEMS,
+		POKEMON,
+		SAVE,
+		EXIT;
 	};
 	public Menu( Game game )
 	{
