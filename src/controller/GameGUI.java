@@ -47,6 +47,7 @@ public class GameGUI extends JFrame {
 	private PokemonView pokemon;
 	private boolean selectingPokemon;
 	private PokemonSelector pokemonChoice;
+	private boolean pressing;
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
 		gui.setVisible(true);
@@ -67,6 +68,7 @@ public class GameGUI extends JFrame {
 		selectingItem = false;
         pokemonList = false;
         selectingPokemon = false;
+        pressing = false;
 		game.addObserver(mapView);
 
 		this.add(mapView);
@@ -125,8 +127,9 @@ public class GameGUI extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent event) {
-		    if( event.getKeyCode() == KeyEvent.VK_J )
+		    if( event.getKeyCode() == KeyEvent.VK_J && !pressing )
 		    {
+		        pressing = true;
 		        Potion p = new Potion();
 		        RunningShoes r = new RunningShoes();
 		        WalkingShoes w = new WalkingShoes();
@@ -134,7 +137,8 @@ public class GameGUI extends JFrame {
 		        game.getTrainer().openPack().addTrainerItem( r );
 		        game.getTrainer().openPack().addTrainerItem( w );
 		    }
-			if(event.getKeyCode() == KeyEvent.VK_ESCAPE){
+			if(event.getKeyCode() == KeyEvent.VK_ESCAPE && !pressing ){
+			    pressing = true;
 				if( game.getState() == State.NORMAL || game.getState() == State.MENU )
 				{
 				    if( !pokemonList && !selectingItem )
@@ -164,7 +168,8 @@ public class GameGUI extends JFrame {
 					mapView.repaint();
 				}
 			}
-			if (event.getKeyCode() == KeyEvent.VK_UP){
+			if (event.getKeyCode() == KeyEvent.VK_UP && !pressing && !mapView.animating){
+			    pressing = true;
 				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
 				{
 					game.moveUp();
@@ -188,7 +193,8 @@ public class GameGUI extends JFrame {
 				    }
 				}
 			}
-			if (event.getKeyCode() == KeyEvent.VK_DOWN){
+			if (event.getKeyCode() == KeyEvent.VK_DOWN && !pressing && !mapView.animating){
+			    pressing = true;
 				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
 				{
 					game.moveDown();
@@ -212,22 +218,27 @@ public class GameGUI extends JFrame {
 				    }
 				}
 			}
-			if (event.getKeyCode() == KeyEvent.VK_LEFT ){
+			if (event.getKeyCode() == KeyEvent.VK_LEFT  && !pressing && !mapView.animating){
+			    pressing = true;
 				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
 				{
 					game.moveLeft();
 				}
 			}
-			if (event.getKeyCode() == KeyEvent.VK_RIGHT ){
+			if (event.getKeyCode() == KeyEvent.VK_RIGHT && !pressing && !mapView.animating){
+			    pressing = true;
 				if( ( game.getState() == State.NORMAL && !mapView.animating ) || game.getState() == State.BATTLE )
 				{
 					game.moveRight();
 				}
 			}
-			if (event.getKeyCode() == KeyEvent.VK_Z)
-				game.select();
-			if( event.getKeyCode() == KeyEvent.VK_ENTER )
+			if (event.getKeyCode() == KeyEvent.VK_Z && !pressing && !mapView.animating){
+			    pressing = true;
+			    game.select();
+			}
+			if( event.getKeyCode() == KeyEvent.VK_ENTER && !pressing && !mapView.animating)
 			{
+			    pressing = true;
 				if( game.getState() == State.MENU )
 				{
 				    if( selectingItem && !selectingPokemon)
@@ -323,6 +334,7 @@ public class GameGUI extends JFrame {
 
 		@Override
 		public void keyReleased(KeyEvent arg0) {
+		    pressing = false;
 		}
 
 		@Override

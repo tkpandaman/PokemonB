@@ -46,6 +46,8 @@ public class MapView extends JPanel implements Observer {
     private boolean isUsingLeftFoot;
     public boolean initial;
     public boolean selectingItem;
+    private int oldCamX;
+    private int oldCamY;
     private final int DELAY_TIME = 80;
     
 	public MapView(Game game){
@@ -76,14 +78,66 @@ public class MapView extends JPanel implements Observer {
 		selectingItem = false;
 		updateCamera();
 	}
-	
+	private int offset = 0;
+	private boolean reset = false;
 	public void paintComponent(Graphics g){
 		super.paintComponent( g );
 		Graphics2D g2 = (Graphics2D)g;
 		g2.clearRect(0, 0, 100000, 100000);
-		
 		g2.translate(-cameraX*map.getTileSize(), -cameraY*map.getTileSize());
-		
+		if( animating )
+		{
+		    if( oldCamY > cameraY )
+		    {
+                if( !reset )
+                {
+                    offset = 0;
+                    reset = true;
+                }
+                offset+=8;
+                g2.translate(-oldCamX*map.getTileSize(), -oldCamY*map.getTileSize());
+                g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize() + offset);
+		    }
+		    if( oldCamY < cameraY )
+		    {
+		        if( !reset )
+		        {
+		            offset = 0;
+		            reset = true;
+		        }
+		        offset+=8;
+		        g2.translate(-oldCamX*map.getTileSize(), -oldCamY*map.getTileSize());
+		        g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize() - offset);
+		    }
+		    if( oldCamX > cameraX )
+		    {
+                if( !reset )
+                {
+                    offset = 0;
+                    reset = true;
+                }
+                offset+=8;
+                g2.translate(-oldCamX*map.getTileSize(), -oldCamY*map.getTileSize());
+                g2.translate(cameraX*map.getTileSize() + offset, cameraY*map.getTileSize());
+		    }
+		    if( oldCamX < cameraX )
+		    {
+		        System.out.println( oldCamY + " " + cameraY );
+                if( !reset )
+                {
+                    offset = 0;
+                    reset = true;
+                }
+                offset+=8;
+                g2.translate(-oldCamX*map.getTileSize(), -oldCamY*map.getTileSize());
+                g2.translate(cameraX*map.getTileSize() - offset, cameraY*map.getTileSize());
+		    }
+		}
+		else
+		{
+		    offset = 0;
+		    reset = false;
+		}
 		MapTile[][] tiles = map.getTiles();
 		int tileSize = map.getTileSize();
 		for(int x=0; x<tiles.length; x++){
@@ -91,13 +145,11 @@ public class MapView extends JPanel implements Observer {
 				int imgx = tiles[x][y].getTilesetX();
 				int imgy = tiles[x][y].getTilesetY();
 				g2.drawImage(tileset.tileAt(imgx, imgy), x*tileSize, y*tileSize, null);
-				//g2.drawImage( trainer.getSubimage( 64, 0, 32, 32 ), 0, 0, null );
 			}
 		}
 		for(int x=0; x<tiles.length; x++){
             for(int y=0; y<tiles[0].length; y++){
 				if (x==game.getPlayerX() && y==game.getPlayerY()){
-				    //g2.drawImage(trainer, trainerOldX, trainerOldY, null);
 				    if( animating )
 				    {
 				        animate(g2,x,y);
@@ -113,7 +165,6 @@ public class MapView extends JPanel implements Observer {
                         }
                         catch( InterruptedException e )
                         {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
 				    }
@@ -121,7 +172,6 @@ public class MapView extends JPanel implements Observer {
 			}
 			
 		}
-		
 		g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize());
 		
 		g2.setColor(Color.BLUE);
@@ -161,7 +211,6 @@ public class MapView extends JPanel implements Observer {
             {
                 e.printStackTrace();
             }
-            //g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize()+16);
         }
         if( trainerOldY > y*tileSize )
         {
@@ -234,7 +283,9 @@ public class MapView extends JPanel implements Observer {
 	}
 	
 	private void updateCamera(){
+	    oldCamX = cameraX;
 		cameraX = game.getPlayerX()-15;
+		oldCamY = cameraY;
 		cameraY = game.getPlayerY()-11;
 		checkCamera();
 	}
@@ -247,10 +298,22 @@ public class MapView extends JPanel implements Observer {
 	
 	private void checkCamera()
 	{
-	    if (cameraX < 0) cameraX = 0;
-        if (cameraX+32 > map.getWidth()) cameraX = map.getWidth()-32;
-        if (cameraY < 0) cameraY = 0;
-        if (cameraY+28 > map.getHeight()) cameraY = map.getHeight()-28;
+	    if (cameraX < 0){
+	        cameraX = 0;
+	        oldCamX = 0;
+	    }
+        if (cameraX+32 > map.getWidth()){
+            cameraX = map.getWidth()-32;
+            oldCamX = map.getWidth()-32;
+        }
+        if (cameraY < 0){
+            cameraY = 0;
+            oldCamY = 0;
+        }
+        if (cameraY+28 > map.getHeight()){
+            cameraY = map.getHeight()-28;
+            oldCamY = map.getHeight()-28;
+        }
 	}
 	
 	public void updateTileset(){
