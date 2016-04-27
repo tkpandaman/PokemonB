@@ -184,7 +184,7 @@ public class GameGUI extends JFrame {
 
         @Override
         public void keyPressed(KeyEvent event) {
-            if( event.getKeyCode() == KeyEvent.VK_J )
+            /*if( event.getKeyCode() == KeyEvent.VK_J )
             {
                 Potion p = new Potion();
                 RunningShoes r = new RunningShoes();
@@ -192,7 +192,7 @@ public class GameGUI extends JFrame {
                 game.getTrainer().openPack().addPokemonItem( p );
                 game.getTrainer().openPack().addTrainerItem( r );
                 game.getTrainer().openPack().addTrainerItem( w );
-            }
+            }*/
             if(event.getKeyCode() == KeyEvent.VK_ESCAPE ){
                 if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation) || game.getState() == State.MENU )
                 {

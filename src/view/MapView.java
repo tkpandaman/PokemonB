@@ -177,11 +177,12 @@ public class MapView extends JPanel implements Observer {
         {
             EndGame endGame = new EndGame( game );
             endGame.setLocation( 100, 100 );
-            this.add( endGame );
 
             PokemonView viewPokemon = new PokemonView( game );
-            viewPokemon.setLocation(100, 250);
+            viewPokemon.setVisible( true );
+            viewPokemon.setLocation(100, 210);
             this.add( viewPokemon );
+            this.add( endGame );
         }
     }
 

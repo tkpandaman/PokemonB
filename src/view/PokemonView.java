@@ -50,7 +50,7 @@ public class PokemonView extends JPanel {
 		this.setLayout( null );
         this.setSize( 200, 30 + ( 30 * this.game.getTrainer().openPack().getPokemonCaptured() ) );
         this.setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
-        this.setVisible(false);
+        this.setVisible(true);
         // pokemon label
         JLabel pokemonLabel = new JLabel( "POKEMON (" + game.getTrainer().openPack().getPokemonCaptured() + "):" );
         pokemonLabel.setFont( new Font( "Serif", Font.BOLD, 20 ) );
