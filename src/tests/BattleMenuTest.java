@@ -123,5 +123,23 @@ public class BattleMenuTest {
 		assertEquals(menu.getMove(), BattleAction.End);
 		assertEquals(menu.battleOver(), true);
 	}
+	
+	@Test
+	public void testSelect(){
+		BattleMenu menu = new BattleMenu();
+		Backpack bp = new Backpack(rand);
+		Trainer t = new Trainer("Ash", bp);
+		Pokemon p = new Pokedex(0.8).getPokemon();
+		Battle b = new Battle(t,p,rand);
+		menu.startBattle(b);
+		
+		b.throwRock();
+		b.throwRock();
+		b.throwRock();
+		menu.select();
+		//System.out.println(menu.getText());
+		assertTrue(menu.getText().contains("Success"));
+		
+	}
 
 }
