@@ -9,9 +9,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class EditorGUI extends JFrame {
 	private static final long serialVersionUID = 2084081246604831895L;
+	
+	private JTabbedPane propertiesPane;
 
 	public static void main(String[] args) {
 		
@@ -48,6 +53,26 @@ public class EditorGUI extends JFrame {
 		//tile properties: lets you choose the properties (solidity, random encounter chance) of the tile
 		TilePropertiesPanel tileProperties = new TilePropertiesPanel(levelEditor);
 		MapPropertiesPanel mapProperties = new MapPropertiesPanel(levelEditor);
+		MapItemPanel mapItems = new MapItemPanel(levelEditor);
+		
+		propertiesPane = new JTabbedPane();
+		propertiesPane.add("Tiles", tileProperties);
+		propertiesPane.add("Items", mapItems);
+		
+		//Change the cursor type to display a ghost image of the Item being placed
+		propertiesPane.addChangeListener(new ChangeListener()
+	    {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(propertiesPane.getSelectedIndex() == 1){
+					levelEditor.cursor = "Items";
+				}
+				else if(propertiesPane.getSelectedIndex() == 0){
+					levelEditor.cursor = "Tiles";
+				}
+				
+			}
+		    });
 		
 		levelEditor.addObserver(tileProperties);
 		levelEditor.addObserver(mapProperties);
@@ -61,7 +86,7 @@ public class EditorGUI extends JFrame {
 		rightPanel.setLayout(new BorderLayout());
 		mainPanel.setLayout(new BorderLayout());
 		
-		rightPanel.add(tileProperties, BorderLayout.PAGE_START);
+		rightPanel.add(propertiesPane, BorderLayout.PAGE_START);
 		rightPanel.add(mapProperties, BorderLayout.PAGE_END);
 		mainPanel.add(rightPanel, BorderLayout.EAST);
 		mainPanel.add(mapScrollPane, BorderLayout.CENTER);

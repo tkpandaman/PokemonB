@@ -18,7 +18,7 @@ public class BattleMenuTest {
 	@Test
 	public void startBattleTest() {
 		BattleMenu menu = new BattleMenu();
-		Backpack bp = new Backpack();
+		Backpack bp = new Backpack(rand);
 		Trainer t = new Trainer("Ash", bp);
 		Battle b = new Battle(t,rand,0.8);
 		menu.startBattle(b);
@@ -28,7 +28,7 @@ public class BattleMenuTest {
 	@Test
 	public void directionTest() {
 		BattleMenu menu = new BattleMenu();
-		Backpack bp = new Backpack();
+		Backpack bp = new Backpack(rand);
 		Trainer t = new Trainer("Ash", bp);
 		Battle b = new Battle(t,rand,0.8);
 		menu.startBattle(b);
@@ -53,7 +53,7 @@ public class BattleMenuTest {
 	@Test
 	public void getTextTest() {
 		BattleMenu menu = new BattleMenu();
-		Backpack bp = new Backpack();
+		Backpack bp = new Backpack(rand);
 		Trainer t = new Trainer("Ash", bp);
 		Battle b = new Battle(t,rand,0.8);
 		menu.startBattle(b);
@@ -64,7 +64,7 @@ public class BattleMenuTest {
 	@Test
 	public void getMenuItemTest() {
 		BattleMenu menu = new BattleMenu();
-		Backpack bp = new Backpack();
+		Backpack bp = new Backpack(rand);
 		Trainer t = new Trainer("Ash", bp);
 		Battle b = new Battle(t,rand,0.8);
 		menu.startBattle(b);
