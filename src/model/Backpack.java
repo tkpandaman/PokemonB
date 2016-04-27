@@ -25,18 +25,6 @@ public class Backpack implements Serializable{
 	private Random rand;
 	
 	public static final int INI_POKEBALLS = 30;  //initial amount of pokeballs
-
-	/**
-	 * Create a new Backpack with intial amount of pokeballs
-	 */
-	public Backpack(){
-		
-		pokemonList = new ArrayList<Pokemon>();
-		trainerItemList = new ArrayList<TrainerItem>();
-		pokemonItemList = new ArrayList<PokemonItem>();
-		pokeBalls = INI_POKEBALLS;
-		rand = new Random();
-	}
 	
 	/**
 	 * Create a new Backpack for testing with intial amount of pokeballs
@@ -93,11 +81,41 @@ public class Backpack implements Serializable{
 	}
 	
 	/**
+	 * Finds and returns a PokemonItem with the given name
+	 * @param name as the Item name
+	 * @return PokemonItem
+	 */
+	public PokemonItem getPokemonItemNamed(String name){
+		for(PokemonItem i : pokemonItemList){
+			if (i.getName().equals(name)){
+				return i;
+			}
+		}
+		return null;
+	}
+	
+	public List<TrainerItem> getTrainerItems(){
+		return this.trainerItemList;
+	}
+	
+	public List<PokemonItem> getPokemonItems(){
+		return this.pokemonItemList;
+	}
+	
+	/**
 	 * Add a TrainerItem to the list
 	 * @param ti as a TrainerItem
 	 */
 	public void addTrainerItem(TrainerItem ti){
 		trainerItemList.add(ti);
+	}
+	
+	/**
+	 * Add a TrainerItem to the list
+	 * @param ti as a TrainerItem
+	 */
+	public void addPokemonItem(PokemonItem pi){
+		pokemonItemList.add(pi);
 	}
 	
 	/**

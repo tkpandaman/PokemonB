@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Random;
 
 import org.junit.Test;
 
@@ -14,6 +15,8 @@ import model.Trainer;
 
 public class TestRunningShoes extends SerializableTestCase
 {
+	Random r = new Random(1337L);
+	
     @Test
     public void testRunningShoesGetName()
     {
@@ -29,7 +32,7 @@ public class TestRunningShoes extends SerializableTestCase
     @Test
     public void testRunningShoesIncreaseSpeed()
     {
-    	Backpack bp = new Backpack();
+    	Backpack bp = new Backpack(r);
         Trainer t = new Trainer("Bob", bp);
         RunningShoes shoe = new RunningShoes();
         assertEquals( 1.0, t.getSpeed(), 0.000000000000000000001 );
@@ -44,7 +47,7 @@ public class TestRunningShoes extends SerializableTestCase
     @Test
     public void testRunningShoesNotEqualToObject()
     {
-    	Backpack bp = new Backpack();
+    	Backpack bp = new Backpack(r);
         Trainer t = new Trainer("Bob", bp);
         RunningShoes shoe = new RunningShoes();
         assertFalse( shoe.equals( t ) );

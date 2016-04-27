@@ -13,12 +13,11 @@ import org.junit.Test;
 
 public class BackpackTest {
 	
-	Random r = new Random();
-	Backpack bp = new Backpack();
-	Backpack bpR = new Backpack(r);
+	Random r = new Random(1337L);
 
 	@Test
 	public void backPackAddPokeballTest() {
+		Backpack bp = new Backpack(r);
 		assertEquals(bp.getPokeballsLeft(), 30);
 		bp.addPokeball();
 		assertEquals(bp.getPokeballsLeft(), 31);
@@ -34,6 +33,7 @@ public class BackpackTest {
 	
 	@Test
 	public void backPackAddTrainerItemTest(){
+		Backpack bp = new Backpack(r);
 		TrainerItem shoes = new RunningShoes();
 		bp.addTrainerItem(shoes);
 		assertEquals(bp.getTrainerItemNamed("Running Shoes").getName(), shoes.getName());
@@ -42,6 +42,7 @@ public class BackpackTest {
 	
 	@Test
 	public void backpackPokemonTest(){
+		Backpack bp = new Backpack(r);
 		Charizard charizard = new Charizard();
 		bp.addPokemon(charizard);
 		assertEquals(bp.getPokemonCaptured(), 1);
@@ -49,6 +50,7 @@ public class BackpackTest {
     @Test
     public void testBackpackPokemonAt()
     {
+    	Backpack bp = new Backpack(r);
         Charizard charizard = new Charizard();
         bp.addPokemon(charizard);
         assertEquals( "Charizard", bp.getPokemonAt( 0 ).getClass().getSimpleName() );

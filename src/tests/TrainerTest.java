@@ -1,6 +1,9 @@
 package tests;
 
 import static org.junit.Assert.*;
+
+import java.util.Random;
+
 import model.Backpack;
 import model.Trainer;
 
@@ -8,7 +11,8 @@ import org.junit.Test;
 
 public class TrainerTest {
 	
-	private Backpack bp = new Backpack();
+	private Random r = new Random(1337L);
+	private Backpack bp = new Backpack(r);
 	private Trainer ash = new Trainer("Ash", bp);
 
 	@Test
