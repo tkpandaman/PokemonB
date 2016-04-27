@@ -2,6 +2,8 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import model.Backpack;
@@ -83,5 +85,19 @@ public class BackpackTest {
         Charizard charizard = new Charizard();
         bp.addPokemon(charizard);
         assertEquals( "Charizard", bp.getPokemonAt( 0 ).getClass().getSimpleName() );
+    }
+    @Test
+    public void testBackpackGetTrainerItems()
+    {
+        Backpack b = new Backpack( new Random() );
+        List<TrainerItem> items = new ArrayList<TrainerItem>();
+        assertEquals( items, b.getTrainerItems() );
+    }
+    @Test
+    public void testBackpackGetPokemonItems()
+    {
+        Backpack b = new Backpack(new Random());
+        List<PokemonItem> items = new ArrayList<PokemonItem>();
+        assertEquals( items, b.getPokemonItems() );
     }
 }

@@ -94,14 +94,6 @@ public class Backpack implements Serializable{
 		return null;
 	}
 	
-	public List<TrainerItem> getTrainerItems(){
-		return this.trainerItemList;
-	}
-	
-	public List<PokemonItem> getPokemonItems(){
-		return this.pokemonItemList;
-	}
-	
 	/**
 	 * Add a TrainerItem to the list
 	 * @param ti as a TrainerItem
@@ -109,7 +101,6 @@ public class Backpack implements Serializable{
 	public void addTrainerItem(TrainerItem ti){
 		trainerItemList.add(ti);
 	}
-	
 	/**
 	 * Add a TrainerItem to the list
 	 * @param ti as a TrainerItem
@@ -138,6 +129,12 @@ public class Backpack implements Serializable{
 		pokemonList.add(p);
 	}
 	
-	
-	
+	public List<TrainerItem> getTrainerItems()
+	{
+	    return trainerItemList;
+	}
+	public List<PokemonItem> getPokemonItems()
+    {
+        return pokemonItemList;
+    }
 }

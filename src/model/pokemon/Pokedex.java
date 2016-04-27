@@ -1,54 +1,55 @@
 package model.pokemon;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Pokedex {
 	private Random theRandom;
-	private ArrayList<Pokemon> pokemon;
+	private double choice;
+
+	public Pokedex(Random r){
+		this.theRandom = r;
+		this.choice = r.nextDouble();
+	}
 	
-    public Pokedex(Random r){
-    	this.theRandom = r;
-    	pokemon = new ArrayList<Pokemon>();
-    	
-    	// Add in our Pokemon
-    	pokemon.add(new Arbok());
-    	pokemon.add(new Beedrill());
-    	pokemon.add(new Butterfree());
-    	pokemon.add(new Charizard());
-    	pokemon.add(new Pidgeot());
-    	pokemon.add(new Pikachu());
-    	pokemon.add(new Snorlax());
-    	pokemon.add(new Spearow());
-    	pokemon.add(new Squirtle());
-    	pokemon.add(new Voltorb());
-      	
-    }
-    
-    public Pokemon getPokemon(){
-    	switch(theRandom.nextInt(23)){
-    	case 0: case 1: case 2:
-    		return pokemon.get(0);
-    	case 3: case 4: case 5: 
-    		return pokemon.get(1);
-    	case 6: case 7: case 8: 
-    		return pokemon.get(2);
-    	case 9: case 10: case 11: 
-    		return pokemon.get(3);
-    	case 12: case 13: case 14:
-    		return pokemon.get(4);
-    	case 15: case 16: 
-    		return pokemon.get(5);
-    	case 17: case 18: 
-    		return pokemon.get(6);
-    	case 19: case 20: 
-    		return pokemon.get(7);
-    	case 21: 
-    		return pokemon.get(8);
-    	case 22: 
-    		return pokemon.get(9);
-    	}
-    	
-    	return null;
-    }
+	// I know this is bad code but it's late
+	public Pokedex(double choice){
+		this.choice = choice;
+	}
+
+	public Pokemon getPokemon(){
+		
+		//Commons 75%
+		if(choice >= 0.0 && choice < 0.125){
+			return new Arbok();
+		}
+		else if (choice >= 0.125 && choice < 0.25){
+			return new Voltorb();
+		}
+		else if (choice >= 0.25 && choice < 0.375){
+			return new Butterfree();
+		}
+		else if (choice >= 0.375 && choice < 0.5){
+			return new Spearow();
+		}
+		else if (choice >= 0.5 && choice < 0.625){
+			return new Beedrill();
+		}
+		else if (choice >= 0.625 && choice < 0.75){
+			return new Pidgeot();
+		}
+
+		//Rares 18%
+		else if (choice >= 0.75 && choice < 0.81){
+			return new Squirtle();
+		}
+		else if (choice >= 0.81 && choice < 0.87){
+			return new Pikachu();
+		}
+		else if (choice >= 0.87 && choice < 0.93){
+			return new Charizard();
+		}
+
+		//Ultra-rare 8%
+		return new Snorlax();
+	}
 }

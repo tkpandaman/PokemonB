@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Random;
 
+import model.pokemon.Pokedex;
+import model.pokemon.Pokemon;
+
 public class Game extends Observable implements Serializable {
 
 	private static final long serialVersionUID = -1241442352734346332L;
@@ -110,7 +113,9 @@ public class Game extends Observable implements Serializable {
 
 		if(isPokemon){
 			state = State.BATTLE;
-			battle = new Battle(trainer);
+			Random rand = new Random();
+			Pokemon p = new Pokedex(rand).getPokemon();
+			battle = new Battle(trainer, p, rand);
 			battleMenu.startBattle(battle);
 		}
 	}
@@ -181,12 +186,11 @@ public class Game extends Observable implements Serializable {
 	}
 
 	public void select(){
-		if (state == State.BATTLE){
-			battleMenu.select();
-		}
-
 		if (battleMenu.battleOver()){
 			state = State.NORMAL;
+		}
+		if (state == State.BATTLE){
+			battleMenu.select();
 		}
 	}
 
@@ -218,11 +222,9 @@ public class Game extends Observable implements Serializable {
 	{
 		if( state ==State.NORMAL ) {
 			state = State.MENU;
-			return;
 		}
-		if( state ==State.MENU ) {
+		else if( state ==State.MENU ) {
 			state = State.NORMAL;
-			return;
 		}
 	}
 

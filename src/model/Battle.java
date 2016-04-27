@@ -8,6 +8,7 @@ import model.pokemon.Arbok;
 import model.pokemon.Beedrill;
 import model.pokemon.Butterfree;
 import model.pokemon.Charizard;
+import model.pokemon.Pidgeot;
 import model.pokemon.Pikachu;
 import model.pokemon.Pokemon;
 import model.pokemon.Snorlax;
@@ -45,32 +46,16 @@ public class Battle extends Observable implements Serializable {
 	public static final double MIN_CAPTURE_CHANCE = 0.35;
 	
 	/**
-	 * Instantiates a new battle.
-	 *
-	 * @param t the trainer
-	 */
-	public Battle(Trainer t){
-		this.t = t;
-		this.rand = new Random();
-		this.poke = randomPokemon(rand.nextDouble());
-		this.turnsTillFlee = poke.getTurnsTillFlee();
-		this.chanceOfRun = poke.getLikelyRun() / 100;
-		this.turn = 1;
-		this.willFlee = false;
-		this.chanceOfCapture = MIN_CAPTURE_CHANCE;
-	}
-	
-	/**
 	 * Instantiates a new battle with random seed for testability.
 	 *
 	 * @param t the trainer
 	 * @param p the pokemon
 	 * @param r the random
 	 */
-	public Battle(Trainer t, Random rand, double pokemonChoice){
+	public Battle(Trainer t, Pokemon p, Random rand){
 		this.t = t;
 		this.rand = rand;
-		this.poke = randomPokemon(pokemonChoice);
+		this.poke = p;
 		this.turnsTillFlee = poke.getTurnsTillFlee();
 		this.chanceOfRun = (double)poke.getLikelyRun() / 100;
 		this.turn = 1;
@@ -129,41 +114,6 @@ public class Battle extends Observable implements Serializable {
 		if (turn >= turnsTillFlee || rand.nextDouble() < chanceOfRun){
 			this.willFlee = true;
 		}
-		
-	}
-	
-	private Pokemon randomPokemon(double choice){
-		
-		//Commons 60%
-		if(choice >= 0.0 && choice < 0.15){
-			return new Arbok();
-		}
-		else if (choice >= 0.15 && choice < 0.30){
-			return new Voltorb();
-		}
-		else if (choice >= 0.30 && choice < 0.45){
-			return new Butterfree();
-		}
-		else if (choice >= 0.45 && choice < 0.60){
-			return new Spearow();
-		}
-		
-		//Rares 30%
-		else if (choice >= 0.60 && choice < 0.675){
-			return new Beedrill();
-		}
-		else if (choice >= 0.675 && choice < 0.75){
-			return new Pikachu();
-		}
-		else if (choice >= 0.75 && choice < 0.825){
-			return new Charizard();
-		}
-		else if (choice >= 0.825 && choice < 0.9){
-			return new Squirtle();
-		}
-		
-		//Ultra-rare 10%
-		return new Snorlax();
 		
 	}
 	

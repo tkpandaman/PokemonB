@@ -37,7 +37,7 @@ public class EndGame extends JPanel {
         name.setSize( 500, 20 );
         name.setLocation( 10, 40 );
         this.add( name );
-        JButton newGame = new JButton( "New Game" );
+        /*JButton newGame = new JButton( "New Game" );
         newGame.setSize( 150, 25 );
         newGame.setLocation( 10, 70 );
         newGame.addActionListener( new ActionListener()
@@ -48,7 +48,7 @@ public class EndGame extends JPanel {
                 // need a new game method for game if we want this button to work
             }
         });
-        this.add( newGame );
+        this.add( newGame );*/
         // pokemon caught label
         JLabel pokemonCaught = new JLabel( "POKEMON CAUGHT: " + game.getTrainer().openPack().getPokemonCaptured() );
         pokemonCaught.setFont( new Font( "Serif", Font.BOLD, 20 ) );

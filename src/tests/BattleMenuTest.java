@@ -8,6 +8,8 @@ import model.Backpack;
 import model.Battle;
 import model.BattleMenu;
 import model.Trainer;
+import model.pokemon.Pokedex;
+import model.pokemon.Pokemon;
 
 import org.junit.Test;
 
@@ -20,7 +22,8 @@ public class BattleMenuTest {
 		BattleMenu menu = new BattleMenu();
 		Backpack bp = new Backpack(rand);
 		Trainer t = new Trainer("Ash", bp);
-		Battle b = new Battle(t,rand,0.8);
+		Pokemon p = new Pokedex(0.8).getPokemon();
+		Battle b = new Battle(t, p, rand);
 		menu.startBattle(b);
 		assertEquals(b, menu.getBattle());
 	}
@@ -30,7 +33,8 @@ public class BattleMenuTest {
 		BattleMenu menu = new BattleMenu();
 		Backpack bp = new Backpack(rand);
 		Trainer t = new Trainer("Ash", bp);
-		Battle b = new Battle(t,rand,0.8);
+		Pokemon p = new Pokedex(0.8).getPokemon();
+		Battle b = new Battle(t, p, rand);
 		menu.startBattle(b);
 		menu.select();
 		assertEquals(0,menu.getIndex());
@@ -55,7 +59,8 @@ public class BattleMenuTest {
 		BattleMenu menu = new BattleMenu();
 		Backpack bp = new Backpack(rand);
 		Trainer t = new Trainer("Ash", bp);
-		Battle b = new Battle(t,rand,0.8);
+		Pokemon p = new Pokedex(0.8).getPokemon();
+		Battle b = new Battle(t, p, rand);
 		menu.startBattle(b);
 		assertEquals("",menu.getText());
 		
@@ -66,7 +71,8 @@ public class BattleMenuTest {
 		BattleMenu menu = new BattleMenu();
 		Backpack bp = new Backpack(rand);
 		Trainer t = new Trainer("Ash", bp);
-		Battle b = new Battle(t,rand,0.8);
+		Pokemon p = new Pokedex(0.8).getPokemon();
+		Battle b = new Battle(t, p, rand);
 		menu.startBattle(b);
 		assertEquals("BALL",menu.getItems()[0].getText());
 		assertEquals(0,menu.getItems()[0].getX());
