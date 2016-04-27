@@ -179,12 +179,11 @@ public class Game extends Observable implements Serializable {
 	}
 
 	public void select(){
-		if (state == State.BATTLE){
-			battleMenu.select();
-		}
-
 		if (battleMenu.battleOver()){
 			state = State.NORMAL;
+		}
+		if (state == State.BATTLE){
+			battleMenu.select();
 		}
 	}
 
