@@ -92,12 +92,10 @@ public class BattleView extends JPanel implements Observer{
 		
 		
 		if(animX > endX){
-			System.out.println("In her");
 			timer.stop();
 			animX = -1;
 			animY = -1;
 			endX = -1;
-			System.out.println(menu.getMove());
 			menu.resultAction();
 			isAnimating = false;
 		}
@@ -160,7 +158,6 @@ public class BattleView extends JPanel implements Observer{
 		    	}
 		    break;
 		    default:
-		    	System.out.println("Game Started");
 		    break;
 		}
 		
@@ -224,7 +221,6 @@ public class BattleView extends JPanel implements Observer{
 	 * the same time.
 	 */
 	public void fadeIn() {
-		System.out.println("Fade in");
 		this.fadeInTimer.restart();
 	}
 

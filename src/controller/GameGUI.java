@@ -17,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -68,7 +69,7 @@ public class GameGUI extends JFrame {
 
 		maps = loadMaps();
 
-		game = new Game(maps, maps.get(DEFAULT_MAP));
+		game = new Game(maps, maps.get(DEFAULT_MAP), new Random());
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
 		selectingItem = false;

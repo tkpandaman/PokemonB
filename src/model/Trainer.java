@@ -24,8 +24,7 @@ public class Trainer implements Serializable {
 	public Trainer(String name, Backpack bp){
 		this.bp = bp;
 		this.name = name;
-		// aparently to get this to work for 500 steps we need it to be 499?
-		this.steps = 499;
+		this.steps = 500;
 		this.speed = 1.0;
 	}
 	

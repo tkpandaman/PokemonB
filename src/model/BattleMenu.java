@@ -24,7 +24,7 @@ public class BattleMenu extends Observable implements Serializable{
 		buttons[2] = new MenuItem("ROCK", BattleAction.Rock, 0, 1);
 		buttons[3] = new MenuItem("RUN", BattleAction.Run, 1, 1);
 	}
-	
+
 	public int getIndex(){
 		return menuIndex;
 	}
