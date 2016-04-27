@@ -9,15 +9,14 @@ public class BattleMenu extends Observable implements Serializable{
     private int menuIndex;
 	private MenuItem[] buttons;
 	private Battle battle;
-	
 	private String text = "test";
 	
 	private boolean battleOver;
-	
-	private enum BattleAction implements Serializable {Ball, Bait, Rock, Run};
+	private BattleAction curMove;
 	
 	public BattleMenu(){
 		menuIndex = 0;
+		curMove = BattleAction.Start;
 		
 		buttons = new MenuItem[4];
 		buttons[0] = new MenuItem("BALL", BattleAction.Ball, 0, 0);
@@ -79,6 +78,7 @@ public class BattleMenu extends Observable implements Serializable{
 		switch(item.getAction()){
 		case Ball:
 			text = "You threw a safari ball! \r\n";
+			curMove = BattleAction.Ball;
 			boolean result = battle.throwSafariBall();
 			if (result){
 				text += "Success!";
@@ -87,34 +87,63 @@ public class BattleMenu extends Observable implements Serializable{
 			else text += "Failure!";
 			break;
 		case Bait:
+			curMove = BattleAction.Bait;
 			text = "You threw bait!";
 			battle.throwBait();
 			break;
 		case Rock:
+			curMove = BattleAction.Rock;
 			text = "You threw a rock!";
 			battle.throwRock();
 			break;
 		case Run:
+			curMove = BattleAction.Run;
 			battleOver = true;
 			break;
-		}
-		if( battle.getTrainer().openPack().getPokeballsLeft() == 0 )
-		{
-		    //text = "You ran out of pokeballs!";
-		    battleOver = true;
-		}
-		if (battle.pokemonRanAway()){
-			//text = "The pokemon ran away!";
-			battleOver = true;
+		default: break;
 		}
 		
-		//TODO: if battle.pokemonRanAway, end battle
+		setChanged();
+		notifyObservers();
+		
+	}
+	
+	public void resultAction(){
+		if( battle.getTrainer().openPack().getPokeballsLeft() == 0 )
+		{
+		    text = "You ran out of pokeballs!";
+		    curMove = BattleAction.End;
+		    battleOver = true;
+		}
+		else if (battle.pokemonRanAway() && !battleOver){
+			text = "The pokemon ran away!";
+			if(curMove == BattleAction.PokeRun){
+				curMove = BattleAction.End;
+			}
+			else{
+			    curMove = BattleAction.PokeRun;
+			}
+			battleOver = true;
+		}
+		else{
+			curMove = BattleAction.End;
+		}
 		setChanged();
 		notifyObservers();
 	}
 	
 	public MenuItem[] getItems(){
 		return buttons;
+	}
+	
+	public BattleAction getMove(){
+		return this.curMove;
+	}
+	
+	public void setMove(BattleAction b){
+		this.curMove = b;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public String getText(){
