@@ -376,6 +376,7 @@ public class GameGUI extends JFrame {
             if( !mapView.animating && game.getState() == State.BATTLE){
                 GameGUI.this.remove(mapView);
                 GameGUI.this.add(battleView);
+                battleView.fadeIn();
                 GameGUI.this.revalidate();
                 GameGUI.this.repaint();
             } else if( game.getState() != State.MENU ){
