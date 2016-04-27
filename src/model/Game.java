@@ -1,9 +1,13 @@
 package model;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Random;
+
+import javax.swing.Timer;
 
 import model.pokemon.Pokedex;
 import model.pokemon.Pokemon;
@@ -23,6 +27,8 @@ public class Game extends Observable implements Serializable {
 	private Battle battle;
 	private BattleMenu battleMenu;
 	public boolean isTransition;
+	
+	private float transitionAlpha;
 
 	public Game(HashMap<String, Map> maps, Map startMap, Random r){
 
@@ -36,6 +42,7 @@ public class Game extends Observable implements Serializable {
 		playerX = 2;
 		playerY = 2;
 		rand = r;
+		transitionAlpha = 0;
 		update();
 
 	}
@@ -100,9 +107,6 @@ public class Game extends Observable implements Serializable {
 		{
 			state = State.WIN;
 		}
-		if (state == State.BATTLE){
-			battleMenu.left();
-		}
 	}
 
 	public void checkForPokemon(Random r){
@@ -112,11 +116,10 @@ public class Game extends Observable implements Serializable {
 		boolean isPokemon = r.nextInt(chance) == 0;
 
 		if(isPokemon){
-			state = State.BATTLE;
-			Random rand = new Random();
-			Pokemon p = new Pokedex(rand).getPokemon();
-			battle = new Battle(trainer, p, rand);
-			battleMenu.startBattle(battle);
+			state = State.FROZEN;
+			Timer fadeOutTimer = new Timer(50, null);
+			fadeOutTimer.addActionListener(new FadeOutListener());
+			fadeOutTimer.start();
 		}
 	}
 
@@ -136,6 +139,9 @@ public class Game extends Observable implements Serializable {
 				playerX = map.getWidth()-1;
 			}
 		}
+		if (state == State.BATTLE){
+			battleMenu.left();
+		}
 		checkGameState();
 	}
 
@@ -150,6 +156,9 @@ public class Game extends Observable implements Serializable {
 				transitionToMap(map.getRightMap()); //need to see which map is right of this one
 				playerX = 0;
 			}
+		}
+		if (state == State.BATTLE){
+			battleMenu.right();
 		}
 		checkGameState();
 	}
@@ -166,6 +175,9 @@ public class Game extends Observable implements Serializable {
 				playerY = map.getHeight()-1;
 			}
 		}
+		if (state == State.BATTLE){
+			battleMenu.up();
+		}
 		checkGameState();
 
 	}
@@ -181,6 +193,9 @@ public class Game extends Observable implements Serializable {
 				transitionToMap(map.getDownMap()); //need to see which map is down of this one
 				playerY = 0;
 			}
+		}
+		if (state == State.BATTLE){
+			battleMenu.down();
 		}
 		checkGameState();
 	}
@@ -218,6 +233,7 @@ public class Game extends Observable implements Serializable {
 	public BattleMenu getBattleMenu(){
 		return battleMenu;
 	}
+	
 	public void chooseMenu()
 	{
 		if( state ==State.NORMAL ) {
@@ -225,6 +241,29 @@ public class Game extends Observable implements Serializable {
 		}
 		else if( state ==State.MENU ) {
 			state = State.NORMAL;
+		}
+	}
+	
+	public float getTransitionAlpha(){
+		return transitionAlpha;
+	}
+	
+	private class FadeOutListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			transitionAlpha += 5;
+			if (transitionAlpha >= 255){
+				transitionAlpha = 0;
+				((Timer) e.getSource()).stop();
+				state = State.BATTLE;
+				Random rand = new Random();
+				Pokemon p = new Pokedex(rand).getPokemon();
+				battle = new Battle(trainer, p, rand);
+				battleMenu.startBattle(battle);
+				update();
+			}
+			update();
 		}
 	}
 

@@ -56,6 +56,8 @@ public class MapView extends JPanel implements Observer {
     private int oldCamY;
     public boolean endAnimation;
     private final int DELAY_TIME = 80;
+    
+    private float transitionAlpha;
 	
 	//Item Imags
 	private HashMap<String,BufferedImage> itemImages;
@@ -184,6 +186,9 @@ public class MapView extends JPanel implements Observer {
             this.add( viewPokemon );
             this.add( endGame );
         }
+        
+        g2.setColor(new Color(0.0f, 0.0f, 0.0f, transitionAlpha/255.0f));
+        g2.fillRect(0, 0, 8000, 8000);
     }
 
 	private void loadTrainerImages(){
@@ -343,6 +348,7 @@ public class MapView extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object obj) {
 		game = (Game)o;
+		transitionAlpha = game.getTransitionAlpha();
 		if (!game.getMap().equals(map)){
 			map = game.getMap();
 			updateTileset();
