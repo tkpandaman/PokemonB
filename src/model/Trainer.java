@@ -17,6 +17,9 @@ public class Trainer implements Serializable {
 	private int steps;
 	private double speed;
 	
+	private static final int INI_STEPS = 500;
+	private static final double INI_SPEED = 2.0;
+	
 	/**
 	 * Construct a new Trainer with 500 steps and given name.
 	 * @param name as the Trainer's name
@@ -24,8 +27,8 @@ public class Trainer implements Serializable {
 	public Trainer(String name, Backpack bp){
 		this.bp = bp;
 		this.name = name;
-		this.steps = 500;
-		this.speed = 1.0;
+		this.steps = INI_STEPS;
+		this.speed = INI_SPEED;
 	}
 	
 	/**

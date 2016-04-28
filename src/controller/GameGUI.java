@@ -48,7 +48,7 @@ public class GameGUI extends JFrame implements Observer {
 	private BattleView battleView;
 	private Menu menu;
 	private Stats stats;
-	private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
+	
 	private boolean selectingItem;
 	private boolean pokemonList;
 	private ItemSelector items;
@@ -56,6 +56,8 @@ public class GameGUI extends JFrame implements Observer {
 	private boolean selectingPokemon;
 	private PokemonSelector pokemonChoice;
 	private boolean pressing;
+	
+	private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
 	private static final String DEFAULT_MAP = "safari-zone-1";
 	public static void main(String[] args){
 		GameGUI gui = new GameGUI();
@@ -65,7 +67,7 @@ public class GameGUI extends JFrame implements Observer {
 	public GameGUI(){
 		this.setTitle("Pokemon");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(1024, 768);
+		this.setSize(1024, 720);
 
 		this.addWindowListener(new SaveAndLoad());
 

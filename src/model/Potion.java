@@ -12,9 +12,13 @@ public class Potion extends PokemonItem implements Serializable
 {
     private static final long serialVersionUID = 6171109725928356151L;
     private final int HP_GAINED = 20;
+    
+    private static final String STRING_NAME = "Potion";
+    private static final String STRING_DESC = "Heals a pokemon's health by 20 HP" ;
+    
     public Potion()
     {
-        super( "Potion", "Heals a pokemon's health by 20 HP" );
+        super( STRING_NAME, STRING_DESC );
     }
 
     @Override

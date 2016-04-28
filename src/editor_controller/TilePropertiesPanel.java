@@ -14,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +30,7 @@ public class TilePropertiesPanel extends JPanel implements Observer {
 	
 	private LevelEditor levelEditor;
 	private JLabel tileIcon;
+	private JCheckBox copy;
 	
 	private ArrayList<TileTypeSelectionListener> selectionListeners;
 	
@@ -65,6 +67,16 @@ public class TilePropertiesPanel extends JPanel implements Observer {
 				radioButton.setSelected(true);
 			}
 		}
+		
+		copy = new JCheckBox();
+		copy.setSelected(false);
+		copy.setText("Copy Selected Tile");
+		
+		copy.addActionListener(new copyButtonListener());
+		
+		this.add(copy, BorderLayout.LINE_START);
+		
+		
 	}
 
 	@Override
@@ -79,6 +91,19 @@ public class TilePropertiesPanel extends JPanel implements Observer {
 				listener.getButton().setSelected(true);
 			}
 		}
+		copy.setSelected(levelEditor.copy);
+	}
+	
+	//Determines if copy button is selected or not, and updates the levelEditor
+	private class copyButtonListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			levelEditor.copy = copy.isSelected();
+			
+		}
+		
 	}
 	
 	// An ActionListener which responds to a TileType being selected and sets the current TileType to that.
