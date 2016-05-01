@@ -192,18 +192,8 @@ public class GameGUI extends JFrame implements Observer {
         public void keyPressed(KeyEvent event) {
             if( game.getState() == State.FROZEN )
             {
-                System.out.println( "FREEZ" );
                 return;
             }
-            /*if( event.getKeyCode() == KeyEvent.VK_J )
-            {
-                Potion p = new Potion();
-                RunningShoes r = new RunningShoes();
-                WalkingShoes w = new WalkingShoes();
-                game.getTrainer().openPack().addPokemonItem( p );
-                game.getTrainer().openPack().addTrainerItem( r );
-                game.getTrainer().openPack().addTrainerItem( w );
-            }*/
             if(event.getKeyCode() == KeyEvent.VK_ESCAPE ){
                 if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation ) || game.getState() == State.MENU )
                 {
