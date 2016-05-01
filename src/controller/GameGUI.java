@@ -63,7 +63,7 @@ public class GameGUI extends JFrame implements Observer {
 	private PokemonView pokemon;
 	private boolean selectingPokemon;
 	private PokemonSelector pokemonChoice;
-	private boolean pressing;
+	private boolean canPress;
 	
 	private JFXPanel fxPanel;
 	private MediaPlayer mediaPlayer;
@@ -85,7 +85,7 @@ public class GameGUI extends JFrame implements Observer {
 		this.setTitle("Pokemon");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1024, 720);
-
+		canPress= true;
 		this.addWindowListener(new SaveAndLoad());
 
 		maps = loadMaps();
@@ -97,7 +97,6 @@ public class GameGUI extends JFrame implements Observer {
 		selectingItem = false;
         pokemonList = false;
         selectingPokemon = false;
-        pressing = false;
 		game.addObserver(mapView);
 		game.addObserver(this);
 
@@ -219,17 +218,12 @@ public class GameGUI extends JFrame implements Observer {
 
         @Override
         public void keyPressed(KeyEvent event) {
-            /*if( event.getKeyCode() == KeyEvent.VK_J )
+            if( game.getState() == State.FROZEN )
             {
-                Potion p = new Potion();
-                RunningShoes r = new RunningShoes();
-                WalkingShoes w = new WalkingShoes();
-                game.getTrainer().openPack().addPokemonItem( p );
-                game.getTrainer().openPack().addTrainerItem( r );
-                game.getTrainer().openPack().addTrainerItem( w );
-            }*/
+                return;
+            }
             if(event.getKeyCode() == KeyEvent.VK_ESCAPE ){
-                if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation) || game.getState() == State.MENU )
+                if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation ) || game.getState() == State.MENU )
                 {
                 	
                     if( !pokemonList && !selectingItem )
@@ -261,8 +255,14 @@ public class GameGUI extends JFrame implements Observer {
                     mapView.repaint();
                 }
             }
+            if (event.getKeyCode() == KeyEvent.VK_Z ){
+                if( game.getState() == State.BATTLE )
+                {
+                    game.select();
+                }
+            }
             if (event.getKeyCode() == KeyEvent.VK_UP ){
-                if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation ) || game.getState() == State.BATTLE )
+                if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation && !game.inTransition && game.getPlayerY() >= 0) || game.getState() == State.BATTLE )
                 {
                     game.moveUp();
                 }
@@ -286,7 +286,7 @@ public class GameGUI extends JFrame implements Observer {
                 }
             }
             if (event.getKeyCode() == KeyEvent.VK_DOWN  ){
-                if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation ) || game.getState() == State.BATTLE )
+                if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation && !game.inTransition ) || game.getState() == State.BATTLE )
                 {
                     game.moveDown();
                 }
@@ -310,13 +310,13 @@ public class GameGUI extends JFrame implements Observer {
                 }
             }
             if (event.getKeyCode() == KeyEvent.VK_LEFT  ){
-                if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation ) || game.getState() == State.BATTLE )
+                if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation && !game.inTransition ) || game.getState() == State.BATTLE )
                 {
                     game.moveLeft();
                 }
             }
             if (event.getKeyCode() == KeyEvent.VK_RIGHT ){
-                if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation ) || game.getState() == State.BATTLE )
+                if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation && !game.inTransition ) || game.getState() == State.BATTLE )
                 {
                     game.moveRight();
                 }
@@ -325,7 +325,7 @@ public class GameGUI extends JFrame implements Observer {
                 if( game.getState() == State.BATTLE )
                     game.select();
             }
-            if( event.getKeyCode() == KeyEvent.VK_ENTER && !mapView.animating && !mapView.endAnimation)
+            if( event.getKeyCode() == KeyEvent.VK_ENTER && !mapView.animating && !mapView.endAnimation && !game.inTransition)
             {
                 if( game.getState() == State.MENU )
                 {

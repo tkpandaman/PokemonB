@@ -1,7 +1,10 @@
 package model;
 
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Observable;
@@ -26,12 +29,13 @@ public class Game extends Observable implements Serializable {
 
 	private Battle battle;
 	private BattleMenu battleMenu;
-	public boolean isTransition;
+	public boolean inTransition;
 	
 	private float transitionAlpha;
 
 	public Game(HashMap<String, Map> maps, Map startMap, Random r){
 
+	    inTransition = false;
 		battleMenu = new BattleMenu();
 
 		//Load map
@@ -137,6 +141,27 @@ public class Game extends Observable implements Serializable {
 			else if(map.getLeftMap() != null){ //change this to null?
 				transitionToMap(map.getLeftMap()); //need to see which map is left of this one
 				playerX = map.getWidth()-1;
+				inTransition = true;
+                update();
+                try
+                {
+                    Robot robot = new Robot();
+                    robot.keyPress( KeyEvent.VK_LEFT );
+                    robot.keyRelease( KeyEvent.VK_LEFT );
+                }
+                catch( AWTException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                Timer timer = new Timer(50, new ActionListener() {
+                    @Override
+                    public void actionPerformed( ActionEvent arg0 ) {
+                        inTransition = false;
+                    }
+                });
+                timer.setRepeats( false );
+                timer.start();
 			}
 		}
 		if (state == State.BATTLE){
@@ -155,6 +180,27 @@ public class Game extends Observable implements Serializable {
 			else if(map.getRightMap() != null){
 				transitionToMap(map.getRightMap()); //need to see which map is right of this one
 				playerX = 0;
+				inTransition = true;
+                update();
+                try
+                {
+                    Robot robot = new Robot();
+                    robot.keyPress( KeyEvent.VK_RIGHT );
+                    robot.keyRelease( KeyEvent.VK_RIGHT );
+                }
+                catch( AWTException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                Timer timer = new Timer(50, new ActionListener() {
+                    @Override
+                    public void actionPerformed( ActionEvent arg0 ) {
+                        inTransition = false;
+                    }
+                });
+                timer.setRepeats( false );
+                timer.start();
 			}
 		}
 		if (state == State.BATTLE){
@@ -171,8 +217,19 @@ public class Game extends Observable implements Serializable {
 				}
 			}
 			else if(map.getUpMap() != null){
+			    inTransition = true;
 				transitionToMap(map.getUpMap()); //need to see which map is up of this one
-				playerY = map.getHeight()-1;
+				update();
+				playerY = map.getHeight()-2;
+				update();
+				Timer timer = new Timer(50, new ActionListener() {
+				    @Override
+				    public void actionPerformed( ActionEvent arg0 ) {
+				        inTransition = false;
+				    }
+				});
+				timer.setRepeats( false );
+				timer.start();
 			}
 		}
 		if (state == State.BATTLE){
@@ -190,8 +247,29 @@ public class Game extends Observable implements Serializable {
 				}
 			}
 			else if(map.getDownMap() != null){
+			    inTransition = true;
 				transitionToMap(map.getDownMap()); //need to see which map is down of this one
 				playerY = 0;
+                update();
+                try
+                {
+                    Robot robot = new Robot();
+                    robot.keyPress( KeyEvent.VK_DOWN );
+                    robot.keyRelease( KeyEvent.VK_DOWN );
+                }
+                catch( AWTException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                Timer timer = new Timer(50, new ActionListener() {
+                    @Override
+                    public void actionPerformed( ActionEvent arg0 ) {
+                        inTransition = false;
+                    }
+                });
+                timer.setRepeats( false );
+                timer.start();
 			}
 		}
 		if (state == State.BATTLE){
