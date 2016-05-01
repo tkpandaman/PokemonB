@@ -357,8 +357,7 @@ public class MapView extends JPanel implements Observer {
 			updateTileset();
 		}
 		else map = game.getMap();
-
-		if( initial ){
+		if( initial && !game.inTransition ){
 			animating = true;
 		};
 		if (obj != null){
@@ -366,5 +365,7 @@ public class MapView extends JPanel implements Observer {
 		}
 		updateCamera();
 		repaint();
+		//if( !game.inTransition )
+		//game.inTransition = true;
 	}
 }
