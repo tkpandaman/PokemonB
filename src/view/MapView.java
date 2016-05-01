@@ -310,7 +310,7 @@ public class MapView extends JPanel implements Observer {
         };
     }
 
-	private void updateCamera(){
+	public void updateCamera(){
 	    oldCamX = cameraX;
 		cameraX = game.getPlayerX()-15;
 		oldCamY = cameraY;

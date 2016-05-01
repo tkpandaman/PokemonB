@@ -292,7 +292,7 @@ public class GameGUI extends JFrame implements Observer {
                     game.moveRight();
                 }
             }
-            if (event.getKeyCode() == KeyEvent.VK_Z ){
+            if (event.getKeyCode() == KeyEvent.VK_ENTER ){
                 if( game.getState() == State.BATTLE )
                     game.select();
             }
@@ -386,9 +386,10 @@ public class GameGUI extends JFrame implements Observer {
                 battleView.fadeIn();
                 GameGUI.this.revalidate();
                 GameGUI.this.repaint();
-            } else if( game.getState() != State.MENU ){
+            } else if( game.getState() != State.MENU && game.getState() != State.BATTLE ){
                 GameGUI.this.remove(battleView);
                 GameGUI.this.add(mapView);
+                GameGUI.this.mapView.repaint();
                 GameGUI.this.revalidate();
                 GameGUI.this.repaint();
             }
