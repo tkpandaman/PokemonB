@@ -3,6 +3,13 @@ package controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.Group;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
@@ -15,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -57,6 +65,15 @@ public class GameGUI extends JFrame implements Observer {
 	private PokemonSelector pokemonChoice;
 	private boolean pressing;
 	
+	private JFXPanel fxPanel;
+	private MediaPlayer mediaPlayer;
+	private boolean isPlayingSongOne;
+	
+	private static final String SONG_MAIN_ONE = Paths.get("audio/PokemonMain1Extended.m4a").toUri().toString();
+	private static final String SONG_MAIN_TWO = Paths.get("audio/PokemonMain2.m4a").toUri().toString();
+	private static final String SONG_FIGHT = Paths.get("audio/PokemonFight.m4a").toUri().toString();
+	private static final String SONG_FIGHT_INTRO = Paths.get("audio/PokemonFightIntro.m4a").toUri().toString();
+	
 	private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
 	private static final String DEFAULT_MAP = "safari-zone-1";
 	public static void main(String[] args){
@@ -90,6 +107,17 @@ public class GameGUI extends JFrame implements Observer {
 
 		mapView.repaint();
 		battleView.repaint();
+		
+		
+		this.fxPanel = new JFXPanel();
+		// JavaFX runs on a different thread, to make sure it works correctly we
+		// need to do this.
+		Platform.runLater(() -> {
+			fxPanel.setScene(new Scene(new Group()));
+			// Initial media player
+			GameGUI.this.playSong(SONG_MAIN_ONE);
+			GameGUI.this.isPlayingSongOne = true;
+		});
 	}
 
 	private HashMap<String, Map> loadMaps(){
@@ -203,6 +231,7 @@ public class GameGUI extends JFrame implements Observer {
             if(event.getKeyCode() == KeyEvent.VK_ESCAPE ){
                 if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation) || game.getState() == State.MENU )
                 {
+                	
                     if( !pokemonList && !selectingItem )
                     {    
                         game.chooseMenu();
@@ -386,12 +415,23 @@ public class GameGUI extends JFrame implements Observer {
                 battleView.fadeIn();
                 GameGUI.this.revalidate();
                 GameGUI.this.repaint();
-            } else if( game.getState() != State.MENU && game.getState() != State.BATTLE ){
+                
+            } else if(game.getState() == State.NORMAL){ //game.getState() != State.MENU && game.getState() != State.BATTLE ){
                 GameGUI.this.remove(battleView);
                 GameGUI.this.add(mapView);
                 GameGUI.this.mapView.repaint();
                 GameGUI.this.revalidate();
                 GameGUI.this.repaint();
+                
+                if(!isPlayingSongOne){
+        			Platform.runLater(() -> {
+        				fxPanel.setScene(new Scene(new Group()));
+        				// Initial media player
+        				GameGUI.this.playSong(SONG_MAIN_ONE);
+        				GameGUI.this.isPlayingSongOne = true;
+        			});
+        		}
+                
             }
             
         }
@@ -410,6 +450,12 @@ public class GameGUI extends JFrame implements Observer {
 	@Override
 	public void update(Observable o, Object obj) {
 		if (game.getState() == State.BATTLE){
+			Platform.runLater(() -> {
+				fxPanel.setScene(new Scene(new Group()));
+				// Initial media player
+				GameGUI.this.playSong(SONG_MAIN_TWO);
+				GameGUI.this.isPlayingSongOne = false;
+			});
 			remove(mapView);
             add(battleView);
             battleView.fadeIn();
@@ -417,6 +463,28 @@ public class GameGUI extends JFrame implements Observer {
             repaint();
 		}
 	};
+	
+	private void playSong(String location){
+		if (this.mediaPlayer != null) {
+			this.mediaPlayer.stop();
+			this.mediaPlayer.dispose();
+		}
+		Media song = new Media(location);
+		this.mediaPlayer = new MediaPlayer(song);
+		// The song will repeat forever
+		this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+		this.mediaPlayer.play();
+	}
+	
+	private void playSongOnce(String location){
+		if (this.mediaPlayer != null) {
+			this.mediaPlayer.stop();
+			this.mediaPlayer.dispose();
+		}
+		Media song = new Media(location);
+		this.mediaPlayer = new MediaPlayer(song);
+		this.mediaPlayer.play();
+	}
 
 	private class SaveAndLoad extends WindowAdapter
 	{

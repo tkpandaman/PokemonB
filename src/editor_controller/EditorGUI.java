@@ -3,6 +3,8 @@ package editor_controller;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -13,10 +15,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class EditorGUI extends JFrame {
+public class EditorGUI extends JFrame implements KeyListener {
 	private static final long serialVersionUID = 2084081246604831895L;
 	
 	private JTabbedPane propertiesPane;
+	private LevelEditor levelEditor;
 
 	public static void main(String[] args) {
 		
@@ -30,10 +33,12 @@ public class EditorGUI extends JFrame {
 		this.setTitle("Pokemon Level Editor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1024, 768);
+		this.setFocusable(true);
+		this.addKeyListener(this);
 		//this.setLayout(new FlowLayout());
 		
 		//level editor = model
-		LevelEditor levelEditor = new LevelEditor("emerald-x2", 32);
+		levelEditor = new LevelEditor("emerald-x2", 32);
 		
 		//map preview: shows the map, lets you draw on it
 		MapPreviewPanel mapPreview = new MapPreviewPanel(levelEditor);
@@ -96,6 +101,32 @@ public class EditorGUI extends JFrame {
 		splitPane.setDividerLocation(550);
 		
 		this.add(splitPane);
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_C){
+			if(levelEditor.copy){
+				levelEditor.copy = false;
+				levelEditor.update();
+			}
+			else{
+				levelEditor.copy = true;
+				levelEditor.update();
+			}
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 	

@@ -56,15 +56,19 @@ public class MapItemPanel extends JPanel {
 		pokeBallItem = new JRadioButton("Safari Ball");
 		pokeBallItem.setActionCommand("pokeBall");
 		pokeBallItem.setSelected(true);
+		pokeBallItem.setFocusable(false);
 
 		shoesItem = new JRadioButton("Speedy Shoes");
 		shoesItem.setActionCommand("speedShoes");
-
+		shoesItem.setFocusable(false);
+		
 		potionItem = new JRadioButton("Health Potion");
 		potionItem.setActionCommand("health");
+		potionItem.setFocusable(false);
 
 		deleteItem = new JRadioButton("Delete Items");
 		deleteItem.setActionCommand("delete");
+		deleteItem.setFocusable(false);
 
 		//Add them to a group
 		itemGroup = new ButtonGroup();

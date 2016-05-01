@@ -51,6 +51,11 @@ public class LevelEditor extends Observable{
 		setTileImage(0, 0);
 	}
 	
+	public void update(){
+		setChanged();
+		notifyObservers();
+	}
+	
 	// Gets the current Tileset.
 	public Tileset getTileset(){
 		return currentTileset;
