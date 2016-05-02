@@ -26,6 +26,7 @@ public class TileSelectionPanel extends JPanel implements Observer{
 		this.levelEditor = levelEditor;
 		
 		this.setLayout(null);
+		this.setFocusable(false);
 		
 		setupLayout();
 		
@@ -45,6 +46,7 @@ public class TileSelectionPanel extends JPanel implements Observer{
 			for(int x=0; x<tileset.getWidth()/tileSize; x++){
 				BufferedImage tile = tileset.tileAt(x, y);
 				tileButtons[i] = new JButton(new ImageIcon(tile));
+				tileButtons[i].setFocusable(false);
 				//add listener
 				tileButtons[i].addActionListener(new TileSelectionListener(x, y));
 				//set size/position

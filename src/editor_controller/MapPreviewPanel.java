@@ -114,16 +114,22 @@ public class MapPreviewPanel extends JPanel implements Observer {
 		public void mouseClicked(MouseEvent e) {
 
 			try{
-				if(levelEditor.cursor.equals("Tiles")){
-					levelEditor.drawTile(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
+				if(!levelEditor.copy){ //If copy button is not selected
+					if(levelEditor.cursor.equals("Tiles")){
+						levelEditor.drawTile(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
+					}
+					else if(levelEditor.cursor.equals("Items")){
+						if(levelEditor.getCurrentItem() != null){
+							levelEditor.getMap().addMapItem(new MapItem(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize(), levelEditor.getCurrentItem()));
+						}
+						else {
+							levelEditor.getMap().popMapItemAt(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
+						}
+					}
 				}
-				else if(levelEditor.cursor.equals("Items")){
-					if(levelEditor.getCurrentItem() != null){
-						levelEditor.getMap().addMapItem(new MapItem(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize(), levelEditor.getCurrentItem()));
-					}
-					else {
-						levelEditor.getMap().popMapItemAt(e.getX()/levelEditor.getTileSize(), e.getY()/levelEditor.getTileSize());
-					}
+				else{
+					levelEditor.copy = false;
+					levelEditor.setTile(levelEditor.getMap().getTiles()[e.getX()/levelEditor.getTileSize()][e.getY()/levelEditor.getTileSize()]);
 				}
 			} catch (ArrayIndexOutOfBoundsException ex){
 				//don't do anything if user clicked out of bounds

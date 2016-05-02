@@ -29,7 +29,9 @@ public class LevelEditor extends Observable{
 	private int tileSize;
 	
 	private Item currentItem;
+	
 	public String cursor;
+	public boolean copy;
 	
 	MapTile currentTile = new MapTile(0,0);
 	
@@ -43,9 +45,15 @@ public class LevelEditor extends Observable{
 		
 		cursor = "Tiles"; //Default cursor
 		currentItem = new Pokeball(new Random()); //Default Item
+		copy = false; //Default copy state
 		
 		map = new Map(width, height, tileset, tileSize);
 		setTileImage(0, 0);
+	}
+	
+	public void update(){
+		setChanged();
+		notifyObservers();
 	}
 	
 	// Gets the current Tileset.
@@ -91,6 +99,13 @@ public class LevelEditor extends Observable{
 		setChanged();
 		notifyObservers();
 	}
+	
+	// Sets the current tile to m
+		public void setTile(MapTile m){
+			currentTile = m;
+			setChanged();
+			notifyObservers();
+		}
 	
 	// Sets the current tile type.
 	public void setTileType(TileType type){

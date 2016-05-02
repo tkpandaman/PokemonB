@@ -1,7 +1,10 @@
 package model;
 
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Observable;
@@ -9,6 +12,7 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
+import model.pokemon.KillMe;
 import model.pokemon.Pokedex;
 import model.pokemon.Pokemon;
 
@@ -22,25 +26,34 @@ public class Game extends Observable implements Serializable {
 	private int playerY;
 	private Random rand;
 
-	private State state = State.NORMAL;
+	private State state;
+	private WinCondition win;
 
 	private Battle battle;
 	private BattleMenu battleMenu;
-	public boolean isTransition;
+	public boolean inTransition;
+	public boolean inFading;
 	
 	private float transitionAlpha;
+	
+	public static final int TRANSITION_SPEED = 5;
 
 	public Game(HashMap<String, Map> maps, Map startMap, Random r){
 
+		inFading = false;
+	    inTransition = false;
 		battleMenu = new BattleMenu();
+		
+		state = State.INTRO; //start with the main menu
+		win = WinCondition.STEPS; //Default condition
 
 		//Load map
 		this.maps = maps;
 		this.map = startMap;
 		Backpack bp = new Backpack(new Random());
 		trainer = new Trainer("Ash Ketchup", bp);
-		playerX = 2;
-		playerY = 2;
+		playerX = 25;
+		playerY = 40;
 		rand = r;
 		transitionAlpha = 0;
 		update();
@@ -69,7 +82,14 @@ public class Game extends Observable implements Serializable {
 			playerX += x;
 			playerY += y;
 			trainer.takeStep();
-			if (trainer.getStepsLeft() <= 0) state = State.WIN;
+			if (trainer.getStepsLeft() <= 0){ 
+				if(win == WinCondition.STEPS){
+					state = State.WIN; 
+				}
+				else {
+					state = State.LOSE; 
+				}
+			}
 			checkForPokemon(rand);
 			checkForItem();
 			update();
@@ -103,9 +123,23 @@ public class Game extends Observable implements Serializable {
 	}
 	
 	private void checkGameState(){
-		if( trainer.openPack().getPokeballsLeft() == 0 )
+		if( trainer.openPack().getPokemonCaptured() == 10 )
 		{
-			state = State.WIN;
+			if(win == WinCondition.POKEMON){
+				state = State.WIN; 
+			}
+			else {
+				state = State.LOSE; 
+			}
+		}
+		else if( trainer.openPack().getPokeballsLeft() == 0 )
+		{
+			if(win == WinCondition.SAFARIBALLS){
+				state = State.WIN; 
+			}
+			else {
+				state = State.LOSE; 
+			}
 		}
 	}
 
@@ -137,6 +171,27 @@ public class Game extends Observable implements Serializable {
 			else if(map.getLeftMap() != null){ //change this to null?
 				transitionToMap(map.getLeftMap()); //need to see which map is left of this one
 				playerX = map.getWidth()-1;
+				inTransition = true;
+                update();
+                try
+                {
+                    Robot robot = new Robot();
+                    robot.keyPress( KeyEvent.VK_LEFT );
+                    robot.keyRelease( KeyEvent.VK_LEFT );
+                }
+                catch( AWTException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                Timer timer = new Timer(50, new ActionListener() {
+                    @Override
+                    public void actionPerformed( ActionEvent arg0 ) {
+                        inTransition = false;
+                    }
+                });
+                timer.setRepeats( false );
+                timer.start();
 			}
 		}
 		if (state == State.BATTLE){
@@ -155,6 +210,27 @@ public class Game extends Observable implements Serializable {
 			else if(map.getRightMap() != null){
 				transitionToMap(map.getRightMap()); //need to see which map is right of this one
 				playerX = 0;
+				inTransition = true;
+                update();
+                try
+                {
+                    Robot robot = new Robot();
+                    robot.keyPress( KeyEvent.VK_RIGHT );
+                    robot.keyRelease( KeyEvent.VK_RIGHT );
+                }
+                catch( AWTException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                Timer timer = new Timer(50, new ActionListener() {
+                    @Override
+                    public void actionPerformed( ActionEvent arg0 ) {
+                        inTransition = false;
+                    }
+                });
+                timer.setRepeats( false );
+                timer.start();
 			}
 		}
 		if (state == State.BATTLE){
@@ -171,8 +247,19 @@ public class Game extends Observable implements Serializable {
 				}
 			}
 			else if(map.getUpMap() != null){
+			    inTransition = true;
 				transitionToMap(map.getUpMap()); //need to see which map is up of this one
-				playerY = map.getHeight()-1;
+				update();
+				playerY = map.getHeight()-2;
+				update();
+				Timer timer = new Timer(50, new ActionListener() {
+				    @Override
+				    public void actionPerformed( ActionEvent arg0 ) {
+				        inTransition = false;
+				    }
+				});
+				timer.setRepeats( false );
+				timer.start();
 			}
 		}
 		if (state == State.BATTLE){
@@ -190,8 +277,29 @@ public class Game extends Observable implements Serializable {
 				}
 			}
 			else if(map.getDownMap() != null){
+			    inTransition = true;
 				transitionToMap(map.getDownMap()); //need to see which map is down of this one
 				playerY = 0;
+                update();
+                try
+                {
+                    Robot robot = new Robot();
+                    robot.keyPress( KeyEvent.VK_DOWN );
+                    robot.keyRelease( KeyEvent.VK_DOWN );
+                }
+                catch( AWTException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                Timer timer = new Timer(50, new ActionListener() {
+                    @Override
+                    public void actionPerformed( ActionEvent arg0 ) {
+                        inTransition = false;
+                    }
+                });
+                timer.setRepeats( false );
+                timer.start();
 			}
 		}
 		if (state == State.BATTLE){
@@ -229,6 +337,19 @@ public class Game extends Observable implements Serializable {
 	public State getState(){
 		return state;
 	}
+	
+	public void setState(State state){
+		this.state = state;
+	}
+
+	
+	public WinCondition getWin(){
+		return win;
+	}
+	
+	public void setWin(WinCondition win){
+		this.win = win;
+	}
 
 	public BattleMenu getBattleMenu(){
 		return battleMenu;
@@ -252,8 +373,10 @@ public class Game extends Observable implements Serializable {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			transitionAlpha += 5;
+			transitionAlpha += TRANSITION_SPEED;
+			inFading = true;
 			if (transitionAlpha >= 255){
+				inFading = false;
 				transitionAlpha = 0;
 				((Timer) e.getSource()).stop();
 				state = State.BATTLE;
