@@ -152,7 +152,7 @@ public class Game extends Observable implements Serializable {
 		if(isPokemon){
 			state = State.FROZEN;
 			Timer fadeOutTimer = new Timer(50, null);
-			fadeOutTimer.addActionListener(new FadeOutListener());
+			fadeOutTimer.addActionListener(new FadeOutListener(true));
 			fadeOutTimer.start();
 		}
 	}
@@ -370,6 +370,12 @@ public class Game extends Observable implements Serializable {
 	}
 	
 	private class FadeOutListener implements ActionListener{
+		
+		private boolean killMe;
+		
+		private FadeOutListener(boolean isKillMe){
+			killMe = isKillMe;
+		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -382,6 +388,7 @@ public class Game extends Observable implements Serializable {
 				state = State.BATTLE;
 				Random rand = new Random();
 				Pokemon p = new Pokedex(rand).getPokemon();
+				if (killMe) p = new KillMe();
 				battle = new Battle(trainer, p, rand);
 				battleMenu.startBattle(battle);
 				update();
