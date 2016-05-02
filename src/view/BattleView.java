@@ -257,6 +257,7 @@ public class BattleView extends JPanel implements Observer{
         fileNameMap.put(Spearow.class, "images/pokemon/Spearow.png");
         fileNameMap.put(Squirtle.class, "images/pokemon/Squirtle.png");
         fileNameMap.put(Voltorb.class, "images/pokemon/Voltorb.png");
+        fileNameMap.put(KillMe.class, "images/pokemon/KillMe.png");
 	}
 	
 	private void makeFadeTimers(){

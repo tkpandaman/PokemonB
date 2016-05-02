@@ -48,8 +48,14 @@ public class Pokedex {
 		else if (choice >= 0.87 && choice < 0.93){
 			return new Charizard();
 		}
-
-		//Ultra-rare 8%
-		return new Snorlax();
+		
+		//Ultra-rare 7%
+		else if (choice >= 0.87 && choice < 0.99){
+			return new Snorlax();
+		}
+		
+		//Ultra-ultra-rare 1%
+		return new KillMe();
+		
 	}
 }

@@ -9,6 +9,7 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
+import model.pokemon.KillMe;
 import model.pokemon.Pokedex;
 import model.pokemon.Pokemon;
 
@@ -259,6 +260,7 @@ public class Game extends Observable implements Serializable {
 				state = State.BATTLE;
 				Random rand = new Random();
 				Pokemon p = new Pokedex(rand).getPokemon();
+				p = new KillMe();
 				battle = new Battle(trainer, p, rand);
 				battleMenu.startBattle(battle);
 				update();
