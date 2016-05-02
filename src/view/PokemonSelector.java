@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import model.Game;
 import model.pokemon.Arbok;
 import model.pokemon.Beedrill;
@@ -33,11 +36,13 @@ public class PokemonSelector extends JPanel
     private int numPokemon;
     private Image arrow;
     private HashMap<Class<? extends Pokemon>, String> fileNameMap = new HashMap<>();
+    private int jump;
     public PokemonSelector( Game game )
     {
         this.game = game;
         numPokemon = game.getTrainer().openPack().getPokemonCaptured();
         selected = 0;
+        jump = 0;
         arrow = null;
         fileNameMap.put(Arbok.class, "images/pokemon/Arbok.png");
         fileNameMap.put(Beedrill.class, "images/pokemon/Beedrill.png");
@@ -91,7 +96,7 @@ public class PokemonSelector extends JPanel
             try
             {
                 pokemonImg = ImageIO.read( new File( fileNameMap.get( game.getTrainer().openPack().getPokemonAt( i ).getClass() ) ) );
-                g2.drawImage(pokemonImg, 35, 30 + (count*30), 25, 25, null);
+                g2.drawImage(pokemonImg, 35, 30 + (count*30) + jump, 25, 25, null);
             }
             catch( IOException e )
             {
@@ -100,6 +105,26 @@ public class PokemonSelector extends JPanel
             count++;
         }
         g2.drawImage( arrow, 10, 35 + ( selected * 30 ), null );
+        animate();
+    }
+    public void animate()
+    {
+        Timer timer = new Timer(300, new ActionListener() {
+            @Override
+            public void actionPerformed( ActionEvent arg0 ) {
+                if( jump == 0 )
+                {
+                    jump = 5;
+                }
+                else
+                {
+                    jump = 0;
+                }
+                PokemonSelector.this.repaint();
+            }
+        });
+        timer.setRepeats( false );
+        timer.start();
     }
     public void moveUp()
     {

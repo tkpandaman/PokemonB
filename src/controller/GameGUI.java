@@ -518,11 +518,35 @@ public class GameGUI extends JFrame implements Observer {
 				game.update();
 			};
 			mapView.initial = true;
-			// change GUI after data loaded
 		};
 		@Override
 		public void windowClosing( WindowEvent e )
 		{
+		    int selectedChoice = JOptionPane.showConfirmDialog( null, "Save game?", "Select an option", JOptionPane.YES_NO_CANCEL_OPTION );
+            if( selectedChoice == JOptionPane.NO_OPTION )
+            {
+                System.exit( 0 );
+            };
+            if( selectedChoice == JOptionPane.YES_OPTION )
+            {
+                try
+                {
+                    // save current state of pokemon game (Trainer, pokemon, items, backpack, etc.)
+                    FileOutputStream fos = new FileOutputStream(SAVED_COLLECTION_LOCATION);
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    // save all data we need to a file
+                    oos.writeObject(game);
+                    oos.close();
+                    fos.close();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+
+                game.addObserver(mapView);
+                game.addObserver(GameGUI.this);
+                game.getBattleMenu().addObserver(battleView);
+                game.update();
+            };
 		};
 	}
 
