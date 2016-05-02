@@ -1,8 +1,6 @@
 package model;
 
 
-import model.pokemon.Pokemon;
-
 /**
  * The inheritance hierarchy for any item used on a pokemon in-game
  * @author Joshua Raphael

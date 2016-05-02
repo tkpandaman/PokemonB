@@ -3,5 +3,5 @@ package model;
 import java.io.Serializable;
 
 public enum State implements Serializable {
-	BATTLE, LOSE, NORMAL, WIN, MENU; 
+	BATTLE, LOSE, NORMAL, WIN, MENU, FROZEN; 
 }

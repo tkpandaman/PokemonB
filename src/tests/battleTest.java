@@ -11,6 +11,7 @@ import model.pokemon.Arbok;
 import model.pokemon.Butterfree;
 import model.pokemon.Charizard;
 import model.pokemon.Pikachu;
+import model.pokemon.Pokedex;
 import model.pokemon.Pokemon;
 
 import org.junit.Test;
@@ -18,21 +19,25 @@ import org.junit.Test;
 public class battleTest {
 
 	private Random rand = new Random(1337L);
-	private Trainer ash = new Trainer("Ash");
 
 	@Test
 	public void setupBattleTest() {
-		Battle b = new Battle(ash, rand, 0.0);
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.8).getPokemon();
+		Battle b = new Battle(m, p, rand);
 		assertFalse(b.pokemonRanAway());
 	}
 
 	@Test
 	public void throwRockTest() {
-		Battle b = new Battle(ash, rand, 0.8);
-		Pokemon c = b.getPokemon();
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.8).getPokemon();
+		Battle b = new Battle(m, p, rand);
 
 		b.throwRock();
-		assertEquals(c.getMaxHP() - Battle.ROCK_DAMAGE, c.getCurHP());
+		assertEquals(b.getPokemon().getMaxHP() - Battle.ROCK_DAMAGE, b.getPokemon().getCurHP());
 		assertFalse(b.pokemonRanAway());
 
 		for(int i = 0; i < 4; i++){ //throw 4 rocks = 4 turns passing 
@@ -43,10 +48,12 @@ public class battleTest {
 
 	@Test
 	public void throwBaitTest() {
-
-		Battle b = new Battle(ash, rand, 0.8);
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.8).getPokemon();
+		Battle b = new Battle(m, p, rand);
 		Pokemon c = b.getPokemon();
-		System.out.println(b.getFleeChance());
+		
 		double runChance = (double)c.getLikelyRun()/100;
 
 		assertEquals(runChance, b.getFleeChance(), 0.00001);
@@ -63,8 +70,10 @@ public class battleTest {
 	
 	@Test
 	public void throwSafariBallTest(){
-		Trainer m = new Trainer("Misty");
-		Battle b = new Battle(m, rand, 0.7);
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.6).getPokemon();
+		Battle b = new Battle(m, p, rand);
 		
 		assertEquals(Battle.MIN_CAPTURE_CHANCE , b.getCaptureChance(), 0.00001);
 		assertFalse(b.throwSafariBall());
@@ -78,7 +87,91 @@ public class battleTest {
 		assertTrue(b.throwSafariBall());
 		assertEquals(1, m.openPack().getPokemonCaptured());
 	}
+	@Test
+	public void testArbok()
+	{
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.1).getPokemon();
+		Battle b = new Battle(m, p, rand);
+	    assertEquals( "Arbok", b.getPokemon().getClass().getSimpleName() );
+	}
+	@Test
+    public void testVoltorb()
+    {
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.2).getPokemon();
+		Battle b = new Battle(m, p, rand);
+        assertEquals( "Voltorb", b.getPokemon().getClass().getSimpleName() );
+    }
+	@Test
+    public void testButterfree()
+    {
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.3).getPokemon();
+		Battle b = new Battle(m, p, rand);
+        assertEquals( "Butterfree", b.getPokemon().getClass().getSimpleName() );
+    }
+	@Test
+    public void testSpearow()
+    {
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.4).getPokemon();
+		Battle b = new Battle(m, p, rand);
+        assertEquals( "Spearow", b.getPokemon().getClass().getSimpleName() );
+    }
+	@Test
+    public void testBeedrill()
+    {
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.6).getPokemon();
+		Battle b = new Battle(m, p, rand);
+        assertEquals( "Beedrill", b.getPokemon().getClass().getSimpleName() );
+    }
+	@Test
+	public void testSquirtle()
+	{
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.8).getPokemon();
+		Battle b = new Battle(m, p, rand);
+        assertEquals( "Squirtle", b.getPokemon().getClass().getSimpleName() );
+	}
+	@Test
+    public void testSnorlax()
+    {
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.97).getPokemon();
+		Battle b = new Battle(m, p, rand);
+        assertEquals( "Snorlax", b.getPokemon().getClass().getSimpleName() );
+    }
+	@Test
+	public void testRandomBattle()
+	{
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+		Pokemon p = new Pokedex(0.8).getPokemon();
+		Battle b = new Battle(m, p, rand);
+	}
+	@Test
+	public void testPokeballsRunOut()
+	{
+		Backpack bp = new Backpack(rand);
+		Trainer m = new Trainer("Misty", bp);
+	    assertEquals( 30, m.openPack().getPokeballsLeft() );
 	
-
-
+	    for(int i = 0; i < 30; i++){
+	    	m.openPack().usePokeball();
+	    }
+	    assertEquals( 0, m.openPack().getPokeballsLeft() );
+	    Pokemon p = new Pokedex(rand).getPokemon();
+		Battle b = new Battle(m, p, rand);
+        //assertEquals( b.ge )
+        assertFalse( b.throwSafariBall() );
+	}
 }
