@@ -50,11 +50,11 @@ public class Pokedex {
 		}
 		
 		//Ultra-rare 7%
-		else if (choice >= 0.87 && choice < 0.99){
+		else if (choice >= 0.93 && choice < 0.995){
 			return new Snorlax();
 		}
 		
-		//Ultra-ultra-rare 1%
+		//Ultra-ultra-rare ~1%
 		return new KillMe();
 		
 	}
