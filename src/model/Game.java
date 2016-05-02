@@ -81,7 +81,14 @@ public class Game extends Observable implements Serializable {
 			playerX += x;
 			playerY += y;
 			trainer.takeStep();
-			if (trainer.getStepsLeft() <= 0) state = State.WIN;
+			if (trainer.getStepsLeft() <= 0){ 
+				if(win == WinCondition.STEPS){
+					state = State.WIN; 
+				}
+				else {
+					state = State.LOSE; 
+				}
+			}
 			checkForPokemon(rand);
 			checkForItem();
 			update();
@@ -115,9 +122,23 @@ public class Game extends Observable implements Serializable {
 	}
 	
 	private void checkGameState(){
-		if( trainer.openPack().getPokeballsLeft() == 0 )
+		if( trainer.openPack().getPokemonCaptured() == 10 )
 		{
-			state = State.WIN;
+			if(win == WinCondition.POKEMON){
+				state = State.WIN; 
+			}
+			else {
+				state = State.LOSE; 
+			}
+		}
+		else if( trainer.openPack().getPokeballsLeft() == 0 )
+		{
+			if(win == WinCondition.SAFARIBALLS){
+				state = State.WIN; 
+			}
+			else {
+				state = State.LOSE; 
+			}
 		}
 	}
 

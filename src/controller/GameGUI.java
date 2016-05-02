@@ -287,7 +287,7 @@ public class GameGUI extends JFrame implements Observer {
                     }
                     mapView.repaint();
                 }
-                if(game.getState() == State.WIN){
+                if(game.getState() == State.WIN || game.getState() == State.LOSE){
                 	GameGUI.this.remove(mapView);
                 	GameGUI.this.reset();
                 	introScreenModel.update();
@@ -393,6 +393,8 @@ public class GameGUI extends JFrame implements Observer {
                             {
                                 selectingPokemon = true;
                                 pokemonChoice = new PokemonSelector( game );
+                                
+                                
                                 pokemonChoice.setLocation( 300, 10 );
                                 pokemonChoice.setVisible( true );
                                 mapView.add( pokemonChoice );
