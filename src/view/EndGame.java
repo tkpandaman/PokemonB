@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Game;
+import model.State;
 
 public class EndGame extends JPanel {
 	private Game game;
@@ -26,11 +27,20 @@ public class EndGame extends JPanel {
 		this.setSize(800,100);
 		this.setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
 		// game over label
-        JLabel end = new JLabel("GAME OVER" );
-        end.setFont( new Font( "Serif", Font.BOLD + Font.ITALIC, 20 ) );
-        end.setSize( 500, 20 );
-        end.setLocation( 10, 10 );
-        this.add( end );
+		if(game.getState() == State.WIN){
+			JLabel end = new JLabel("GAME OVER: YOU WIN!");
+			end.setFont( new Font( "Serif", Font.BOLD + Font.ITALIC, 20 ) );
+			end.setSize( 500, 20 );
+			end.setLocation( 10, 10 );
+			this.add( end );
+		}
+		else{
+			JLabel end = new JLabel("GAME OVER: UNSUCCESSFUL");
+			end.setFont( new Font( "Serif", Font.BOLD + Font.ITALIC, 20 ) );
+			end.setSize( 500, 20 );
+			end.setLocation( 10, 10 );
+			this.add( end );
+		}
         // player name label
         JLabel name = new JLabel("PLAYER: " + game.getTrainer().getName() );
         name.setFont( new Font( "Serif", Font.BOLD, 20 ) );

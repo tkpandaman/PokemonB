@@ -55,7 +55,10 @@ public class MapView extends JPanel implements Observer {
     private int oldCamX;
     private int oldCamY;
     public boolean endAnimation;
+   
     private final int DELAY_TIME = 80;
+    private static final int CAM_X_OFFSET = 32;
+    private static final int CAM_Y_OFFSET = 22;
     
     private float transitionAlpha;
 	
@@ -175,7 +178,7 @@ public class MapView extends JPanel implements Observer {
         g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize());
 
         g2.setColor(Color.BLUE);
-        if (game.getState() == State.WIN)
+        if (game.getState() == State.WIN || game.getState() == State.LOSE)
         {
             EndGame endGame = new EndGame( game );
             endGame.setLocation( 100, 100 );
@@ -307,7 +310,7 @@ public class MapView extends JPanel implements Observer {
         };
     }
 
-	private void updateCamera(){
+	public void updateCamera(){
 	    oldCamX = cameraX;
 		cameraX = game.getPlayerX()-15;
 		oldCamY = cameraY;
@@ -327,17 +330,17 @@ public class MapView extends JPanel implements Observer {
 	        cameraX = 0;
 	        oldCamX = 0;
 	    }
-        if (cameraX+32 > map.getWidth()){
-            cameraX = map.getWidth()-32;
-            oldCamX = map.getWidth()-32;
+        if (cameraX+CAM_X_OFFSET > map.getWidth()){
+            cameraX = map.getWidth()-CAM_X_OFFSET;
+            oldCamX = map.getWidth()-CAM_X_OFFSET;
         }
         if (cameraY < 0){
             cameraY = 0;
             oldCamY = 0;
         }
-        if (cameraY+28 > map.getHeight()){
-            cameraY = map.getHeight()-28;
-            oldCamY = map.getHeight()-28;
+        if (cameraY+CAM_Y_OFFSET > map.getHeight()){
+            cameraY = map.getHeight()-CAM_Y_OFFSET;
+            oldCamY = map.getHeight()-CAM_Y_OFFSET;
         }
 	}
 
@@ -354,8 +357,7 @@ public class MapView extends JPanel implements Observer {
 			updateTileset();
 		}
 		else map = game.getMap();
-
-		if( initial ){
+		if( initial && !game.inTransition ){
 			animating = true;
 		};
 		if (obj != null){
@@ -363,5 +365,7 @@ public class MapView extends JPanel implements Observer {
 		}
 		updateCamera();
 		repaint();
+		//if( !game.inTransition )
+		//game.inTransition = true;
 	}
 }

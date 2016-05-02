@@ -161,16 +161,22 @@ public class BattleView extends JPanel implements Observer{
 		    break;
 		    case End:
 		    	if(menu.battleOver()){
-		    	try {
-		            Robot robot = new Robot();
+		    	    try {
+		    	        Robot robot = new Robot();
 
-		            // Simulate a key press
-		            robot.keyPress(KeyEvent.VK_Z);
-		            robot.keyRelease(KeyEvent.VK_Z);
+		    	        // Simulate a key press
+		    	        robot.keyPress(KeyEvent.VK_Z);
+		    	        robot.keyRelease(KeyEvent.VK_Z);
+		    	        robot.keyPress(KeyEvent.VK_Z);
+		    	        robot.keyRelease(KeyEvent.VK_Z);
+		    	        robot.keyPress(KeyEvent.VK_Z);
+		    	        robot.keyRelease(KeyEvent.VK_Z);
+                        robot.keyPress(KeyEvent.VK_Z);
+                        robot.keyRelease(KeyEvent.VK_Z);
 
-		        } catch (AWTException e) {
-		            e.printStackTrace();
-		        }
+		    	    } catch (AWTException e) {
+		    	        e.printStackTrace();
+		    	    }
 		    	}
 		    break;
 		    default:

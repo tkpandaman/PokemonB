@@ -11,7 +11,6 @@ public class Map implements Serializable {
 	private MapTile[][] tile;  //array of Tile objects which comprise the map
 	private int width, height; //width and height of the map (in tiles)
 
-	//public static enum names{none,default_map,emerald_test,viridian_forest}; //Add new maps here
 
 	private String tileset;
 	private int tileSize;
@@ -42,11 +41,12 @@ public class Map implements Serializable {
 		return mapItems;
 	}
 	
+	//Return a MapItem at a point on the map and remove it from the list
 	public MapItem popMapItemAt(int x, int y){
 		for (MapItem m : mapItems){
 			if (m.getX() == x && m.getY() == y){
 				mapItems.remove(m);
-				return m; //Could be sketchy? Needs testing
+				return m;
 			}
 		}
 		return null;

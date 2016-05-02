@@ -10,13 +10,17 @@ import java.io.Serializable;
 public class RunningShoes extends TrainerItem implements Serializable
 {
     private static final long serialVersionUID = 7039593018652493246L;
+    
+    private static final double SET_SPEED = 3.0;
+    private static final String STRING_NAME = "Running Shoes";
+    private static final String STRING_DESC = "Doubles the trainers walking speed";
 
     /**
      * Construct the running shoes item
      */
     public RunningShoes()
     {
-        super( "Running Shoes", "Doubles the trainers walking speed" );
+        super( STRING_NAME, STRING_DESC );
     }
 
     /**
@@ -27,7 +31,7 @@ public class RunningShoes extends TrainerItem implements Serializable
     @Override
     public void use( Trainer trainer )
     {
-        trainer.setSpeed( 2.0 );
+        trainer.setSpeed( SET_SPEED );
     }
     
 }
