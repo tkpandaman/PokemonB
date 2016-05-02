@@ -31,6 +31,12 @@ public class Trainer implements Serializable {
 		this.speed = INI_SPEED;
 	}
 	
+	public void reset(Backpack bp){
+		this.bp = bp;
+		this.steps = INI_STEPS;
+		this.speed = INI_SPEED;
+	}
+	
 	/**
 	 * Returns steps remaining
 	 * @return int as step count

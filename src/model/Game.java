@@ -25,26 +25,34 @@ public class Game extends Observable implements Serializable {
 	private int playerY;
 	private Random rand;
 
-	private State state = State.NORMAL;
+	private State state;
+	private WinCondition win;
 
 	private Battle battle;
 	private BattleMenu battleMenu;
 	public boolean inTransition;
+	public boolean inFading;
 	
 	private float transitionAlpha;
+	
+	public static final int TRANSITION_SPEED = 5;
 
 	public Game(HashMap<String, Map> maps, Map startMap, Random r){
 
+		inFading = false;
 	    inTransition = false;
 		battleMenu = new BattleMenu();
+		
+		state = State.INTRO; //start with the main menu
+		win = WinCondition.STEPS; //Default condition
 
 		//Load map
 		this.maps = maps;
 		this.map = startMap;
 		Backpack bp = new Backpack(new Random());
 		trainer = new Trainer("Ash Ketchup", bp);
-		playerX = 2;
-		playerY = 2;
+		playerX = 25;
+		playerY = 40;
 		rand = r;
 		transitionAlpha = 0;
 		update();
@@ -307,6 +315,19 @@ public class Game extends Observable implements Serializable {
 	public State getState(){
 		return state;
 	}
+	
+	public void setState(State state){
+		this.state = state;
+	}
+
+	
+	public WinCondition getWin(){
+		return win;
+	}
+	
+	public void setWin(WinCondition win){
+		this.win = win;
+	}
 
 	public BattleMenu getBattleMenu(){
 		return battleMenu;
@@ -330,8 +351,10 @@ public class Game extends Observable implements Serializable {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			transitionAlpha += 5;
+			transitionAlpha += TRANSITION_SPEED;
+			inFading = true;
 			if (transitionAlpha >= 255){
+				inFading = false;
 				transitionAlpha = 0;
 				((Timer) e.getSource()).stop();
 				state = State.BATTLE;

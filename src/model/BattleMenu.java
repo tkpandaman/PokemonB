@@ -123,7 +123,6 @@ public class BattleMenu extends Observable implements Serializable{
 		}
 		else if (battle.pokemonRanAway() && !battleOver){
 			text = "The pokemon ran away!";
-			System.out.println("In here" + curMove);
 			if(curMove == BattleAction.PokeRun){
 				curMove = BattleAction.End;
 			}
