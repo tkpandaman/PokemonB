@@ -26,6 +26,7 @@ import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.Battle;
@@ -47,6 +48,11 @@ public class BattleView extends JPanel implements Observer{
 	private Timer timer;
 	private boolean isAnimating = false;
 	private double healthPerc = 1;
+	
+	//Sounds Effects
+	private MediaPlayer mediaPlayer;
+	private static final String SONG_ONE = Paths.get("audio/battleSounds/runsAway.mp3").toUri().toString();
+	private JFXPanel fxPanel;
 	
 	// Timer Variables
 	private int transitionRectangleAlpha;
@@ -75,6 +81,7 @@ public class BattleView extends JPanel implements Observer{
 		menu = game.getBattleMenu();
 		menu.addObserver(this);
 		battle = game.getBattle();	
+		this.fxPanel = new JFXPanel();
 		
 		// Set images and initialize fade timers
         setImages();
@@ -156,6 +163,7 @@ public class BattleView extends JPanel implements Observer{
 		    		endX = this.getWidth() + pokemonImg.getWidth(null)/4;
 		    		animateX();
 		    		isAnimating = true;
+		    		this.playSong(SONG_ONE);
 		    	}
 				   g2.drawImage(pokemonImg, animX, 550-pokemonImg.getHeight(null)/3, pokemonImg.getWidth(null)/3, pokemonImg.getHeight(null)/3, null);
 		    break;
@@ -318,6 +326,18 @@ public class BattleView extends JPanel implements Observer{
 	
 	public boolean isAnimating(){
 		return this.isAnimating;
+	}
+	
+	private void playSong(String location) {
+		if (this.mediaPlayer != null) {
+			this.mediaPlayer.stop();
+			this.mediaPlayer.dispose();
+		}
+		Media song = new Media(location);
+		this.mediaPlayer = new MediaPlayer(song);
+		// The song will repeat forever
+		this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+		this.mediaPlayer.play();
 	}
 	
 }
