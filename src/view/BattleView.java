@@ -11,16 +11,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.Battle;
 import model.BattleMenu;
 import model.BattleMenu.MenuItem;
@@ -39,6 +46,7 @@ public class BattleView extends JPanel implements Observer{
 	private int endX = -1;
 	private Timer timer;
 	private boolean isAnimating = false;
+	private double healthPerc = 1;
 	
 	// Timer Variables
 	private int transitionRectangleAlpha;
@@ -78,7 +86,7 @@ public class BattleView extends JPanel implements Observer{
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D)g;
-		
+		healthPerc = 1;
 		g2.clearRect(0, 0, 100000, 100000);
 		
 		g2.drawImage(background, 0, 0, null);
@@ -92,12 +100,20 @@ public class BattleView extends JPanel implements Observer{
 		
 		
 		if(animX > endX){
+			System.out.println("In here");
 			timer.stop();
 			animX = -1;
 			animY = -1;
 			endX = -1;
 			menu.resultAction();
 			isAnimating = false;
+			healthPerc = (double) battle.getPokemon().getCurHP()/(double) battle.getPokemon().getMaxHP();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		switch(menu.getMove()){
@@ -161,8 +177,25 @@ public class BattleView extends JPanel implements Observer{
 		    break;
 		}
 		
-		if(menu.getMove() != BattleAction.PokeRun)
-		   g2.drawImage(pokemonImg, 600, 550-pokemonImg.getHeight(null)/3, pokemonImg.getWidth(null)/3, pokemonImg.getHeight(null)/3, null);
+		if(menu.getMove() != BattleAction.PokeRun){
+//		    double percent = 1;
+//			if(battle != null && battle.getPokemon() != null){
+//				percent =  (double) battle.getPokemon().getCurHP()/(double) battle.getPokemon().getMaxHP();
+//			    
+//				System.out.println("Max hp: " + battle.getPokemon().getMaxHP());
+//				System.out.println("Max hp: " + battle.getPokemon().getCurHP());
+//				System.out.println("Percent: " + percent);
+//			}
+			
+			g.setColor(Color.RED);
+			g.fillRect(600,550-pokemonImg.getHeight(null)/3 - 30, pokemonImg.getWidth(null)/3 ,20);
+			
+			g.setColor(Color.GREEN);
+			g.fillRect(600,550-pokemonImg.getHeight(null)/3 - 30, Math.round((float) (pokemonImg.getWidth(null)/3 * healthPerc)),20);
+		   
+			g.setColor(Color.black);
+			g2.drawImage(pokemonImg, 600, 550-pokemonImg.getHeight(null)/3, pokemonImg.getWidth(null)/3, pokemonImg.getHeight(null)/3, null);
+		}
 		
 		MenuItem[] items = menu.getItems();
 		
@@ -204,6 +237,7 @@ public class BattleView extends JPanel implements Observer{
 		menu = (BattleMenu)o;
 		if (obj != null){
 			if ((int)obj == 1){
+				this.battle = menu.getBattle();
 				//load pokemon image
 				String filename = fileNameMap.get(menu.getBattle().getPokemon().getClass());
 				try {
