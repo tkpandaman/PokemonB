@@ -31,8 +31,10 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
+import model.Backpack;
 import model.Battle;
 import model.Game;
+import model.IntroScreenModel;
 import model.Map;
 import model.PokemonItem;
 import model.Potion;
@@ -42,6 +44,7 @@ import view.ItemSelector;
 import model.State;
 import model.TrainerItem;
 import model.WalkingShoes;
+import view.IntroScreenView;
 import view.MapView;
 import view.Menu;
 import view.PokemonSelector;
@@ -54,6 +57,8 @@ public class GameGUI extends JFrame implements Observer {
 	private HashMap<String, Map> maps;
 	private MapView mapView;
 	private BattleView battleView;
+	private IntroScreenView introScreenView;
+	private IntroScreenModel introScreenModel;
 	private Menu menu;
 	private Stats stats;
 	
@@ -63,16 +68,17 @@ public class GameGUI extends JFrame implements Observer {
 	private PokemonView pokemon;
 	private boolean selectingPokemon;
 	private PokemonSelector pokemonChoice;
-	private boolean canPress;
 	
 	private JFXPanel fxPanel;
 	private MediaPlayer mediaPlayer;
 	private boolean isPlayingSongOne;
+	private boolean isPlayingFightIntro;
 	
+	//"audio/PokemonMain2.m4a"
 	private static final String SONG_MAIN_ONE = Paths.get("audio/PokemonMain1Extended.m4a").toUri().toString();
 	private static final String SONG_MAIN_TWO = Paths.get("audio/PokemonMain2.m4a").toUri().toString();
 	private static final String SONG_FIGHT = Paths.get("audio/PokemonFight.m4a").toUri().toString();
-	private static final String SONG_FIGHT_INTRO = Paths.get("audio/PokemonFightIntro.m4a").toUri().toString();
+	private static final String SONG_FIGHT_INTRO = Paths.get("audio/PokemonFightIntro02.m4a").toUri().toString();
 	
 	private static final String SAVED_COLLECTION_LOCATION = "pokemonSave";
 	private static final String DEFAULT_MAP = "safari-zone-1";
@@ -85,8 +91,7 @@ public class GameGUI extends JFrame implements Observer {
 		this.setTitle("Pokemon");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1024, 720);
-		canPress= true;
-		this.addWindowListener(new SaveAndLoad());
+		//this.addWindowListener(new SaveAndLoad());
 
 		maps = loadMaps();
 
@@ -94,13 +99,18 @@ public class GameGUI extends JFrame implements Observer {
 		game.setPlayerPos(25,40);
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
+		introScreenModel = new IntroScreenModel(game);
+		introScreenView = new IntroScreenView(introScreenModel);
+		introScreenModel.addObserver(introScreenView);
 		selectingItem = false;
         pokemonList = false;
         selectingPokemon = false;
 		game.addObserver(mapView);
 		game.addObserver(this);
+		
+		isPlayingFightIntro = false;
 
-		this.add(mapView);
+		this.add(introScreenView);
 
 		this.addKeyListener(new ArrowKeyListener());
 
@@ -114,9 +124,32 @@ public class GameGUI extends JFrame implements Observer {
 		Platform.runLater(() -> {
 			fxPanel.setScene(new Scene(new Group()));
 			// Initial media player
-			GameGUI.this.playSong(SONG_MAIN_ONE);
+			GameGUI.this.playSong(SONG_MAIN_TWO);
 			GameGUI.this.isPlayingSongOne = true;
 		});
+	}
+	
+	public void reset(){
+		game = new Game(maps, maps.get(DEFAULT_MAP), new Random());
+		game.setPlayerPos(25,40);
+		mapView = new MapView(game);
+		battleView = new BattleView(game);
+		introScreenModel = new IntroScreenModel(game);
+		introScreenView = new IntroScreenView(introScreenModel);
+		introScreenModel.addObserver(introScreenView);
+		selectingItem = false;
+        pokemonList = false;
+        selectingPokemon = false;
+		game.addObserver(mapView);
+		game.addObserver(this);
+		
+		
+		isPlayingFightIntro = false;
+		
+		this.add(introScreenView);
+
+		mapView.repaint();
+		battleView.repaint();
 	}
 
 	private HashMap<String, Map> loadMaps(){
@@ -254,6 +287,18 @@ public class GameGUI extends JFrame implements Observer {
                     }
                     mapView.repaint();
                 }
+                if(game.getState() == State.WIN){
+                	GameGUI.this.remove(mapView);
+                	GameGUI.this.reset();
+                	introScreenModel.update();
+                	
+                	Platform.runLater(() -> {
+           				fxPanel.setScene(new Scene(new Group()));
+           				// Initial media player
+           				GameGUI.this.playSong(SONG_MAIN_TWO);
+           				GameGUI.this.isPlayingSongOne = true;
+           			});
+                }
             }
             if (event.getKeyCode() == KeyEvent.VK_Z ){
                 if( game.getState() == State.BATTLE )
@@ -284,6 +329,9 @@ public class GameGUI extends JFrame implements Observer {
                         }
                     }
                 }
+                if(game.getState() == State.INTRO){
+                	introScreenModel.moveUp();
+                }
             }
             if (event.getKeyCode() == KeyEvent.VK_DOWN  ){
                 if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation && !game.inTransition ) || game.getState() == State.BATTLE )
@@ -308,6 +356,9 @@ public class GameGUI extends JFrame implements Observer {
                         }
                     }
                 }
+                if(game.getState() == State.INTRO){
+                	introScreenModel.moveDown();
+                }
             }
             if (event.getKeyCode() == KeyEvent.VK_LEFT  ){
                 if( ( game.getState() == State.NORMAL && !mapView.animating && !mapView.endAnimation && !game.inTransition ) || game.getState() == State.BATTLE )
@@ -322,11 +373,16 @@ public class GameGUI extends JFrame implements Observer {
                 }
             }
             if (event.getKeyCode() == KeyEvent.VK_ENTER ){
-                if( game.getState() == State.BATTLE )
+                if( game.getState() == State.BATTLE ){
                     game.select();
+                }
+                else if(game.getState() == State.INTRO){
+            		introScreenModel.select();
+                }
             }
             if( event.getKeyCode() == KeyEvent.VK_ENTER && !mapView.animating && !mapView.endAnimation && !game.inTransition)
             {
+            	
                 if( game.getState() == State.MENU )
                 {
                     if( selectingItem && !selectingPokemon)
@@ -401,15 +457,72 @@ public class GameGUI extends JFrame implements Observer {
                         }
                         if( menu.getSelected() == 3 )
                         {
-                            game.chooseMenu();
-                            mapView.remove( menu );
-                            mapView.remove( stats );
+//                            game.chooseMenu();
+//                            mapView.remove( menu );
+//                            mapView.remove( stats );
+                            
+                            GameGUI.this.remove(mapView);
+                        	GameGUI.this.reset();
+                        	introScreenModel.update();
+                        	
+                        	Platform.runLater(() -> {
+                   				fxPanel.setScene(new Scene(new Group()));
+                   				// Initial media player
+                   				GameGUI.this.playSong(SONG_MAIN_TWO);
+                   				GameGUI.this.isPlayingSongOne = true;
+                   			});
                         }
                     }
                 }
             }
-
-            if( !mapView.animating && game.getState() == State.BATTLE){
+            
+//            if(game.getState() == State.INTRO){
+//            	GameGUI.this.remove(mapView);
+//                GameGUI.this.add(introScreenView);
+//                GameGUI.this.revalidate();
+//                GameGUI.this.repaint();
+//                Platform.runLater(() -> {
+//    				fxPanel.setScene(new Scene(new Group()));
+//    				// Initial media player
+//    				GameGUI.this.playSong(SONG_MAIN_TWO);
+//    				GameGUI.this.isPlayingSongOne = true;
+//    			});
+//            	
+//            } else 
+            
+           if(introScreenModel.getState() == IntroScreenModel.IntroScreenState.StartNewGame){
+        	   GameGUI.this.remove(introScreenView);
+        	   introScreenModel.reset();
+        	   mapView.initial = true;
+       			Platform.runLater(() -> {
+       				fxPanel.setScene(new Scene(new Group()));
+       				// Initial media player
+       				GameGUI.this.playSong(SONG_MAIN_ONE);
+       				GameGUI.this.isPlayingSongOne = true;
+       			});
+       		
+           }
+           else if(introScreenModel.getState() == IntroScreenModel.IntroScreenState.LoadGame){
+        	   if(tryLoadingGame()){
+        		   GameGUI.this.remove(introScreenView);
+        		   introScreenModel.reset();
+        		   Platform.runLater(() -> {
+        			   fxPanel.setScene(new Scene(new Group()));
+        			   // Initial media player
+        			   GameGUI.this.playSong(SONG_MAIN_ONE);
+        			   GameGUI.this.isPlayingSongOne = true;
+        		   });
+        	   }
+        	   else {
+        		   introScreenModel.loadFailed();
+        	   }
+       		
+           }
+           else if(introScreenModel.getState() == IntroScreenModel.IntroScreenState.Quit){
+        	   System.exit(0);
+           }
+            
+           if( !mapView.animating && game.getState() == State.BATTLE){
                 GameGUI.this.remove(mapView);
                 GameGUI.this.add(battleView);
                 battleView.fadeIn();
@@ -453,14 +566,25 @@ public class GameGUI extends JFrame implements Observer {
 			Platform.runLater(() -> {
 				fxPanel.setScene(new Scene(new Group()));
 				// Initial media player
-				GameGUI.this.playSong(SONG_MAIN_TWO);
+				GameGUI.this.playSong(SONG_FIGHT);
 				GameGUI.this.isPlayingSongOne = false;
+				GameGUI.this.isPlayingFightIntro = false;
 			});
 			remove(mapView);
             add(battleView);
             battleView.fadeIn();
             revalidate();
             repaint();
+		}
+		if(game.inFading && !isPlayingFightIntro){
+			Platform.runLater(() -> {
+				fxPanel.setScene(new Scene(new Group()));
+				// Initial media player
+				GameGUI.this.playSongOnce(SONG_FIGHT_INTRO);
+				GameGUI.this.isPlayingSongOne = false;
+				GameGUI.this.isPlayingFightIntro = true;
+				
+			});
 		}
 	};
 	
@@ -484,6 +608,29 @@ public class GameGUI extends JFrame implements Observer {
 		Media song = new Media(location);
 		this.mediaPlayer = new MediaPlayer(song);
 		this.mediaPlayer.play();
+	}
+	
+	private boolean tryLoadingGame(){
+		try
+		{
+			FileInputStream fis = new FileInputStream( SAVED_COLLECTION_LOCATION );
+			ObjectInputStream ois = new ObjectInputStream( fis );
+			// load our saved data
+			game = (Game)ois.readObject();
+			ois.close();
+			fis.close();
+
+		} catch (Exception exception) {
+			//exception.printStackTrace();
+			return false;
+		}
+
+		game.addObserver(mapView);
+		game.addObserver(GameGUI.this);
+		game.getBattleMenu().addObserver(battleView);
+		game.update();
+		mapView.initial = true;
+		return true;
 	}
 
 	private class SaveAndLoad extends WindowAdapter
