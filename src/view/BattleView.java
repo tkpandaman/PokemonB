@@ -86,7 +86,7 @@ public class BattleView extends JPanel implements Observer{
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D)g;
-		
+		healthPerc = 1;
 		g2.clearRect(0, 0, 100000, 100000);
 		
 		g2.drawImage(background, 0, 0, null);
