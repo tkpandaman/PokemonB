@@ -11,16 +11,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.Battle;
 import model.BattleMenu;
 import model.BattleMenu.MenuItem;
@@ -92,12 +99,20 @@ public class BattleView extends JPanel implements Observer{
 		
 		
 		if(animX > endX){
+			System.out.println("In here");
 			timer.stop();
 			animX = -1;
 			animY = -1;
 			endX = -1;
 			menu.resultAction();
 			isAnimating = false;
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		switch(menu.getMove()){
