@@ -93,7 +93,6 @@ public class BattleView extends JPanel implements Observer{
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D)g;
-		healthPerc = 1;
 		g2.clearRect(0, 0, 100000, 100000);
 		
 		g2.drawImage(background, 0, 0, null);
@@ -115,12 +114,6 @@ public class BattleView extends JPanel implements Observer{
 			menu.resultAction();
 			isAnimating = false;
 			healthPerc = (double) battle.getPokemon().getCurHP()/(double) battle.getPokemon().getMaxHP();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		
 		switch(menu.getMove()){
@@ -192,14 +185,6 @@ public class BattleView extends JPanel implements Observer{
 		}
 		
 		if(menu.getMove() != BattleAction.PokeRun){
-//		    double percent = 1;
-//			if(battle != null && battle.getPokemon() != null){
-//				percent =  (double) battle.getPokemon().getCurHP()/(double) battle.getPokemon().getMaxHP();
-//			    
-//				System.out.println("Max hp: " + battle.getPokemon().getMaxHP());
-//				System.out.println("Max hp: " + battle.getPokemon().getCurHP());
-//				System.out.println("Percent: " + percent);
-//			}
 			
 			g.setColor(Color.RED);
 			g.fillRect(600,550-pokemonImg.getHeight(null)/3 - 30, pokemonImg.getWidth(null)/3 ,20);
