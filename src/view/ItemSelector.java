@@ -32,6 +32,12 @@ public class ItemSelector extends JPanel
     private void layoutPanel()
     {
         this.setLayout(null);
+        
+        
+        
+        //And the award for Best Code in the project goes to:
+        
+        /*
         for( int i = 0; i < game.getTrainer().openPack().getTrainerItems().size(); i++ )
         {
             numMenuItems++;
@@ -40,6 +46,12 @@ public class ItemSelector extends JPanel
         {
             numMenuItems++;
         }
+        */
+        
+        numMenuItems = game.getTrainer().openPack().getPokemonItems().size() + game.getTrainer().openPack().getTrainerItems().size();
+        
+        
+        
         this.setSize( 200,30 + ( 30 * numMenuItems ) );
         this.setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
         //this.setLocation(700, 100);

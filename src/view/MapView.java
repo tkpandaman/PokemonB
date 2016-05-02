@@ -178,7 +178,7 @@ public class MapView extends JPanel implements Observer {
         g2.translate(cameraX*map.getTileSize(), cameraY*map.getTileSize());
 
         g2.setColor(Color.BLUE);
-        if (game.getState() == State.WIN)
+        if (game.getState() == State.WIN || game.getState() == State.LOSE)
         {
             EndGame endGame = new EndGame( game );
             endGame.setLocation( 100, 100 );
