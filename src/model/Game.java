@@ -12,6 +12,7 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
+import model.pokemon.KillMe;
 import model.pokemon.Pokedex;
 import model.pokemon.Pokemon;
 

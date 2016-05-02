@@ -20,6 +20,7 @@ import model.pokemon.Arbok;
 import model.pokemon.Beedrill;
 import model.pokemon.Butterfree;
 import model.pokemon.Charizard;
+import model.pokemon.KillMe;
 import model.pokemon.Pidgeot;
 import model.pokemon.Pikachu;
 import model.pokemon.Pokemon;
@@ -47,6 +48,7 @@ public class PokemonView extends JPanel {
         fileNameMap.put(Spearow.class, "images/pokemon/Spearow.png");
         fileNameMap.put(Squirtle.class, "images/pokemon/Squirtle.png");
         fileNameMap.put(Voltorb.class, "images/pokemon/Voltorb.png");
+        fileNameMap.put(KillMe.class, "images/pokemon/KillMe.png");
 		layoutPanel();
 	}
 	private void layoutPanel()
