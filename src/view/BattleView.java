@@ -26,6 +26,7 @@ import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import model.Battle;
@@ -47,6 +48,11 @@ public class BattleView extends JPanel implements Observer{
 	private Timer timer;
 	private boolean isAnimating = false;
 	private double healthPerc = 1;
+	
+	//Sounds Effects
+	private MediaPlayer mediaPlayer;
+	private static final String SONG_ONE = Paths.get("audio/battleSounds/runsAway.mp3").toUri().toString();
+	private JFXPanel fxPanel;
 	
 	// Timer Variables
 	private int transitionRectangleAlpha;
@@ -75,6 +81,7 @@ public class BattleView extends JPanel implements Observer{
 		menu = game.getBattleMenu();
 		menu.addObserver(this);
 		battle = game.getBattle();	
+		this.fxPanel = new JFXPanel();
 		
 		// Set images and initialize fade timers
         setImages();
@@ -86,7 +93,6 @@ public class BattleView extends JPanel implements Observer{
 	
 	public void paintComponent(Graphics g){
 		Graphics2D g2 = (Graphics2D)g;
-		healthPerc = 1;
 		g2.clearRect(0, 0, 100000, 100000);
 		
 		g2.drawImage(background, 0, 0, null);
@@ -108,12 +114,6 @@ public class BattleView extends JPanel implements Observer{
 			menu.resultAction();
 			isAnimating = false;
 			healthPerc = (double) battle.getPokemon().getCurHP()/(double) battle.getPokemon().getMaxHP();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		
 		switch(menu.getMove()){
@@ -156,6 +156,7 @@ public class BattleView extends JPanel implements Observer{
 		    		endX = this.getWidth() + pokemonImg.getWidth(null)/4;
 		    		animateX();
 		    		isAnimating = true;
+		    		this.playSong(SONG_ONE);
 		    	}
 				   g2.drawImage(pokemonImg, animX, 550-pokemonImg.getHeight(null)/3, pokemonImg.getWidth(null)/3, pokemonImg.getHeight(null)/3, null);
 		    break;
@@ -184,14 +185,6 @@ public class BattleView extends JPanel implements Observer{
 		}
 		
 		if(menu.getMove() != BattleAction.PokeRun){
-//		    double percent = 1;
-//			if(battle != null && battle.getPokemon() != null){
-//				percent =  (double) battle.getPokemon().getCurHP()/(double) battle.getPokemon().getMaxHP();
-//			    
-//				System.out.println("Max hp: " + battle.getPokemon().getMaxHP());
-//				System.out.println("Max hp: " + battle.getPokemon().getCurHP());
-//				System.out.println("Percent: " + percent);
-//			}
 			
 			g.setColor(Color.RED);
 			g.fillRect(600,550-pokemonImg.getHeight(null)/3 - 30, pokemonImg.getWidth(null)/3 ,20);
@@ -325,6 +318,18 @@ public class BattleView extends JPanel implements Observer{
 	
 	public boolean isAnimating(){
 		return this.isAnimating;
+	}
+	
+	private void playSong(String location) {
+		if (this.mediaPlayer != null) {
+			this.mediaPlayer.stop();
+			this.mediaPlayer.dispose();
+		}
+		Media song = new Media(location);
+		this.mediaPlayer = new MediaPlayer(song);
+		// The song will repeat forever
+		this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+		this.mediaPlayer.play();
 	}
 	
 }
