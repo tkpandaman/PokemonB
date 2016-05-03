@@ -111,13 +111,10 @@ public class BattleView extends JPanel implements Observer{
 		
 		
 		if(animX > endX){
-			System.out.println("In here");
 			timer.stop();
 			animX = -1;
 			animY = -1;
 			endX = -1;
-			
-			
 			
 			menu.resultAction();
 			
@@ -170,7 +167,6 @@ public class BattleView extends JPanel implements Observer{
 		    break;
 		    case Run:
 		    	menu.setMove(BattleAction.End);
-		    break; 
 		    case PokeRun:
 		    	if(animX == -1){
 		    		animX = 600;
