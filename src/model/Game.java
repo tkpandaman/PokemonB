@@ -152,7 +152,12 @@ public class Game extends Observable implements Serializable {
 		if(isPokemon){
 			state = State.FROZEN;
 			Timer fadeOutTimer = new Timer(50, null);
-			fadeOutTimer.addActionListener(new FadeOutListener(true));
+			if(t.getTileType() == TileType.Encounter){
+				t.setTileType(TileType.Floor);
+				fadeOutTimer.addActionListener(new FadeOutListener(true));
+			}
+			else
+				fadeOutTimer.addActionListener(new FadeOutListener(false));
 			fadeOutTimer.start();
 		}
 	}
