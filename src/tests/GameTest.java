@@ -41,37 +41,37 @@ public class GameTest {
 		maps.put("start", map);
 		Game game = new Game(maps, map, r);
 
-		assertEquals(game.getPlayerX(), 2);
-		assertEquals(game.getPlayerY(), 2);
+		assertEquals(game.getPlayerX(), 25);
+		assertEquals(game.getPlayerY(), 40);
 
 		game.moveUp();
-		assertEquals(game.getPlayerX(), 2);
-		assertEquals(game.getPlayerY(), 1);
+		assertEquals(game.getPlayerX(), 25);
+		assertEquals(game.getPlayerY(), 39);
 
 		game.moveLeft();
-		assertEquals(game.getPlayerX(), 1);
-		assertEquals(game.getPlayerY(), 1);
+		assertEquals(game.getPlayerX(), 24);
+		assertEquals(game.getPlayerY(), 39);
 
 		game.moveDown();
-		assertEquals(game.getPlayerX(), 1);
-		assertEquals(game.getPlayerY(), 2);
+		assertEquals(game.getPlayerX(), 24);
+		assertEquals(game.getPlayerY(), 40);
 
 		game.moveRight();
-		assertEquals(game.getPlayerX(), 2);
-		assertEquals(game.getPlayerY(), 2);
+		assertEquals(game.getPlayerX(), 25);
+		assertEquals(game.getPlayerY(), 40);
 
 		game.select();
 
-		assertEquals(game.getPlayerX(), 2);
-		assertEquals(game.getPlayerY(), 2);
+		assertEquals(game.getPlayerX(), 25);
+		assertEquals(game.getPlayerY(), 40);
 
 		game.moveUp();
-		assertEquals(game.getPlayerX(), 2);
-		assertEquals(game.getPlayerY(), 1);
+		assertEquals(game.getPlayerX(), 25);
+		assertEquals(game.getPlayerY(), 39);
 
 		game.moveLeft();
-		assertEquals(game.getPlayerX(), 1);
-		assertEquals(game.getPlayerY(), 1);
+		assertEquals(game.getPlayerX(), 24);
+		assertEquals(game.getPlayerY(), 39);
 
 		game.moveRight();
 		game.moveRight();
