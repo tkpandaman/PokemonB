@@ -116,7 +116,20 @@ public class BattleView extends JPanel implements Observer{
 			animX = -1;
 			animY = -1;
 			endX = -1;
+			
+			
+			
 			menu.resultAction();
+			
+			if(menu.getMove() == BattleAction.End && menu.battleOver()){
+				try {
+					Thread.sleep(750);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			isAnimating = false;
 			healthPerc = (double) battle.getPokemon().getCurHP()/(double) battle.getPokemon().getMaxHP();
 		}
