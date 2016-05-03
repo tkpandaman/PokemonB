@@ -84,6 +84,7 @@ public class Menu extends JPanel{
 			this.repaint();
 		}
 	}
+	
 	public void moveDown()
 	{
 		if( selected < numMenuItems - 1 )

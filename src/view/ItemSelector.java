@@ -33,20 +33,8 @@ public class ItemSelector extends JPanel
     {
         this.setLayout(null);
         
-        
-        
-        //And the award for Best Code in the project goes to:
-        
-        /*
-        for( int i = 0; i < game.getTrainer().openPack().getTrainerItems().size(); i++ )
-        {
-            numMenuItems++;
-        }
-        for( int i = 0; i < game.getTrainer().openPack().getPokemonItems().size(); i++ )
-        {
-            numMenuItems++;
-        }
-        */
+      
+     
         
         numMenuItems = game.getTrainer().openPack().getPokemonItems().size() + game.getTrainer().openPack().getTrainerItems().size();
         

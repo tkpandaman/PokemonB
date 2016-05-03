@@ -99,7 +99,7 @@ public class GameGUI extends JFrame implements Observer {
 		game.setPlayerPos(25,40);
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
-		introScreenModel = new IntroScreenModel(game);
+		introScreenModel = new IntroScreenModel(game, IntroScreenModel.IntroScreenState.Start);
 		introScreenView = new IntroScreenView(introScreenModel);
 		introScreenModel.addObserver(introScreenView);
 		selectingItem = false;
@@ -134,7 +134,7 @@ public class GameGUI extends JFrame implements Observer {
 		game.setPlayerPos(25,40);
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
-		introScreenModel = new IntroScreenModel(game);
+		introScreenModel = new IntroScreenModel(game, IntroScreenModel.IntroScreenState.Start);
 		introScreenView = new IntroScreenView(introScreenModel);
 		introScreenModel.addObserver(introScreenView);
 		selectingItem = false;

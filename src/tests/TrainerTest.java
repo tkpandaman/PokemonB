@@ -49,5 +49,11 @@ public class TrainerTest {
 		ash.openPack().usePokeball();
 		assertEquals(ash.openPack().getPokeballsLeft(), 30);
 	}
-	
+	@Test
+	public void testReset()
+	{
+	    Backpack bp = new Backpack(r);
+	    Trainer ash = new Trainer("Ash", bp);
+	    ash.reset( bp );
+	}
 }
