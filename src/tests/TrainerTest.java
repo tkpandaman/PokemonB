@@ -34,7 +34,7 @@ public class TrainerTest {
 	public void speedTest() {
 		Backpack bp = new Backpack(r);
 		Trainer ash = new Trainer("Ash", bp);
-		assertEquals(ash.getSpeed(), 1.0, 0.001);
+		assertEquals(ash.getSpeed(), 2.0, 0.001);
 		ash.setSpeed(1.5);
 		assertEquals(ash.getSpeed(), 1.5, 0.001);
 	}
@@ -49,5 +49,11 @@ public class TrainerTest {
 		ash.openPack().usePokeball();
 		assertEquals(ash.openPack().getPokeballsLeft(), 30);
 	}
-	
+	@Test
+	public void testReset()
+	{
+	    Backpack bp = new Backpack(r);
+	    Trainer ash = new Trainer("Ash", bp);
+	    ash.reset( bp );
+	}
 }

@@ -79,7 +79,10 @@ public class Backpack implements Serializable{
 		}
 		return null;
 	}
-	
+	public boolean removePokemonItem(PokemonItem item)
+	{
+	    return pokemonItemList.remove( item );
+	}
 	/**
 	 * Finds and returns a PokemonItem with the given name
 	 * @param name as the Item name

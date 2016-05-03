@@ -118,7 +118,6 @@ public class BattleMenuTest {
 		b.setPokemonRanAway(true);
 		menu.setBattleOver(false);
 		menu.setMove(BattleAction.PokeRun);
-		System.out.println("Again");
 		menu.resultAction();
 		assertEquals(menu.getMove(), BattleAction.End);
 		assertEquals(menu.battleOver(), true);

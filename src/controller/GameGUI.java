@@ -99,7 +99,7 @@ public class GameGUI extends JFrame implements Observer {
 		game.setPlayerPos(25,40);
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
-		introScreenModel = new IntroScreenModel(game);
+		introScreenModel = new IntroScreenModel(game, IntroScreenModel.IntroScreenState.Start);
 		introScreenView = new IntroScreenView(introScreenModel);
 		introScreenModel.addObserver(introScreenView);
 		selectingItem = false;
@@ -134,7 +134,7 @@ public class GameGUI extends JFrame implements Observer {
 		game.setPlayerPos(25,40);
 		mapView = new MapView(game);
 		battleView = new BattleView(game);
-		introScreenModel = new IntroScreenModel(game);
+		introScreenModel = new IntroScreenModel(game, IntroScreenModel.IntroScreenState.Start);
 		introScreenView = new IntroScreenView(introScreenModel);
 		introScreenModel.addObserver(introScreenView);
 		selectingItem = false;
@@ -413,8 +413,14 @@ public class GameGUI extends JFrame implements Observer {
                     {
                         if( game.getTrainer().openPack().getPokemonCaptured() > 0 )
                         {
-                            ( (PokemonItem)items.getSelected() ).use( game.getTrainer().openPack().getPokemonAt( pokemonChoice.getSelected() ) );
+                            boolean success = ( (PokemonItem)items.getSelected() ).use( game.getTrainer().openPack().getPokemonAt( pokemonChoice.getSelected() ) );
+                            if( success )
+                            {
+                                game.getTrainer().openPack().removePokemonItem( (PokemonItem)items.getSelected() );
+                            }
                             selectingPokemon = false;
+                            selectingItem = false;
+                            mapView.remove( items );
                             mapView.remove( pokemonChoice );
                             mapView.repaint();
                         }
@@ -667,11 +673,35 @@ public class GameGUI extends JFrame implements Observer {
 				game.update();
 			};
 			mapView.initial = true;
-			// change GUI after data loaded
 		};
 		@Override
 		public void windowClosing( WindowEvent e )
 		{
+		    int selectedChoice = JOptionPane.showConfirmDialog( null, "Save game?", "Select an option", JOptionPane.YES_NO_CANCEL_OPTION );
+            if( selectedChoice == JOptionPane.NO_OPTION )
+            {
+                System.exit( 0 );
+            };
+            if( selectedChoice == JOptionPane.YES_OPTION )
+            {
+                try
+                {
+                    // save current state of pokemon game (Trainer, pokemon, items, backpack, etc.)
+                    FileOutputStream fos = new FileOutputStream(SAVED_COLLECTION_LOCATION);
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    // save all data we need to a file
+                    oos.writeObject(game);
+                    oos.close();
+                    fos.close();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+
+                game.addObserver(mapView);
+                game.addObserver(GameGUI.this);
+                game.getBattleMenu().addObserver(battleView);
+                game.update();
+            };
 		};
 	}
 

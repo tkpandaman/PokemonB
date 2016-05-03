@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import org.junit.Test;
+import model.State;
 
 public class StateTest extends SerializableTestCase{
 
@@ -15,6 +16,7 @@ public class StateTest extends SerializableTestCase{
 		assertEquals(model.State.WIN, model.State.WIN);
 		assertEquals(model.State.MENU, model.State.MENU);
 		assertEquals(model.State.NORMAL, model.State.NORMAL);
+		assertEquals( State.valueOf( "NORMAL" ), model.State.NORMAL );
 	}
 	
 	@Test
