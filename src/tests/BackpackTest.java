@@ -100,4 +100,12 @@ public class BackpackTest {
         List<PokemonItem> items = new ArrayList<PokemonItem>();
         assertEquals( items, b.getPokemonItems() );
     }
+    @Test
+    public void testBackpackRemovePokemonItem()
+    {
+        Backpack b = new Backpack(new Random());
+        Potion p = new Potion();
+        b.addPokemonItem( p );
+        assertTrue( b.removePokemonItem( p ) );
+    }
 }
