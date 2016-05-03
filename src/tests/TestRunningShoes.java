@@ -35,9 +35,9 @@ public class TestRunningShoes extends SerializableTestCase
     	Backpack bp = new Backpack(r);
         Trainer t = new Trainer("Bob", bp);
         RunningShoes shoe = new RunningShoes();
-        assertEquals( 1.0, t.getSpeed(), 0.000000000000000000001 );
-        shoe.use( t );
         assertEquals( 2.0, t.getSpeed(), 0.000000000000000000001 );
+        shoe.use( t );
+        assertEquals( 3.0, t.getSpeed(), 0.000000000000000000001 );
     };
     @Test
     public void testRunningShoesSerializable() throws ClassNotFoundException, IOException

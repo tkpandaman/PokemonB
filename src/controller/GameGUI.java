@@ -413,8 +413,14 @@ public class GameGUI extends JFrame implements Observer {
                     {
                         if( game.getTrainer().openPack().getPokemonCaptured() > 0 )
                         {
-                            ( (PokemonItem)items.getSelected() ).use( game.getTrainer().openPack().getPokemonAt( pokemonChoice.getSelected() ) );
+                            boolean success = ( (PokemonItem)items.getSelected() ).use( game.getTrainer().openPack().getPokemonAt( pokemonChoice.getSelected() ) );
+                            if( success )
+                            {
+                                game.getTrainer().openPack().removePokemonItem( (PokemonItem)items.getSelected() );
+                            }
                             selectingPokemon = false;
+                            selectingItem = false;
+                            mapView.remove( items );
                             mapView.remove( pokemonChoice );
                             mapView.repaint();
                         }
