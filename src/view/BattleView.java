@@ -47,12 +47,16 @@ public class BattleView extends JPanel implements Observer{
 	private int endX = -1;
 	private Timer timer;
 	private boolean isAnimating = false;
-	private double healthPerc = 1;
+	private double healthPerc;
 	
 	//Sounds Effects
 	private MediaPlayer mediaPlayer;
-	private static final String SONG_ONE = Paths.get("audio/battleSounds/runsAway.mp3").toUri().toString();
 	private JFXPanel fxPanel;
+	private static final String POKERUNS = Paths.get("audio/battleSounds/runsAway.mp3").toUri().toString();
+	private static final String THROWBAIT = Paths.get("audio/battleSounds/bait.mp3").toUri().toString();
+	private static final String POKECAUGHT = Paths.get("audio/battleSounds/caught.mp3").toUri().toString();
+	private static final String THROWROCK = Paths.get("audio/battleSounds/rock.mp3").toUri().toString();
+
 	
 	// Timer Variables
 	private int transitionRectangleAlpha;
@@ -87,6 +91,7 @@ public class BattleView extends JPanel implements Observer{
         setImages();
 		makeFadeTimers();
 		
+		healthPerc = 1;
 		
 								
 	}
@@ -111,7 +116,20 @@ public class BattleView extends JPanel implements Observer{
 			animX = -1;
 			animY = -1;
 			endX = -1;
+			
+			
+			
 			menu.resultAction();
+			
+			if(menu.getMove() == BattleAction.End && menu.battleOver()){
+				try {
+					Thread.sleep(750);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			isAnimating = false;
 			healthPerc = (double) battle.getPokemon().getCurHP()/(double) battle.getPokemon().getMaxHP();
 		}
@@ -124,6 +142,7 @@ public class BattleView extends JPanel implements Observer{
 		    		endX = 620;
 		    		animateX();
 		    		isAnimating = true;
+		    		this.playSong(POKECAUGHT);
 		    	}
 		    	g2.drawImage(pokeball, animX, animY, null);
 		    break;
@@ -134,6 +153,7 @@ public class BattleView extends JPanel implements Observer{
 		    		endX = 620;
 		    		animateX();
 		    		isAnimating = true;
+		    		this.playSong(THROWBAIT);
 		    	}
 		    	g2.drawImage(bait, animX, animY, null);
 		    break;
@@ -144,6 +164,7 @@ public class BattleView extends JPanel implements Observer{
 		    		endX = 620;
 		    		animateX();
 		    		isAnimating = true;
+		    		this.playSong(THROWROCK);
 		    	}
 		    	g2.drawImage(rock, animX, animY, null);
 		    break;
@@ -156,12 +177,13 @@ public class BattleView extends JPanel implements Observer{
 		    		endX = this.getWidth() + pokemonImg.getWidth(null)/4;
 		    		animateX();
 		    		isAnimating = true;
-		    		this.playSong(SONG_ONE);
+		    		this.playSong(POKERUNS);
 		    	}
 				   g2.drawImage(pokemonImg, animX, 550-pokemonImg.getHeight(null)/3, pokemonImg.getWidth(null)/3, pokemonImg.getHeight(null)/3, null);
 		    break;
 		    case End:
 		    	if(menu.battleOver()){
+		    		healthPerc = 1;
 		    	    try {
 		    	        Robot robot = new Robot();
 
@@ -328,7 +350,6 @@ public class BattleView extends JPanel implements Observer{
 		Media song = new Media(location);
 		this.mediaPlayer = new MediaPlayer(song);
 		// The song will repeat forever
-		this.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 		this.mediaPlayer.play();
 	}
 	
