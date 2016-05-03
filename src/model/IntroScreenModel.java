@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Observable;
 
-public class IntroScreenModel extends Observable {
-	
-	public String[] startChoice;
+public class IntroScreenModel extends Observable implements Serializable {
+
+    private static final long serialVersionUID = 7277245440402214454L;
+    public String[] startChoice;
 	public String[] mainChoice;
 	public String[] loadChoice;
 	public String[] newGameChoice;
@@ -14,12 +16,12 @@ public class IntroScreenModel extends Observable {
 	
 	private Game game;
 	
-	public enum IntroScreenState{ Start, Main, NewGame, StartNewGame, LoadGame, LoadFail, Credits, Quit };
+	public enum IntroScreenState implements Serializable{ Start, Main, NewGame, StartNewGame, LoadGame, LoadFail, Credits, Quit };
 	
-	public IntroScreenModel(Game game){
+	public IntroScreenModel(Game game, IntroScreenState state){
 		this.game = game;
 		this.selected = 0;
-		this.state = IntroScreenState.Start;
+		this.state = state;
 		
 		loadStrings();
 	}
