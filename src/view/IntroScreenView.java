@@ -73,7 +73,7 @@ public class IntroScreenView extends JPanel implements Observer{
 		try
 		{
 			arrow = ImageIO.read( new File( "images/arrow.png" ) );
-			startScreen = ImageIO.read( new File( "images/mainMenu/StartScreen.jpg" ) );
+			startScreen = ImageIO.read( new File( "images/mainMenu/StartScreen1.jpg" ) );
 			mainMenuScreen = ImageIO.read( new File( "images/mainMenu/MainMenu.png" ) );
 		}
 		catch (IOException e)

@@ -84,6 +84,7 @@ public class GameTest {
 		// test that gamestate is keeping up when game updates
 		assertEquals(25,game.getPlayerX());
 		assertEquals(40,game.getPlayerY());
+
 	}
 
 	@Test
@@ -200,7 +201,7 @@ public class GameTest {
 		game.setPlayerPos(0, 0);
 
 		game.setWin(WinCondition.POKEMON);
-		
+
 		assertEquals(WinCondition.POKEMON, game.getWin());
 
 		for(int i = 0; i < 500; i++){
@@ -222,6 +223,8 @@ public class GameTest {
 		game.moveRight();
 
 		assertEquals(State.WIN, game.getState());
+
+		assertEquals(game.getTransitionAlpha(), 0.1, 0.00001);
 
 
 	}
@@ -248,9 +251,9 @@ public class GameTest {
 		for(int i = 0; i < 30; i++){
 			game.getTrainer().openPack().usePokeball();
 		}
-		
+
 		game.moveRight();
-		
+
 		assertEquals(State.WIN, game.getState());
 		assertEquals(WinCondition.SAFARIBALLS, game.getWin());
 	}
